@@ -1,5 +1,7 @@
 package presentation;
 
+import java.awt.FlowLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,11 +18,14 @@ public class Loginpanel extends JPanel{
   public Loginpanel() {
     
     JPanel p_login = new JPanel();
+    p_login.setLayout(new FlowLayout());
     p_login.add(l_username);
     p_login.add(t_username);
     p_login.add(l_password);
     p_login.add(t_password);
     p_login.add(b_login);
+    
+    
      
   }
 }

@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 public class Sqlpanel extends JPanel {
 
   public Sqlpanel(){
-    JTextArea printArea = new JTextArea(200, 400);
+    JTextArea printArea = new JTextArea(20, 40);
     printArea.setName("printArea");
     printArea.setEditable(false);
   }
