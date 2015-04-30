@@ -1,16 +1,17 @@
 package csv;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class CSVFormatter<T> {
    private static final String
            SEPARATOR = ",",
            EOL = "\r\n";
 
-   private CSVSerializer<T> serializer;
+   private Function<T, List<String>> serializer;
    private List<String> header;
 
-   public CSVFormatter(CSVSerializer<T> serializer) {
+   public CSVFormatter(Function<T, List<String>> serializer) {
       this.serializer = serializer;
    }
 

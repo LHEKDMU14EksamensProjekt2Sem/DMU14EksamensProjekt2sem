@@ -1,5 +1,4 @@
 import csv.CSVFormatter;
-import csv.CSVSerializer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class Main {
    public static void main(String[] args) {
-      CSVSerializer<Record> serializer = item -> {
+      CSVFormatter<Record> formatter = new CSVFormatter<>(item -> {
          List<String> fields = new LinkedList<>();
          fields.add(item.getFirstName());
          fields.add(item.getLastName());
@@ -17,9 +16,7 @@ public class Main {
          fields.add(String.valueOf(item.getPhone()));
          fields.add(item.getEmail());
          return fields;
-      };
-
-      CSVFormatter<Record> formatter = new CSVFormatter<>(serializer);
+      });
 
       List<String> header = new LinkedList<>();
       header.add("First name");
