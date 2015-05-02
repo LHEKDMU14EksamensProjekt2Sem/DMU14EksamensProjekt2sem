@@ -9,16 +9,15 @@ import java.util.List;
 
 public class Main {
    public static void main(String[] args) {
-      CSVFormatter<Record> formatter = new CSVFormatter<>(item -> {
-         List<String> fields = new ArrayList<>();
-         fields.add(item.getFirstName());
-         fields.add(item.getLastName());
-         fields.add(String.valueOf(item.getYearOfBirth()));
-         fields.add(String.valueOf(item.getPhone()));
-         fields.add(item.getEmail());
-         fields.add(item.getNote());
-         return fields;
-      });
+      CSVFormatter<Record> formatter = new CSVFormatter<>(r ->
+              new String[]{
+                      r.getFirstName(),
+                      r.getLastName(),
+                      String.valueOf(r.getYearOfBirth()),
+                      String.valueOf(r.getPhone()),
+                      r.getEmail(),
+                      r.getNote()
+              });
 
       formatter.addField(new CSVField("First name"));
       formatter.addField(new CSVField("Last name"));

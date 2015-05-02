@@ -10,10 +10,10 @@ public class CSVFormatter<T> {
            SEPARATOR = ",",
            EOL = "\r\n";
 
-   private Function<T, List<String>> serializer;
+   private Function<T, String[]> serializer;
    private List<CSVField> fields;
 
-   public CSVFormatter(Function<T, List<String>> serializer) {
+   public CSVFormatter(Function<T, String[]> serializer) {
       this.serializer = serializer;
       this.fields = new ArrayList<>();
    }
@@ -54,10 +54,10 @@ public class CSVFormatter<T> {
 
       // Add records, quoting values if required
       for (T item : items) {
-         List<String> values = serializer.apply(item);
-         for (int i = 0; i < values.size(); i++) {
+         String[] values = serializer.apply(item);
+         for (int i = 0; i < values.length; i++) {
             if (i < fields.size() && fields.get(i).isQuoted())
-               values.set(i, quote(values.get(i)));
+               values[i] = quote(values[i]);
          }
 
          sb.append(String.join(SEPARATOR, values));
