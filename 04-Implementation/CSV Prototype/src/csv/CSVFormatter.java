@@ -1,5 +1,7 @@
 package csv;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -9,32 +11,56 @@ public class CSVFormatter<T> {
            EOL = "\r\n";
 
    private Function<T, List<String>> serializer;
-   private List<String> header;
+   private List<CSVField> fields;
 
    public CSVFormatter(Function<T, List<String>> serializer) {
       this.serializer = serializer;
+      this.fields = new ArrayList<>();
    }
 
-   public List<String> getHeader() {
-      return header;
+   /**
+    * Returns a string enclosed with double quotes. Any
+    * double quote character within the string is escaped
+    * by preceding it with another double quote.
+    *
+    * @param s string to enclose with double quotes
+    * @return string enclosed with double quotes
+    */
+   private static String quote(String s) {
+      return '"' + s.replace("\"", "\"\"") + '"';
    }
 
-   public void setHeader(List<String> header) {
-      this.header = header;
+   public Iterator<CSVField> getFields() {
+      return fields.iterator();
+   }
+
+   public void addField(CSVField field) {
+      fields.add(field);
    }
 
    public String format(List<T> items) {
       StringBuilder sb = new StringBuilder();
 
-      // Add header if non-empty
-      if (header != null && !header.isEmpty()) {
+      // Add header if fields are added and
+      // the first field has a header
+      if (!fields.isEmpty() && fields.get(0).getHeader() != null) {
+         List<String> header = new ArrayList<>();
+         for (CSVField field : fields)
+            header.add(field.getHeader());
+
          sb.append(String.join(SEPARATOR, header));
          sb.append(EOL);
       }
 
-      // Add rows
+      // Add records, quoting values if required
       for (T item : items) {
-         sb.append(String.join(SEPARATOR, serializer.apply(item)));
+         List<String> values = serializer.apply(item);
+         for (int i = 0; i < values.size(); i++) {
+            if (i < fields.size() && fields.get(i).isQuoted())
+               values.set(i, quote(values.get(i)));
+         }
+
+         sb.append(String.join(SEPARATOR, values));
          sb.append(EOL);
       }
 

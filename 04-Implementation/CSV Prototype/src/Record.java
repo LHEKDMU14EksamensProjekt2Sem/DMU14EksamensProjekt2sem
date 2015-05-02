@@ -1,13 +1,14 @@
 public class Record {
-   private String firstName, lastName, email;
+   private String firstName, lastName, email, note;
    private int yearOfBirth, phone;
 
-   public Record(String firstName, String lastName, int yearOfBirth, int phone, String email) {
+   public Record(String firstName, String lastName, int yearOfBirth, int phone, String email, String note) {
       setFirstName(firstName);
       setLastName(lastName);
       setYearOfBirth(yearOfBirth);
       setPhone(phone);
       setEmail(email);
+      setNote(note);
    }
 
    public String getFirstName() {
@@ -48,5 +49,13 @@ public class Record {
 
    public void setEmail(String email) {
       this.email = email;
+   }
+
+   public String getNote() {
+      return note;
+   }
+
+   public void setNote(String note) {
+      this.note = note;
    }
 }
