@@ -1,0 +1,14 @@
+FFS-OC-12: specifyDownPayment
+
+Systemoperation
+specifyDownPayment( downPayment )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans lr af LoanRequest eksisterer.
+
+Slutbetingelser
+lr.downPayment blev sat til downPayment.
+lr.loan blev præsenteret.

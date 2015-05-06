@@ -1,0 +1,13 @@
+FFS-OC-04: specifyStreet
+
+Systemoperation
+specifyStreet( street )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af street er gyldig, blev c.street sat til street; ellers blev en fejlbesked præsenteret.

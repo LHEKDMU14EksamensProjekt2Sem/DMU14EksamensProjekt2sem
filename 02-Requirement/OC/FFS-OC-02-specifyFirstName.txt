@@ -1,0 +1,13 @@
+FFS-OC-02: specifyFirstName
+
+Systemoperation
+specifyFirstName( firstName )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af firstName er gyldig, blev c.firstName sat til firstName; ellers blev en fejlbesked præsenteret.

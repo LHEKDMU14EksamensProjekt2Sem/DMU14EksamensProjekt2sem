@@ -1,0 +1,16 @@
+FFS-OC-10: specifyCar
+
+Systemoperation
+specifyCar( car )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans lr af LoanRequest eksisterer.
+Car car eksisterer.
+
+Slutbetingelser
+lr.car blev sat til car.
+car.salePrice blev præsenteret.
+lr.total blev præsenteret.

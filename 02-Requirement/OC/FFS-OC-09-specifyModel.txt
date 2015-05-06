@@ -1,0 +1,13 @@
+FFS-OC-09: specifyModel
+
+Systemoperation
+specifyModel( model )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+CarModel model eksisterer.
+
+Slutbetingelser
+Alle instanser c af Car hvor c.model = model blev præsenteret.

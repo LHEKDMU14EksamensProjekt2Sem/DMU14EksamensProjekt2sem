@@ -1,0 +1,13 @@
+FFS-OC-06: specifyPhone
+
+Systemoperation
+specifyPhone( phone )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af phone er gyldig, blev c.phone sat til phone; ellers blev en fejlbesked præsenteret.

@@ -1,0 +1,17 @@
+FFS-OC-11: applyDiscount
+
+Systemoperation
+applyDiscount( discount, isPercentage )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans lr af LoanRequest eksisterer.
+
+Slutbetingelser
+En instans d af Discount blev skabt.
+d.discount blev sat til discount.
+d.isPercentage blev sat til isPercentage.
+lr.discount blev sat til d.
+lr.total blev præsenteret.

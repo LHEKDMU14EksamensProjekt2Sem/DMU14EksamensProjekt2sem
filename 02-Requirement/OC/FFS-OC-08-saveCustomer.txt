@@ -1,0 +1,13 @@
+FFS-OC-08: saveCustomer
+
+Systemoperation
+saveCustomer
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Ingen.

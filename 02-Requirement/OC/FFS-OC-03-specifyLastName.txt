@@ -1,0 +1,13 @@
+FFS-OC-03: specifyLastName
+
+Systemoperation
+specifyLastName( lastName )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af lastName er gyldig, blev c.lastName sat til lastName; ellers blev en fejlbesked præsenteret.
