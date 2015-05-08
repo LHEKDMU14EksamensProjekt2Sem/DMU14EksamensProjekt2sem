@@ -13,6 +13,20 @@ public class Customer {
 	private String phone;
 	private String email;
 
+	public Customer(String cpr, String firstName, String lastName,
+			String streetName, String number, int postalCode, String phone,
+			String email) {
+		super();
+		this.cpr = cpr;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.streetName = streetName;
+		this.number = number;
+		this.postalCode = postalCode;
+		this.phone = phone;
+		this.email = email;
+	}
+
 	public int getId() {
 		return id;
 	}
