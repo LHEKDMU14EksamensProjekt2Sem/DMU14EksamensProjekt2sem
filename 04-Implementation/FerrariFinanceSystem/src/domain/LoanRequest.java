@@ -8,6 +8,17 @@ public class LoanRequest {
 	private double downPayment;
 	private double loanAmount;
 	private double loanPayment;
+	
+	public LoanRequest(int loanRequestNumber, double discount, double total,
+			double downPayment, double loanAmount, double loanPayment) {
+		super();
+		this.loanRequestNumber = loanRequestNumber;
+		this.discount = discount;
+		this.total = total;
+		this.downPayment = downPayment;
+		this.loanAmount = loanAmount;
+		this.loanPayment = loanPayment;
+	}
 
 	public int getLoanRequestNumber() {
 		return loanRequestNumber;
