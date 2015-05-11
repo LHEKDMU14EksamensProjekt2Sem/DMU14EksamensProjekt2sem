@@ -20,36 +20,36 @@ public class Menu extends JPanel {
     
     Dimension dim1 = new Dimension( 200, 60 );
     
-    JButton btn_låneAnmodning = new JButton("Opret LåneAnmodning");
-    btn_låneAnmodning.setPreferredSize( dim1 );
-    btn_låneAnmodning.addActionListener( new ActionListener() {
+    JButton btn_loanRequest = new JButton("Opret LaaneAnmodning");
+    btn_loanRequest.setPreferredSize( dim1 );
+    btn_loanRequest.addActionListener( new ActionListener() {
       public void actionPerformed( ActionEvent e ) {
         // TODO Auto-generated method stub
         
       }
     } );
     
-    JButton btn_seAnmodning = new JButton("Se LåneAnmodninger");
-    btn_seAnmodning.setPreferredSize( dim1 );
-    btn_seAnmodning.addActionListener( new ActionListener() {
+    JButton btn_viewRequest = new JButton("Se LaaneAnmodninger");
+    btn_viewRequest.setPreferredSize( dim1 );
+    btn_viewRequest.addActionListener( new ActionListener() {
       public void actionPerformed( ActionEvent e ) {
         // TODO Auto-generated method stub
         
       }
     } );
     
-    JButton btn_låneTildbud = new JButton("Opret og Godkend Lånetilbud");
-    btn_låneTildbud.setPreferredSize( dim1 );
-    btn_låneTildbud.addActionListener( new ActionListener() {
+    JButton btn_loanOffer = new JButton("Opret og Godkend Laanetilbud");
+    btn_loanOffer.setPreferredSize( dim1 );
+    btn_loanOffer.addActionListener( new ActionListener() {
       public void actionPerformed( ActionEvent e ) {
         // TODO Auto-generated method stub
         
       }
     } );
 
-    JButton btn_seLåneTilbud = new JButton("Se LåneTilbud");
-    btn_seLåneTilbud.setPreferredSize( dim1 );
-    btn_seLåneTilbud.addActionListener( new ActionListener() {
+    JButton btn_viewLoanOffer = new JButton("Se LaaneTilbud");
+    btn_viewLoanOffer.setPreferredSize( dim1 );
+    btn_viewLoanOffer.addActionListener( new ActionListener() {
       public void actionPerformed( ActionEvent e ) {
         // TODO Auto-generated method stub
         
@@ -71,29 +71,25 @@ public class Menu extends JPanel {
     c.gridwidth = 1;
     c.gridx = 0;
     c.gridy = 0;
-    add(btn_låneAnmodning, c);
+    add(btn_loanRequest, c);
 
     
     c.insets = new Insets(10,0,0,0);
     c.gridwidth = 1;
     c.gridx = 0;
     c.gridy = 1;
-    add(btn_seAnmodning, c);
+    add(btn_viewRequest, c);
 
     c.insets = new Insets(0,10,0,0);
     c.gridwidth = 3;
     c.gridx= 1;
     c.gridy= 0;
-    add(btn_låneTildbud, c);
+    add(btn_loanOffer, c);
  
     c.insets = new Insets(10,10,0,0);
     c.gridwidth = 3;
     c.gridx = 1;
     c.gridy= 1;
-    add(btn_seLåneTilbud, c);
-  
-  
-  
-  
+    add(btn_viewLoanOffer, c);
   }
 }

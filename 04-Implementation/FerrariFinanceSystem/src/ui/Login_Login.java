@@ -28,7 +28,7 @@ public class Login_Login extends JPanel{
       
       @Override
       public void actionPerformed( ActionEvent e ) {
-        Centerpane.removeBil();
+        Centerpane.removeLogin();
       }
     } );
     
