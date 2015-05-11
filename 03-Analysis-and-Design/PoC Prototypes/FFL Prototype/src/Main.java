@@ -5,7 +5,7 @@ import domain.LoanRequest;
 import query.CreditRatingQuery;
 import query.InterestRateQuery;
 import query.Query;
-import query.QueryHandler;
+import query.QueryManager;
 import query.QueryTimeoutException;
 
 public class Main {
@@ -19,7 +19,7 @@ public class Main {
       Query crQuery = new CreditRatingQuery(rator, c, 3500);
       Query irQuery = new InterestRateQuery(rate, lr, 1500);
 
-      QueryHandler handler = new QueryHandler();
+      QueryManager handler = new QueryManager();
       handler.addQuery(crQuery);
       handler.addQuery(irQuery);
 

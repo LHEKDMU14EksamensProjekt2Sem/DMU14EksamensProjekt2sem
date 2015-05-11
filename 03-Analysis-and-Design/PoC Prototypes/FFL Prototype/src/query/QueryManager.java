@@ -3,13 +3,13 @@ package query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryHandler {
+public class QueryManager {
    private static final int JOIN_MAX_WAIT = 500;
 
    private List<Query> queries;
    private List<Thread> threads;
 
-   public QueryHandler() {
+   public QueryManager() {
       queries = new ArrayList<>();
       threads = new ArrayList<>();
    }
