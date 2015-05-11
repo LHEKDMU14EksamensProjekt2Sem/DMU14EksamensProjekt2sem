@@ -19,13 +19,13 @@ public class Main {
       Query crQuery = new CreditRatingQuery(rator, c, 3500);
       Query irQuery = new InterestRateQuery(rate, lr, 1500);
 
-      QueryManager handler = new QueryManager();
-      handler.addQuery(crQuery);
-      handler.addQuery(irQuery);
+      QueryManager mgr = new QueryManager();
+      mgr.addQuery(crQuery);
+      mgr.addQuery(irQuery);
 
       try {
-         handler.runAll();
-         handler.waitForAll();
+         mgr.runAll();
+         mgr.waitForAll();
          System.out.println("Customer rating: " + c.getRating());
          System.out.println("Today's interest rate: " + lr.getInterestRate());
       } catch (QueryTimeoutException e) {
