@@ -68,6 +68,13 @@ public class QueryHandler {
       }
    }
 
+   /**
+    * Aborts all current tasks throwing a <code>QueryTimeoutException</code> for the
+    * given <code>Query</code>. All live threads are interrupted.
+    *
+    * @param q the <code>Query</code> that has timed out
+    * @throws QueryTimeoutException
+    */
    private void abortByTimeout(Query q) throws QueryTimeoutException {
       for (Thread t : threads) {
          if (t.isAlive())
