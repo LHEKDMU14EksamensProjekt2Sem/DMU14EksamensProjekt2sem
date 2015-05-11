@@ -1,5 +1,6 @@
 package ui.Customer;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -8,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import com.sun.xml.internal.ws.api.Component;
 
   public class Customer_Panel extends JPanel {
   
@@ -28,7 +31,7 @@ import javax.swing.JPanel;
       p_info = new Customer_Informationpanel();
       add(p_info);
       
-//      p_buttons = new Customer_Buttonpanel();
-//      add(p_buttons);
+      p_buttons = new Customer_Buttonpanel();
+      add(p_buttons, BorderLayout.PAGE_END);
     }
 }
