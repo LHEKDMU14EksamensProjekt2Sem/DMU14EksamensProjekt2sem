@@ -1,24 +1,18 @@
 package csv;
 
-public class CSVField {
+import java.util.function.Function;
+
+public class CSVField<T> {
+   private final Function<T, String> translator;
    private String header;
-   private boolean quoted;
 
-   public CSVField() {
-      this(null, false);
+   public CSVField(Function<T, String> translator) {
+      this(null, translator);
    }
 
-   public CSVField(String header) {
-      this(header, false);
-   }
-
-   public CSVField(boolean quoted) {
-      this(null, quoted);
-   }
-
-   public CSVField(String header, boolean quoted) {
+   public CSVField(String header, Function<T, String> translator) {
       this.header = header;
-      this.quoted = quoted;
+      this.translator = translator;
    }
 
    public String getHeader() {
@@ -29,11 +23,7 @@ public class CSVField {
       this.header = header;
    }
 
-   public boolean isQuoted() {
-      return quoted;
-   }
-
-   public void setQuoted(boolean quoted) {
-      this.quoted = quoted;
+   public String valueOf(T record) {
+      return translator.apply(record);
    }
 }
