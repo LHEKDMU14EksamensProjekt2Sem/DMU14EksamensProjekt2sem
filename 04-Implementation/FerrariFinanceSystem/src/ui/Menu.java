@@ -24,8 +24,8 @@ public class Menu extends JPanel {
     btn_loanRequest.setPreferredSize( dim1 );
     btn_loanRequest.addActionListener( new ActionListener() {
       public void actionPerformed( ActionEvent e ) {
-        // TODO Auto-generated method stub
-        
+       Centerpane.removeMenu();
+       Centerpane.addKundePanel();
       }
     } );
     

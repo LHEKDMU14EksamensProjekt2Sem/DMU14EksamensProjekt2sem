@@ -37,7 +37,7 @@ public class Kunde_Informationpanel extends JPanel {
                         BorderFactory.createEmptyBorder(5,5,5,5)));
     GridBagConstraints c = new GridBagConstraints();
     
-    l_note = new JLabel("Bemærkninger:");
+    l_note = new JLabel("Bemaerkninger: ");
     txta_note = new JTextArea( 2, 30);
     l_name = new JLabel("Navn: ");
     txt_firstname = new JTextField(10);

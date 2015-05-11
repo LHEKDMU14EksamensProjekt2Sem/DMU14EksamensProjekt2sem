@@ -32,7 +32,7 @@ public class Centerpane extends JPanel {
     
     p_login = new Login_Login();
     layeredpane.add( p_login , new Integer( 2 ), 0 );
-    
+////    
     p_bil = new Login_bil();
     layeredpane.add( p_bil , new Integer( 1 ), 0 );
     
@@ -49,6 +49,7 @@ public class Centerpane extends JPanel {
   
   public static void removeLogin() {
     layeredpane.remove( p_bil );
+    layeredpane.remove( p_login );
     StartFrame.update();
   }
   
@@ -56,5 +57,17 @@ public class Centerpane extends JPanel {
     p_menu = new Menu();
     layeredpane.add( p_menu, new Integer( 1 ), 0  );
     StartFrame.update();
+  }
+  
+  public static void removeMenu(){
+    layeredpane.remove(p_menu);
+    StartFrame.update();
+  }
+  
+  public static void addKundePanel(){
+    p_Kundepane = new Kunde_Panel();
+    layeredpane.add( p_Kundepane, new Integer( 1 ), 0 );
+    StartFrame.update();
+    
   }
 }

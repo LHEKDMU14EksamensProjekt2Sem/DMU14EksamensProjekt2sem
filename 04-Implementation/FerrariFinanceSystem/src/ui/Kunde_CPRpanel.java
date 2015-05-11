@@ -21,8 +21,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
 
 public class Kunde_CPRpanel extends JPanel{
 
-  private static JPanel cprpane;
-  private static JPanel credit;
   private static JLabel l_cpr;
   private static JTextField txt_cpr;
   private static JLabel l_credit1;
@@ -39,7 +37,7 @@ public class Kunde_CPRpanel extends JPanel{
     
     l_cpr = new JLabel("CPR nummer: ");
     txt_cpr = new JTextField(31);  
-    l_credit1 = new JLabel("Kredit Værdighed: ");
+    l_credit1 = new JLabel("Kredit Vaerdighed: ");
     l_credit2 = new JLabel("D");
     l_credit2.setForeground( Color.RED );
     l_credit2.setBorder( BorderFactory.createLineBorder(Color.BLACK, 1 ));
