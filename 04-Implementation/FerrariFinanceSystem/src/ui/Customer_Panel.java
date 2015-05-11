@@ -28,7 +28,7 @@ import javax.swing.JPanel;
       p_info = new Customer_Informationpanel();
       add(p_info);
       
-      p_buttons = new Customer_Buttonpanel();
-      add(p_buttons);
+//      p_buttons = new Customer_Buttonpanel();
+//      add(p_buttons);
     }
 }
