@@ -3,7 +3,7 @@ package logic;
 public interface CustomerController {
 
 	/**
-	 * Denne metode skal registrerer et cpr-nummer
+	 * Denne metode skal registrerer et cpr-nummer og henter en instance af customer
 	 * @param cpr
 	 */
 	public void specifyCpr(String cpr);
