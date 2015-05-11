@@ -29,8 +29,6 @@ public class Kunde_Informationpanel extends JPanel {
   private static JTextField txt_email;
   
   protected Kunde_Informationpanel() {
-
-
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("Kunde Information"),
@@ -52,9 +50,6 @@ public class Kunde_Informationpanel extends JPanel {
     l_email = new JLabel("Email: ");
     txt_email = new JTextField(30);
     
-    
-    
-
     c.anchor = GridBagConstraints.FIRST_LINE_START;
     c.gridwidth = 1;
     c.gridx = 0;

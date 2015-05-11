@@ -18,7 +18,7 @@ import javax.swing.JPanel;
     
     
     public Kunde_Panel() {
-      setBounds( 132, 100 , 800, 500 );
+      setBounds( 132, 100 , 800, 400 );
       setOpaque( false );
 //      setLayout( new BoxLayout( this, BoxLayout.Y_AXIS ) );
       

@@ -27,8 +27,6 @@ public class Kunde_CPRpanel extends JPanel{
   private static JLabel l_credit2;
   
   protected Kunde_CPRpanel() {
-
-
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("CPR: "),
