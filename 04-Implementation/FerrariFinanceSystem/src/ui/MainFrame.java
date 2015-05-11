@@ -6,8 +6,9 @@ import javax.swing.*;
 
 public class MainFrame extends JFrame {
   
+  private static MainFrame instance;
   
-  public MainFrame() {
+  private MainFrame() {
     setTitle( "Ferrari Finance System" );
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     
@@ -31,4 +32,23 @@ public class MainFrame extends JFrame {
     revalidate();
     repaint();
   }
+
+
+  public static MainFrame getInstance() {
+    if ( instance == null ) {
+      instance = new MainFrame();
+    } 
+    
+    return instance;
+    
+    
+  }
+
+
+ 
+  
+
+  
+    
+  
 }

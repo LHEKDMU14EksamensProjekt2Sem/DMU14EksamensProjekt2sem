@@ -54,24 +54,23 @@ public class Centerpane extends JPanel {
   public static void removeLogin() {
     layeredpane.remove( p_bil );
     layeredpane.remove( p_login );
-    MainFrame.update();
+    MainFrame.getInstance().update();  
   }
   
   public static void addmenu() {
     p_menu = new Menu();
     layeredpane.add( p_menu, new Integer( 1 ), 0  );
-    MainFrame.update();
+    MainFrame.getInstance().update();
   }
   
   public static void removeMenu(){
     layeredpane.remove(p_menu);
-    MainFrame.update();
+    MainFrame.getInstance().update();
   }
   
   public static void addKundePanel(){
     p_Kundepane = new Customer_Panel();
     layeredpane.add( p_Kundepane, new Integer( 1 ), 0 );
-    MainFrame.update();
-    
+    MainFrame.getInstance().update();
   }
 }
