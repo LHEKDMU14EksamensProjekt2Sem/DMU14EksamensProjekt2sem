@@ -13,7 +13,7 @@ public class StartFrame extends JFrame {
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     
     JComponent newContentPane = new Centerpane();
-    newContentPane.setOpaque(true); //content panes must be opaque
+    newContentPane.setOpaque(true); 
     
     frame.setContentPane(newContentPane);
     frame.setLocation( 200, 100 );   
