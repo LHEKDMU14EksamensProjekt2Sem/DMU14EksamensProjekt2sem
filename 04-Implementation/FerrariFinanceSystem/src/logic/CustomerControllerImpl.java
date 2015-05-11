@@ -3,19 +3,25 @@ package logic;
 public class CustomerControllerImpl implements CustomerController {
 
 	@Override
-	public String getCustomer() {
+	public void specifyCpr(String cpr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getCustomer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCredit() {
+	public String fetchCredit(Object customer) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCity() {
+	public String getCity(int postalCode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
