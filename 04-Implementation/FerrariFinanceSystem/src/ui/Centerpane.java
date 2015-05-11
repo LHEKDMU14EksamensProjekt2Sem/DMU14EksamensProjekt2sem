@@ -49,8 +49,6 @@ public class Centerpane extends JPanel {
     add(layeredpane);
   }
   
-  
-  
   public static void removeLogin() {
     layeredpane.remove( p_bil );
     layeredpane.remove( p_login );

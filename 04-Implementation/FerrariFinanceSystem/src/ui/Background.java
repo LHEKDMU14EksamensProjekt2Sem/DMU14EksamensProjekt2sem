@@ -13,6 +13,5 @@ class Background extends JPanel {
     setBounds(0, -5, 1024, 640);
     setOpaque( true );
     add( l_bg );
-    
   }
 }

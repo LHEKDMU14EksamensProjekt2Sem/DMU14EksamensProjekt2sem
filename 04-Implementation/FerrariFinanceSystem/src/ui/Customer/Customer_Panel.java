@@ -18,8 +18,8 @@ import javax.swing.JPanel;
     
     
     public Customer_Panel() {
-      setBounds( 132, 100 , 800, 400 );
-      setOpaque( false );
+      setBounds( 262, 100 , 500, 400 );
+      setOpaque( true );
 //      setLayout( new BoxLayout( this, BoxLayout.Y_AXIS ) );
       
       p_cpr = new Customer_CPRpanel();
