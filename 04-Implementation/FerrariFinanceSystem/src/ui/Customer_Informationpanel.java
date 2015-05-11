@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Kunde_Informationpanel extends JPanel {
+public class Customer_Informationpanel extends JPanel {
   
   private static JLabel l_note;
   private static JTextArea txta_note;
@@ -28,7 +28,7 @@ public class Kunde_Informationpanel extends JPanel {
   private static JLabel l_email;
   private static JTextField txt_email;
   
-  protected Kunde_Informationpanel() {
+  protected Customer_Informationpanel() {
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("Kunde Information"),

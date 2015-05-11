@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-class Kunde_Background {
+class Customer_Background {
  
   protected static JPanel Background(){
     JPanel bg = new JPanel();

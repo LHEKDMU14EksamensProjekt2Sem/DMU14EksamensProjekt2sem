@@ -11,11 +11,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Login_bil extends JPanel {
+public class Login_car extends JPanel {
   
 
 
-  protected Login_bil(){
+  protected Login_car(){
 
     File sourceimage = new File("pic/FerrariDino.jpg");
     BufferedImage image = null;

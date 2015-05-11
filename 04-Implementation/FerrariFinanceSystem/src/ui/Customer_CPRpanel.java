@@ -19,14 +19,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
 
-public class Kunde_CPRpanel extends JPanel{
+public class Customer_CPRpanel extends JPanel{
 
   private static JLabel l_cpr;
   private static JTextField txt_cpr;
   private static JLabel l_credit1;
   private static JLabel l_credit2;
   
-  protected Kunde_CPRpanel() {
+  protected Customer_CPRpanel() {
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("CPR: "),

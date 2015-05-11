@@ -5,9 +5,9 @@ import java.awt.FlowLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 
-public class Kunde_Buttonpanel extends JPanel {
+public class Customer_Buttonpanel extends JPanel {
 
-  protected Kunde_Buttonpanel() {
+  protected Customer_Buttonpanel() {
     setLayout(new FlowLayout());
     
     

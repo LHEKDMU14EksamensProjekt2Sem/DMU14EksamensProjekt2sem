@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-  public class Kunde_Panel extends JPanel {
+  public class Customer_Panel extends JPanel {
   
     
     private static JPanel p_cpr;
@@ -17,18 +17,18 @@ import javax.swing.JPanel;
     private static JPanel p_buttons;
     
     
-    public Kunde_Panel() {
+    public Customer_Panel() {
       setBounds( 132, 100 , 800, 400 );
       setOpaque( false );
 //      setLayout( new BoxLayout( this, BoxLayout.Y_AXIS ) );
       
-      p_cpr = new Kunde_CPRpanel();
+      p_cpr = new Customer_CPRpanel();
       add(p_cpr);
       
-      p_info = new Kunde_Informationpanel();
+      p_info = new Customer_Informationpanel();
       add(p_info);
       
-      p_buttons = new Kunde_Buttonpanel();
+      p_buttons = new Customer_Buttonpanel();
       add(p_buttons);
     }
 }
