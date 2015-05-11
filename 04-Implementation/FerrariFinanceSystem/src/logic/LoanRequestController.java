@@ -1,24 +1,43 @@
 package logic;
 
+import java.util.List;
+
+/**
+ * @author Louise
+ *
+ */
+/**
+ * @author Louise
+ *
+ */
+/**
+ * @author Louise
+ *
+ */
 public interface LoanRequestController {
 
+	/**
+	 * Denne metode henter alle modeller i databasen 
+	 */
+	public void fetchModels();
+	
 	/** 
-	 * Denne metode returnerer en liste af bil-objekter
+	 * Denne metode returnerer en liste af model-objekter
+	 * @return liste af modeller
+	 */
+	public List getModels();
+	
+	/**
+	 * Denne metode henter alle biler under den pågældende model
+	 * @param car
+	 */
+	public void fetchCars(Object car);
+	
+	/**
+	 * Denne metode returnere en en liste af bil-objekter
 	 * @return liste af biler
 	 */
-	public String getModels();
-	
-	/**
-	 * Denne metode returnerer en pris paa den valgte model
-	 * @return pris paa valgt bil
-	 */
-	public double getPrice();
-	
-	/**
-	 * Denne metode returnerer informationer på den valgte bil
-	 * @return information paa bilen
-	 */
-	public String getInformation();
+	public List getCars();
 	
 	/**
 	 * Denne metode returnerer en samlet salgspris 
@@ -27,10 +46,9 @@ public interface LoanRequestController {
 	public double getSalesprice();
 	
 	/**
-	 * Denne metode returnerer udbetalingen
-	 * @return downpayment
+	 * Denne metode registrerer downPayment 
 	 */
-	public double getDownpayment();
+	public void setDownpayment();
 	
 	/**
 	 * Denne metode returnere det beloeb, der skal finansieres gennem laan

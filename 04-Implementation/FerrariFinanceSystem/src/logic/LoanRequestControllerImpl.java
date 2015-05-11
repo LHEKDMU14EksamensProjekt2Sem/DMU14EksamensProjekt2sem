@@ -1,21 +1,29 @@
 package logic;
 
+import java.util.List;
+
 public class LoanRequestControllerImpl implements LoanRequestController {
 
 	@Override
-	public String getModels() {
+	public void fetchModels() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List getModels() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public double getPrice() {
+	public void fetchCars(Object car) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 	@Override
-	public String getInformation() {
+	public List getCars() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -27,9 +35,9 @@ public class LoanRequestControllerImpl implements LoanRequestController {
 	}
 
 	@Override
-	public double getDownpayment() {
+	public void setDownpayment() {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 	@Override
