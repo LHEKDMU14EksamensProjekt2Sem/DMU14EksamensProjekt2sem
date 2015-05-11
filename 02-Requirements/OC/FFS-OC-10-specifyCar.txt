@@ -11,6 +11,6 @@ En instans lr af LoanRequest eksisterer.
 Car car eksisterer.
 
 Slutbetingelser
-lr.car blev sat til car.
+lr blev associeret med car.
 car.salePrice blev præsenteret.
 lr.total blev præsenteret.
