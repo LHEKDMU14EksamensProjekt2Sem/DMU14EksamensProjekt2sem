@@ -1,6 +1,10 @@
 package ui;
 
 import java.awt.Container;
+
+import ui.Customer.Customer_Panel;
+import ui.Login.*;
+
 import java.awt.LayoutManager;
 
 import javax.swing.BoxLayout;
@@ -50,24 +54,24 @@ public class Centerpane extends JPanel {
   public static void removeLogin() {
     layeredpane.remove( p_bil );
     layeredpane.remove( p_login );
-    StartFrame.update();
+    MainFrame.update();
   }
   
   public static void addmenu() {
     p_menu = new Menu();
     layeredpane.add( p_menu, new Integer( 1 ), 0  );
-    StartFrame.update();
+    MainFrame.update();
   }
   
   public static void removeMenu(){
     layeredpane.remove(p_menu);
-    StartFrame.update();
+    MainFrame.update();
   }
   
   public static void addKundePanel(){
     p_Kundepane = new Customer_Panel();
     layeredpane.add( p_Kundepane, new Integer( 1 ), 0 );
-    StartFrame.update();
+    MainFrame.update();
     
   }
 }

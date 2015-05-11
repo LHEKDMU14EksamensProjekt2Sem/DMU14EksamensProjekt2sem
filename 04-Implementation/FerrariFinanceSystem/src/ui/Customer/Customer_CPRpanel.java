@@ -1,4 +1,4 @@
-package ui;
+package ui.Customer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,7 +26,7 @@ public class Customer_CPRpanel extends JPanel{
   private static JLabel l_credit1;
   private static JLabel l_credit2;
   
-  protected Customer_CPRpanel() {
+  public Customer_CPRpanel() {
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("CPR: "),

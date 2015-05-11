@@ -1,6 +1,5 @@
-package ui;
+package ui.Login;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -12,20 +11,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Login_Logo {
-
-  protected static JPanel Logo(){
-    JPanel logo = new JPanel();
-    ImageIcon image2 = new ImageIcon("pic/logo3.png");
-    JLabel l_logo = new JLabel(image2);
-    logo.setBounds(10, 10, 154, 100);
-    logo.setBackground( null );
-    logo.setBorder( null );
-    logo.setOpaque(false);
-    logo.add(l_logo);
-    return logo;
-  }
+public class Login_car extends JPanel {
   
+
+  public Login_car(){
+
+    File sourceimage = new File("pic/FerrariDino.jpg");
+    BufferedImage image = null;
+    try {
+      image = ImageIO.read(sourceimage);
+    }
+    catch ( IOException e ) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    BufferedImage resizedImage = resize( image , 500 , 312 );
+    ImageIcon image2 = new ImageIcon(resizedImage);
+    JLabel l_logo = new JLabel(image2);
+    setBounds(262, 120, 500, 312);
+    setBackground( null );
+    setOpaque(false);
+    add(l_logo);
+    
+  }
   
   public static BufferedImage resize(BufferedImage image, int width, int height) {
     BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);

@@ -1,4 +1,4 @@
-package ui;
+package ui.Customer;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -28,7 +28,7 @@ public class Customer_Informationpanel extends JPanel {
   private static JLabel l_email;
   private static JTextField txt_email;
   
-  protected Customer_Informationpanel() {
+  public Customer_Informationpanel() {
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("Kunde Information"),
