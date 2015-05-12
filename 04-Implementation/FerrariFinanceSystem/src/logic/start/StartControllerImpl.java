@@ -1,4 +1,4 @@
-package logic;
+package logic.start;
 
 public class StartControllerImpl implements StartController {
 

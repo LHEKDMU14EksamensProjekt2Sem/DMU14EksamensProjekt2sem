@@ -1,4 +1,4 @@
-package logic;
+package logic.requestLoan;
 
 public interface CustomerController {
 

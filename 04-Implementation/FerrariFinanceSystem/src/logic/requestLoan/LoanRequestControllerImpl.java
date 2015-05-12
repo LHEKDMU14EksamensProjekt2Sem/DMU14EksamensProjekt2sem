@@ -1,4 +1,4 @@
-package logic;
+package logic.requestLoan;
 
 import java.util.List;
 
