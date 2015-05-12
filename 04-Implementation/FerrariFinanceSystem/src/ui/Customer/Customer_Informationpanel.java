@@ -1,4 +1,4 @@
-package ui.Customer;
+package ui.customer;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

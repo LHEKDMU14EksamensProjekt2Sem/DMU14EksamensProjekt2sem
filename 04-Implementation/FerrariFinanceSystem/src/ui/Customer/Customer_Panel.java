@@ -1,4 +1,4 @@
-package ui.Customer;
+package ui.customer;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;

@@ -2,8 +2,8 @@ package ui;
 
 import java.awt.Container;
 
-import ui.Customer.Customer_Panel;
-import ui.Login.*;
+import ui.customer.Customer_Panel;
+import ui.login.*;
 
 import java.awt.LayoutManager;
 

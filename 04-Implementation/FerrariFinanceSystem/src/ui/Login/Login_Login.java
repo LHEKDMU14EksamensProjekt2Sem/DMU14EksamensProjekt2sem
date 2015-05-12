@@ -1,4 +1,4 @@
-package ui.Login;
+package ui.login;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

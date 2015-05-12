@@ -1,4 +1,4 @@
-package ui.Login;
+package ui.login;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

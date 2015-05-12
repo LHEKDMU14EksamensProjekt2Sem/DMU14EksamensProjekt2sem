@@ -1,4 +1,4 @@
-package ui.Customer;
+package ui.customer;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
