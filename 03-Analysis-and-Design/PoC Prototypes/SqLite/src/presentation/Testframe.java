@@ -26,21 +26,13 @@ public class Testframe extends JFrame {
     f.setVisible(true);
     }
   
-    JLabel l_username = new JLabel("Brugernavn:");
-    JLabel l_password = new JLabel("Adgangskode:");
-    JTextField t_username = new JTextField(15);
-    JTextField t_password = new JTextField(15);
-    JButton b_login = new JButton("Login");
+    JButton b_login = new JButton("Test DB access");
     
        
     public void Loginpanel() {
       
       JPanel p_login = new JPanel();
       p_login.setLayout(new FlowLayout());
-      p_login.add(l_username);
-      p_login.add(t_username);
-      p_login.add(l_password);
-      p_login.add(t_password);
       p_login.add(b_login);
       
       b_login.addActionListener(new ActionListener() { 
@@ -55,7 +47,7 @@ public class Testframe extends JFrame {
     public void Helppanel(){
       JPanel p_help = new JPanel();
       p_help.setLayout(new FlowLayout());
-      JLabel l_help = new JLabel("Tryk pÂ Login for at g¯re nedslag i databasen, og fÂ udskrevet dataen.");
+      JLabel l_help = new JLabel("Tryk p√• knappen for at g√∏re nedslag i databasen, og f√• udskrevet all data.");
       p_help.add(l_help);
       f.add(p_help, BorderLayout.SOUTH);
     }
@@ -75,21 +67,17 @@ public class Testframe extends JFrame {
     
     public void Sqltest() {
       
-      // connection, preb.statement og resultset oprettes, og sÊttes til null.
        Connection con = null;
        Statement st = null;
        ResultSet rs = null;
 
          try {
-           // ≈bner databasen/Opretter forbindelse til databasen..
            con = DriverManager.getConnection("jdbc:sqlite:sqlitePrototype.db");
            con.setAutoCommit(false);
 
-           // Diffinerer statement og resulset(Vis alt fra tabellen "salger").        
            st = con.createStatement();
            rs = st.executeQuery( "SELECT * FROM SALGER;" );
            
-           //PrÊsenterer resultater, sÂlÊnge der er en "next" i resultsettet.        
            while ( rs.next() ) {
              
               int ID = rs.getInt("ID");
@@ -97,13 +85,12 @@ public class Testframe extends JFrame {
               String Password  = rs.getString("Password");
               int Niv = rs.getInt("Niv");
               
-              printPÂKonsol( "ID = " + ID );
-              printPÂKonsol( "NAME = " + Name );
-              printPÂKonsol( "PASSWORD = " + Password );
-              printPÂKonsol( "NIV = " + Niv );
-              printPÂKonsol( " ");
+              printPaaKonsol( "ID = " + ID );
+              printPaaKonsol( "NAME = " + Name );
+              printPaaKonsol( "PASSWORD = " + Password );
+              printPaaKonsol( "NIV = " + Niv );
+              printPaaKonsol( " ");
            }
-           // Lukker connection, statements og resultset. 
            rs.close();
            st.close();
            con.close();
@@ -113,7 +100,7 @@ public class Testframe extends JFrame {
          }
        }
     
-    private void printPÂKonsol(String tekst) {
+    private void printPaaKonsol(String tekst) {
       printArea.append(tekst + "\n");
       printArea.setCaretPosition(printArea.getText().length()-1);
     }
