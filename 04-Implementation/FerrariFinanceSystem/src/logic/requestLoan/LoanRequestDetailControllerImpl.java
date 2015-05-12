@@ -2,7 +2,7 @@ package logic.requestLoan;
 
 import java.util.List;
 
-public class LoanRequestControllerImpl implements LoanRequestController {
+public class LoanRequestDetailControllerImpl implements LoanRequestDetailController {
 
 	@Override
 	public void fetchModels() {

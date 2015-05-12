@@ -1,14 +1,12 @@
 package dataaccess;
 
-public class CarDataAccess {
+public class SalesmanDataAccess {
 
 	/*
 	 * I Denne klasse skal der ligge
-	 * ReadOne
-	 * ReadAll 
+	 * ReadOne - Skal omdøbes senere
 	 */
 	
 	private static final String SELECT_ONE = "";
-	private static final String SELECT_ALL = "";
 	
 }

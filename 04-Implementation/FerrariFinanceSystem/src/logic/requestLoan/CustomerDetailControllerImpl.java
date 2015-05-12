@@ -1,6 +1,6 @@
 package logic.requestLoan;
 
-public class CustomerControllerImpl implements CustomerController {
+public class CustomerDetailControllerImpl implements CustomerDetailController {
 
 	@Override
 	public void specifyCpr(String cpr) {

@@ -1,6 +1,6 @@
 package logic.requestLoan;
 
-public interface CustomerController {
+public interface CustomerDetailController {
 
 	/**
 	 * Denne metode skal registrerer et cpr-nummer og henter en instance af customer
