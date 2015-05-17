@@ -23,11 +23,17 @@ public class DefaultConnectionHandler implements ConnectionHandler {
 
    @Override
    public void commit() throws SQLException {
+      if (con == null)
+         throw new SQLException("Attempting commit on uninstantiated connection");
+
       con.commit();
    }
 
    @Override
    public void rollback() throws SQLException {
+      if (con == null)
+         throw new SQLException("Attempting rollback on uninstantiated connection");
+
       con.rollback();
    }
 
