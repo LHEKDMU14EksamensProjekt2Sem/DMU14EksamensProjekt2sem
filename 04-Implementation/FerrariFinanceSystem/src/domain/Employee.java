@@ -1,8 +1,10 @@
 package domain;
 
-public class Customer {
+import logic.EmployeeRole;
+
+public class Employee {
    private Person person;
-   private boolean standing;
+   private EmployeeRole role;
 
    public int getId() {
       return person.getId();
@@ -16,11 +18,11 @@ public class Customer {
       this.person = person;
    }
 
-   public boolean inGoodStanding() {
-      return standing;
+   public EmployeeRole getRole() {
+      return role;
    }
 
-   public void setStanding(boolean standing) {
-      this.standing = standing;
+   public void setRole(EmployeeRole role) {
+      this.role = role;
    }
 }

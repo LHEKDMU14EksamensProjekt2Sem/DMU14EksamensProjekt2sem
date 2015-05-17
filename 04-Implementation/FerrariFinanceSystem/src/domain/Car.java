@@ -1,16 +1,22 @@
 package domain;
 
 public class Car {
+   private int id;
+   private CarConfig config;
 
-	private int serialnumber;
-	private double price;
-	
-	public int getSerialnumber() {
-		return serialnumber;
-	}
-	
-	public double getPrice() {
-		return price;
-	}
-	
+   public int getId() {
+      return id;
+   }
+
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public CarConfig getConfig() {
+      return config;
+   }
+
+   public void setConfig(CarConfig config) {
+      this.config = config;
+   }
 }

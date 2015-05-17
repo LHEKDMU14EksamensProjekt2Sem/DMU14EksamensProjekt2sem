@@ -1,8 +1,7 @@
-public class main {
-  
-  public static void main( String[] args ) {
- 
-    ui.MainFrame.getInstance(); 
-  }
+import logic.Application;
 
+public class Main {
+   public static void main(String[] args) {
+      new Application();
+   }
 }

@@ -1,13 +1,10 @@
 package domain;
 
-import logic.Money;
-
-public class CarModel {
+public class CarConfig {
    private int id;
-   private int year;
+   private CarModel model;
    private String name;
    private String description;
-   private Money basePrice;
 
    public int getId() {
       return id;
@@ -17,12 +14,12 @@ public class CarModel {
       this.id = id;
    }
 
-   public int getYear() {
-      return year;
+   public CarModel getModel() {
+      return model;
    }
 
-   public void setYear(int year) {
-      this.year = year;
+   public void setModel(CarModel model) {
+      this.model = model;
    }
 
    public String getName() {
@@ -39,13 +36,5 @@ public class CarModel {
 
    public void setDescription(String description) {
       this.description = description;
-   }
-
-   public Money getBasePrice() {
-      return basePrice;
-   }
-
-   public void setBasePrice(Money basePrice) {
-      this.basePrice = basePrice;
    }
 }
