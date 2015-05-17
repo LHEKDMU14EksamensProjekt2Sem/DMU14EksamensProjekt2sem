@@ -37,6 +37,12 @@ public class DefaultConnectionHandler implements ConnectionHandler {
       con.rollback();
    }
 
+   /**
+    * Closes the connection. If the connection has already been closed,
+    * or the connection has not yet been instantiated, this is a no-op.
+    *
+    * @throws SQLException
+    */
    @Override
    public void close() throws SQLException {
       if (con != null)
