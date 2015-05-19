@@ -2,7 +2,7 @@ package logic.session.requestloan;
 
 import java.util.Observer;
 
-public interface CustomerDetailController {
+public interface CustomerDetailsController {
 
 	/**
 	 * Denne metode skal registrerer et cpr-nummer og henter en instance af customer

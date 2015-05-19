@@ -2,7 +2,7 @@ package logic.session.requestloan;
 
 import java.util.Observer;
 
-public class CustomerDetailControllerImpl implements CustomerDetailController {
+public class CustomerDetailsControllerImpl implements CustomerDetailsController {
 
 	@Override
 	public void specifyCpr(String cpr) {
