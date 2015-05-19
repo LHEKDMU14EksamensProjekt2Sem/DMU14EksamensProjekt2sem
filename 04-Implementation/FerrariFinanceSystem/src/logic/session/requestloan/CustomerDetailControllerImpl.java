@@ -1,5 +1,7 @@
 package logic.session.requestloan;
 
+import java.util.Observer;
+
 public class CustomerDetailControllerImpl implements CustomerDetailController {
 
 	@Override
@@ -15,9 +17,8 @@ public class CustomerDetailControllerImpl implements CustomerDetailController {
 	}
 
 	@Override
-	public String fetchCredit(Object customer) {
+	public void fetchCreditworthiness(Observer observer) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
