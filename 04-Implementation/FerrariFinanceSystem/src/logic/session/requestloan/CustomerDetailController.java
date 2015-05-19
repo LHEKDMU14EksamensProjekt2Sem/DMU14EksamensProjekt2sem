@@ -1,5 +1,7 @@
 package logic.session.requestloan;
 
+import java.util.Observer;
+
 public interface CustomerDetailController {
 
 	/**
@@ -13,13 +15,9 @@ public interface CustomerDetailController {
 	 * @return Kundeinformation, der matcher cpr
 	 */
 	public Object getCustomer();
-	
-	/**
-	 * Denne metode returnerer kreditvaerdighed i form af bogstaverne A, B, C el. D
-	 * @param customer
-	 * @return Kreditvaerdighed som et enkelt bogstav
-	 */
-	public String fetchCredit(Object customer);
+
+	// TODO: javadoc
+	void fetchCreditworthiness(Observer observer);
 	
 	/**
 	 * Denne metode returnerer en by, der matcher det indtastede postnummer 
