@@ -1,0 +1,4 @@
+CREATE TABLE employee_role (
+  id INTEGER NOT NULL PRIMARY KEY,
+  role TEXT NOT NULL
+);

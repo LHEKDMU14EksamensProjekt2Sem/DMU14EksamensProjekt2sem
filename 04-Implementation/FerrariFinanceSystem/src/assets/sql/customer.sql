@@ -1,0 +1,4 @@
+CREATE TABLE customer (
+  id INTEGER NOT NULL PRIMARY KEY REFERENCES person(id),
+  standing BOOLEAN NOT NULL
+);

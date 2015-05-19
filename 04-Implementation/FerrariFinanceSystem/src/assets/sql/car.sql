@@ -1,0 +1,4 @@
+CREATE TABLE car (
+  id INTEGER NOT NULL PRIMARY KEY,
+  config_id INTEGER NOT NULL REFERENCES car_config(id)
+);
