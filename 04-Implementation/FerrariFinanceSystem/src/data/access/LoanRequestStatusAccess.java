@@ -5,6 +5,8 @@ import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class LoanRequestStatusAccess {
    private ConnectionHandler con;
@@ -14,9 +16,15 @@ public class LoanRequestStatusAccess {
    }
 
    public void createLoanRequestStatus(LoanRequestStatus status) throws SQLException {
+      createLoanRequestStatuses(Arrays.asList(status));
+   }
+
+   public void createLoanRequestStatuses(List<LoanRequestStatus> statuses) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setString(1, status.toString());
-         st.executeUpdate();
+         for (LoanRequestStatus status : statuses) {
+            st.setString(1, status.toString());
+            st.executeUpdate();
+         }
       }
    }
 

@@ -5,6 +5,8 @@ import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmployeeRoleAccess {
    private ConnectionHandler con;
@@ -14,9 +16,15 @@ public class EmployeeRoleAccess {
    }
 
    public void createEmployeeRole(EmployeeRole role) throws SQLException {
+      createEmployeeRoles(Arrays.asList(role));
+   }
+
+   public void createEmployeeRoles(List<EmployeeRole> roles) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setString(1, role.toString());
-         st.executeUpdate();
+         for (EmployeeRole role : roles) {
+            st.setString(1, role.toString());
+            st.executeUpdate();
+         }
       }
    }
 
