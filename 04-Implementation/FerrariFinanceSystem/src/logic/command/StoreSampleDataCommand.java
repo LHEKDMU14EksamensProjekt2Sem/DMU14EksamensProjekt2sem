@@ -29,8 +29,10 @@ public class StoreSampleDataCommand implements Command {
 
    private void createEmployees(ConnectionHandler con) throws SQLException {
       EmployeeLogic logic = new EmployeeLogic();
-      for (Employee em : newEmployees()) {
-         logic.createEmployee(em, con);
+      Employee[] employees = newEmployees();
+      String[] cprs = new String[]{ "9876543210", "0099887766" };
+      for (int i = 0; i < cprs.length; i++) {
+         logic.createEmployee(employees[i], cprs[i], con);
       }
    }
 
