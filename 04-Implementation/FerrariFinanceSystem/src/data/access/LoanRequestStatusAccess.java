@@ -22,7 +22,7 @@ public class LoanRequestStatusAccess {
    public void createLoanRequestStatuses(List<LoanRequestStatus> statuses) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
          for (LoanRequestStatus status : statuses) {
-            st.setString(1, status.toString());
+            st.setString(1, status.name());
             st.executeUpdate();
          }
       }

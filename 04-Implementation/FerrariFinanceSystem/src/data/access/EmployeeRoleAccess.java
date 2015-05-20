@@ -22,7 +22,7 @@ public class EmployeeRoleAccess {
    public void createEmployeeRoles(List<EmployeeRole> roles) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
          for (EmployeeRole role : roles) {
-            st.setString(1, role.toString());
+            st.setString(1, role.name());
             st.executeUpdate();
          }
       }
