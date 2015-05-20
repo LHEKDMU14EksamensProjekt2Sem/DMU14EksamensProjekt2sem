@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class Application {
    private static final String
            NAME = "Ferrari Finance System",
-           VERSION = "0.1";
+           VERSION = "0.2";
 
    private MainSessionFacade facade;
 
