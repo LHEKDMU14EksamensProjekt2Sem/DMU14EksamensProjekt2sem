@@ -1,4 +1,4 @@
-package logic;
+package domain;
 
 public enum EmployeeRole {
    SALESMAN, SALES_MANAGER

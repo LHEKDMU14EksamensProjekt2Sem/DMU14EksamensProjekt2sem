@@ -1,7 +1,7 @@
 package util.auth;
 
 import domain.Employee;
-import logic.EmployeeRole;
+import domain.EmployeeRole;
 import domain.Person;
 
 import java.sql.SQLException;

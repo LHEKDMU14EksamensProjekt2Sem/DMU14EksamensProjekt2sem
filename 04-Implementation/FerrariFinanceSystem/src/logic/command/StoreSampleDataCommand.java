@@ -6,7 +6,7 @@ import domain.Person;
 import domain.PostalCode;
 import domain.CarModel;
 import util.finance.Money;
-import logic.EmployeeRole;
+import domain.EmployeeRole;
 import logic.entity.CustomerLogic;
 import logic.entity.EmployeeLogic;
 import util.function.Command;

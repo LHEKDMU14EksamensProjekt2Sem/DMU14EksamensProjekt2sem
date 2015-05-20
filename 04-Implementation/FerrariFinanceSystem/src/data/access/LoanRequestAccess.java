@@ -1,7 +1,7 @@
 package data.access;
 
 import domain.LoanRequest;
-import logic.LoanRequestStatus;
+import domain.LoanRequestStatus;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
