@@ -21,7 +21,7 @@ public class CarAccess {
    public List<CarModel> readCarModels() throws SQLException {
       ResultSet resultset = null;
       List<CarModel> list;
-      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_MODELS)){
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_MANY)){
          list = new ArrayList<CarModel>();
          resultset = st.executeQuery();
          while (resultset.next()) {
@@ -47,7 +47,7 @@ public class CarAccess {
       // TODO
       static final String SELECT_ALL = " ";
       
-      static final String SELECT_MODELS = "SELECT id, year, name, description, base_price FROM car_model";
+      static final String SELECT_MANY = "SELECT id, year, name, description, base_price FROM car_model";
             
       static final String SELECT_ONE = " ";
    }
