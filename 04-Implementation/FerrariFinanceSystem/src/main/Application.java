@@ -25,7 +25,7 @@ public class Application {
       facade = new MainSessionFacadeImpl();
 
       try {
-         createDatabase(true);
+         createDatabase();
          setSystemLookAndFeel();
          invokeMainFrame();
       } catch (IOException | SQLException e) {
@@ -35,24 +35,25 @@ public class Application {
 
    /**
     * Sets up the database and stores initial data. If a database file
-    * already exists, and the <code>reset</code> flag is set to <code>false</code>,
-    * this is a no-op. CAUTION: If <code>reset</code> is set to <code>true</code>,
-    * any existing database will be destroyed and a new one created. A reset
-    * will also store a fictional data sample for development purposes.
+    * already exists, and the <code>Environment.DEBUG</code> flag is set to
+    * <code>false</code>, this is a no-op. CAUTION: If <code>Environment.DEBUG</code>
+    * is set to <code>true</code>, any existing database will be destroyed and
+    * a new one created. Debug mode will also create a fictional data sample for
+    * debugging purposes.
     *
-    * @param reset flag indicating whether to reset the database
     * @throws IOException
     * @throws SQLException
     */
-   private void createDatabase(boolean reset) throws IOException, SQLException {
-      if (reset)
+   private void createDatabase() throws IOException, SQLException {
+      if (Environment.DEBUG)
          DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
             try {
                new CreateDatabaseCommand(con).execute();
-               if (reset)
+
+               if (Environment.DEBUG)
                   new CreateSampleCommand(con).execute();
 
                con.commit();
