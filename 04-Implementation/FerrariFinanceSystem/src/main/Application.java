@@ -1,21 +1,17 @@
 package main;
 
 import data.ConnectionHandlerFactory;
-import data.DBPath;
 import logic.command.CreateDatabaseCommand;
-import logic.command.StoreInitialDataCommand;
-import logic.command.StoreSampleDataCommand;
+import logic.command.CreateSampleCommand;
 import logic.session.main.MainSessionFacade;
 import logic.session.main.MainSessionFacadeImpl;
+import logic.util.DataUtil;
 import ui.main.MainFrame;
 import util.jdbc.ConnectionHandler;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class Application {
@@ -29,7 +25,7 @@ public class Application {
       facade = new MainSessionFacadeImpl();
 
       try {
-         setUpDatabase(true);
+         createDatabase(true);
          setSystemLookAndFeel();
          invokeMainFrame();
       } catch (IOException | SQLException e) {
@@ -48,18 +44,16 @@ public class Application {
     * @throws IOException
     * @throws SQLException
     */
-   private void setUpDatabase(boolean reset) throws IOException, SQLException {
-      Path db = Paths.get(DBPath.getPath());
+   private void createDatabase(boolean reset) throws IOException, SQLException {
       if (reset)
-         Files.deleteIfExists(db);
+         DataUtil.destroyDatabase();
 
-      if (!Files.exists(db)) {
+      if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
             try {
                new CreateDatabaseCommand(con).execute();
-               new StoreInitialDataCommand(con).execute();
                if (reset)
-                  new StoreSampleDataCommand(con).execute();
+                  new CreateSampleCommand(con).execute();
 
                con.commit();
             } catch (SQLException e) {
