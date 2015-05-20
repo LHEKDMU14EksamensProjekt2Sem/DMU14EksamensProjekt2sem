@@ -4,6 +4,8 @@ import domain.Customer;
 import domain.Employee;
 import domain.Person;
 import domain.PostalCode;
+import domain.CarModel;
+import logic.Money;
 import logic.EmployeeRole;
 import logic.entity.CustomerLogic;
 import logic.entity.EmployeeLogic;
@@ -40,6 +42,7 @@ public class StoreSampleDataCommand implements Command {
          logic.createCustomer(customers[i], cprs[i], con);
       }
    }
+   
 
    private Employee[] newEmployees() {
       return new Employee[]{
@@ -70,6 +73,17 @@ public class StoreSampleDataCommand implements Command {
                       false)
       };
    }
+   
+//   private CarModel[] newModels() {
+//      return new CarModel[]{
+//            newModel(2014, "Ferrari California T", "description", "3395000"),
+//            newModel(2015, "488 GTB", "description", "7459000.00" ),
+//            newModel(2010, "458 ITALIA", "description", "4390000.00" ),
+//            newModel(2013, "F12BERLINETTA", "description", "5905000.00"),
+//            newModel(2011, "FF", "description", "5280000.00"),
+//            newModel(2013, "LaFERRARI", "description", "2995000.00")
+//      };
+//   }
 
    private Employee newEmployee(Person p, EmployeeRole role) {
       Employee em = new Employee();
@@ -102,5 +116,15 @@ public class StoreSampleDataCommand implements Command {
       PostalCode pc = new PostalCode();
       pc.setPostalCode(postalCode);
       return pc;
+   }
+   
+   private CarModel newModel(int year, String name, String description, Money price) {
+      CarModel m = new CarModel();
+      m.setYear(year);
+      m.setName(name);
+      m.setDescription(description);
+      m.setBasePrice(price);
+      return m;
+      
    }
 }
