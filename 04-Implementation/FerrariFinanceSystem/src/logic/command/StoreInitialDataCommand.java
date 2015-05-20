@@ -56,7 +56,7 @@ public class StoreInitialDataCommand implements Command {
    private void storeEmployeeRoleValues(ConnectionHandler con) throws SQLException {
       EmployeeRoleAccess access = new EmployeeRoleAccess(con);
       for (EmployeeRole role : EmployeeRole.values()) {
-         access.createEmployeeRole(role.toString());
+         access.createEmployeeRole(role);
       }
    }
 

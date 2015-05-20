@@ -1,5 +1,6 @@
 package data.access;
 
+import domain.EmployeeRole;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
@@ -12,9 +13,9 @@ public class EmployeeRoleAccess {
       this.con = con;
    }
 
-   public void createEmployeeRole(String role) throws SQLException {
+   public void createEmployeeRole(EmployeeRole role) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setString(1, role);
+         st.setString(1, role.toString());
          st.executeUpdate();
       }
    }
