@@ -63,7 +63,7 @@ public class StoreInitialDataCommand implements Command {
    private void storeLoanRequestStatusValues(ConnectionHandler con) throws SQLException {
       LoanRequestStatusAccess access = new LoanRequestStatusAccess(con);
       for (LoanRequestStatus status : LoanRequestStatus.values()) {
-         access.createLoanRequestStatus(status.toString());
+         access.createLoanRequestStatus(status);
       }
    }
 }

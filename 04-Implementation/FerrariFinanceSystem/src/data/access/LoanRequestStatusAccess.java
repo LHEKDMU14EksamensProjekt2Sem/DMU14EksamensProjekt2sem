@@ -1,5 +1,6 @@
 package data.access;
 
+import domain.LoanRequestStatus;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
@@ -12,9 +13,9 @@ public class LoanRequestStatusAccess {
       this.con = con;
    }
 
-   public void createLoanRequestStatus(String status) throws SQLException {
+   public void createLoanRequestStatus(LoanRequestStatus status) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setString(1, status);
+         st.setString(1, status.toString());
          st.executeUpdate();
       }
    }
