@@ -4,6 +4,7 @@ import domain.Car;
 import domain.CarModel;
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanView;
+import ui.UIFactory;
 import util.session.SessionPresenter;
 
 import javax.swing.JButton;
@@ -11,7 +12,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,8 +52,8 @@ public class RequestDetailsPanel extends JPanel {
       cbCarModel = createComboBox();
       List<CarModel> list;
       list = presenter.getFacade().getModels();
-      for (CarModel model : list ) {
-         cbCarModel.addItem( model );
+      for (CarModel model : list) {
+         cbCarModel.addItem(model);
       }
 
       lblCar = createLabel("Bil:");
@@ -114,8 +114,12 @@ public class RequestDetailsPanel extends JPanel {
       gbc.gridx++;
       gbc.gridy = -1;
       gbc.anchor = WEST;
+      gbc.fill = HORIZONTAL;
+      gbc.gridwidth = 2;
       addNext(cbCarModel, gbc);
       addNext(cbCar, gbc);
+
+      gbc.fill = NONE;
       addNext(tfBasePrice, gbc);
       addNext(tfDiscount, gbc);
       addNext(tfDiscountPct, gbc);
@@ -123,11 +127,16 @@ public class RequestDetailsPanel extends JPanel {
       addNext(tfDownPayment, gbc);
       addNext(tfLoanAmount, gbc);
       addNext(tfPrefRepayment, gbc);
+
+      gbc.gridwidth = 1;
       addNext(tfPrefTerm, gbc);
+
+      gbc.gridx++;
+      add(UIFactory.createLabel("mdr."), gbc);
 
       gbc.gridx = 0;
       gbc.gridy++;
-      gbc.gridwidth = 2;
+      gbc.gridwidth = 3;
       gbc.anchor = EAST;
       add(btnSend, gbc);
    }
