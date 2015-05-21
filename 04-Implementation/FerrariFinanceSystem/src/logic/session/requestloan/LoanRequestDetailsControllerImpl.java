@@ -15,7 +15,7 @@ public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsContr
 	@Override
 	public List getModels() {
 	   try {
-         return new CarModelLogicImpl().readCarModel();
+         return new CarModelLogicImpl().listCarModels();
       }
       catch ( SQLException e ) {
          e.printStackTrace();
