@@ -1,4 +1,4 @@
-package logic.command;
+package dev.command;
 
 import domain.Customer;
 import domain.Employee;

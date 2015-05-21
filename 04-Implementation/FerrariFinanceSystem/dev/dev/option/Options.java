@@ -1,26 +1,26 @@
 package dev.option;
 
-import main.Environment;
+import java.util.HashMap;
 
 public class Options {
-   public static void parse(String[] args) {
+   private final HashMap<String, Value<Boolean>> opts;
+
+   public Options() {
+      opts = new HashMap<>();
+   }
+
+   public void add(String name, Value<Boolean> option) {
+      opts.put(name, option);
+   }
+
+   public void parse(String[] args) throws InvalidOptionException {
       for (String arg : args) {
-         // Skip if not an option
-         if (!arg.startsWith("--"))
-            continue;
+         Value<Boolean> opt = opts.get(arg.toLowerCase());
 
-         try {
-            Option opt = Option.valueOf(
-                    arg.substring(2).toUpperCase());
+         if (opt == null)
+            throw new InvalidOptionException(arg);
 
-            switch (opt) {
-               case DEBUG:
-                  Environment.DEBUG = true;
-                  break;
-            }
-         } catch (IllegalArgumentException e) {
-            System.out.println("Error: Invalid option: " + arg);
-         }
+         opt.set(true);
       }
    }
 }

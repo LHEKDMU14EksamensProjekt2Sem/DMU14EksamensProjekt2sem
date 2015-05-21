@@ -1,18 +1,12 @@
 package main;
 
-import data.ConnectionHandlerFactory;
-import logic.command.CreateDatabaseCommand;
-import logic.command.CreateSampleCommand;
 import logic.session.main.MainSessionFacade;
 import logic.session.main.MainSessionFacadeImpl;
-import logic.util.DataUtil;
 import ui.main.MainFrame;
-import util.jdbc.ConnectionHandler;
+import util.function.Command;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class Application {
    private static final String
@@ -21,47 +15,15 @@ public class Application {
 
    private MainSessionFacade facade;
 
-   public Application() {
+   public Application(Command startup) {
       facade = new MainSessionFacadeImpl();
 
       try {
-         createDatabase();
+         startup.execute();
          setSystemLookAndFeel();
          invokeMainFrame();
-      } catch (IOException | SQLException e) {
+      } catch (Exception e) {
          System.out.println("Fatal error: Database setup failed: " + e);
-      }
-   }
-
-   /**
-    * Sets up the database and stores initial data. If a database file
-    * already exists, and the <code>Environment.DEBUG</code> flag is set to
-    * <code>false</code>, this is a no-op. CAUTION: If <code>Environment.DEBUG</code>
-    * is set to <code>true</code>, any existing database will be destroyed and
-    * a new one created. Debug mode will also create a fictional data sample for
-    * debugging purposes.
-    *
-    * @throws IOException
-    * @throws SQLException
-    */
-   private void createDatabase() throws IOException, SQLException {
-      if (Environment.DEBUG)
-         DataUtil.destroyDatabase();
-
-      if (!DataUtil.databaseExists()) {
-         try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-            try {
-               new CreateDatabaseCommand(con).execute();
-
-               if (Environment.DEBUG)
-                  new CreateSampleCommand(con).execute();
-
-               con.commit();
-            } catch (SQLException e) {
-               con.rollback();
-               throw e;
-            }
-         }
       }
    }
 
