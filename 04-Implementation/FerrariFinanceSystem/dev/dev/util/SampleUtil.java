@@ -1,4 +1,4 @@
-package logic.util;
+package dev.util;
 
 import domain.CarModel;
 import domain.Customer;

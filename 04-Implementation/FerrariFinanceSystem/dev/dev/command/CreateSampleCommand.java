@@ -4,7 +4,7 @@ import domain.Customer;
 import domain.Employee;
 import logic.entity.CustomerLogic;
 import logic.entity.EmployeeLogic;
-import logic.util.SampleUtil;
+import dev.util.SampleUtil;
 import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
