@@ -6,17 +6,25 @@ import ui.UIFactory;
 import util.session.SessionPresenter;
 import util.session.UnsupportedViewException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Window;
 
+import static java.awt.GridBagConstraints.*;
 import static logic.session.requestloan.RequestLoanView.*;
 
 public class RequestLoanDialog extends JDialog implements
         SessionPresenter<RequestLoanView, RequestLoanSessionFacade> {
 
    private RequestLoanSessionFacade facade;
+   private JPanel contentPanel;
+   private JLabel messageLabel;
 
    private CardLayout layout;
    private CPRPanel cprPanel;
@@ -36,7 +44,10 @@ public class RequestLoanDialog extends JDialog implements
    }
 
    private void initComponents() {
-      ((JPanel) getContentPane()).setBorder(UIFactory.createContentBorder());
+      layout = new CardLayout();
+      contentPanel = new JPanel(layout);
+      contentPanel.setBorder(UIFactory.createContentBorder());
+      messageLabel = UIFactory.createLabel("");
 
       cprPanel = new CPRPanel(this);
       customerDetailsPanel = new CustomerDetailsPanel(this);
@@ -44,16 +55,28 @@ public class RequestLoanDialog extends JDialog implements
    }
 
    private void layoutComponents() {
-      layout = new CardLayout();
-      setLayout(layout);
+      setLayout(new GridBagLayout());
+      GridBagConstraints gbc = new GridBagConstraints();
 
-      add(cprPanel);
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.weightx = 1;
+      gbc.fill = HORIZONTAL;
+      gbc.anchor = WEST;
+      gbc.insets = new Insets(20,12,20,12);
+      add(messageLabel, gbc);
+
+      gbc.gridy++;
+      gbc.anchor = CENTER;
+      add(contentPanel, gbc);
+
+      contentPanel.add(cprPanel);
       layout.addLayoutComponent(cprPanel, CPR.toString());
 
-      add(customerDetailsPanel);
+      contentPanel.add(customerDetailsPanel);
       layout.addLayoutComponent(customerDetailsPanel, CUSTOMER_DETAILS.toString());
 
-      add(requestDetailsPanel);
+      contentPanel.add(requestDetailsPanel);
       layout.addLayoutComponent(requestDetailsPanel, REQUEST_DETAILS.toString());
    }
 
@@ -74,11 +97,25 @@ public class RequestLoanDialog extends JDialog implements
       }
 
       facade.setView(view);
-      layout.show(getContentPane(), view.toString());
+      layout.show(contentPanel, view.toString());
    }
 
    @Override
    public RequestLoanSessionFacade getFacade() {
       return facade;
+   }
+
+   public void setMessage(String message) {
+      setMessage(null, message);
+   }
+
+   public void setMessage(ImageIcon icon, String message) {
+      messageLabel.setText(message);
+      messageLabel.setIcon(icon);
+   }
+
+   public void clearMessage() {
+      messageLabel.setText(" ");
+      messageLabel.setIcon(null);
    }
 }

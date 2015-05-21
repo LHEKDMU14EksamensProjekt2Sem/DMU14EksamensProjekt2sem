@@ -3,13 +3,19 @@ package logic.util;
 import domain.PostalCode;
 import util.io.FileIO;
 
+import javax.swing.ImageIcon;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AssetsUtil {
-   private static InputStream get(String path) {
+   private static URL getURL(String path) {
+      return ClassLoader.getSystemResource(path);
+   }
+
+   private static InputStream getStream(String path) {
       return ClassLoader.getSystemResourceAsStream(path);
    }
 
@@ -43,7 +49,7 @@ public class AssetsUtil {
       List<String> batch = new ArrayList<>();
       for (String t : tables) {
          String path = "assets/sql/" + t + ".sql";
-         String sql = FileIO.read(get(path), linePattern);
+         String sql = FileIO.read(getStream(path), linePattern);
          batch.add(sql);
       }
 
@@ -54,7 +60,7 @@ public class AssetsUtil {
       String path = "assets/data/postal_codes.txt";
       List<PostalCode> postalCodes = new ArrayList<>();
 
-      for (String line : FileIO.readLines(get(path))) {
+      for (String line : FileIO.readLines(getStream(path))) {
          String[] parts = line.split(";");
          PostalCode pc = new PostalCode();
          pc.setPostalCode(Integer.parseInt(parts[0]));
@@ -63,5 +69,9 @@ public class AssetsUtil {
       }
 
       return postalCodes;
+   }
+
+   public static ImageIcon loadLoaderIcon() throws IOException {
+      return new ImageIcon(getURL("assets/images/loader.gif"));
    }
 }

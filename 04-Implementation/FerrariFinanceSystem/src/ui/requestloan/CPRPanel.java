@@ -3,9 +3,11 @@ package ui.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanView;
+import logic.util.AssetsUtil;
 import util.command.Callback;
 import util.session.SessionPresenter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,6 +18,7 @@ import java.awt.GridBagLayout;
 import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
 import static logic.session.requestloan.RequestLoanView.*;
@@ -50,6 +53,14 @@ public class CPRPanel extends JPanel {
                   presenter.go(CUSTOMER_DETAILS);
                   presenter.getFacade().specifyCPR(cpr);
                   presenter.getFacade().fetchCreditRating(callback);
+
+                  try {
+                     String msg = "Henter kreditværdighed...";
+                     ImageIcon icon = AssetsUtil.loadLoaderIcon();
+                     ((RequestLoanDialog) presenter).setMessage(icon, msg);
+                  } catch (IOException ex) {
+                     // No-op
+                  }
                }
             });
          }
@@ -84,19 +95,24 @@ public class CPRPanel extends JPanel {
 
       @Override
       public void success(Rating result) {
+         ((RequestLoanDialog) presenter).clearMessage();
          System.out.println("Credit rating: " + result);
 
          if (result == Rating.D) {
             JOptionPane.showMessageDialog(parent,
-                    String.format("Kundens kreditværdighed er D.%nLåneanmodning afvist."),
+                    String.format("Kreditværdighed %s.%nLåneanmodning afvist.", result),
                     "Låneanmodning afvist",
                     JOptionPane.WARNING_MESSAGE);
             parent.dispose();
+         } else {
+            String msg = "✓ Kreditværdighed " + result;
+            ((RequestLoanDialog) presenter).setMessage(msg);
          }
       }
 
       @Override
       public void failure(Void exception) {
+         ((RequestLoanDialog) presenter).clearMessage();
          System.out.println("Failed to fetch credit rating: " + exception);
       }
    }
