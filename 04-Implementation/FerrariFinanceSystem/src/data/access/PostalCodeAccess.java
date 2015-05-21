@@ -5,6 +5,8 @@ import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class PostalCodeAccess {
    private ConnectionHandler con;
@@ -14,10 +16,16 @@ public class PostalCodeAccess {
    }
 
    public void createPostalCode(PostalCode postalCode) throws SQLException {
+      createPostalCodes(Arrays.asList(postalCode));
+   }
+
+   public void createPostalCodes(List<PostalCode> postalCodes) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setInt(1, postalCode.getPostalCode());
-         st.setString(2, postalCode.getCity());
-         st.executeUpdate();
+         for (PostalCode postalCode : postalCodes) {
+            st.setInt(1, postalCode.getPostalCode());
+            st.setString(2, postalCode.getCity());
+            st.executeUpdate();
+         }
       }
    }
 

@@ -1,11 +1,12 @@
 package data.access;
 
 import domain.LoanRequest;
-import logic.LoanRequestStatus;
+import domain.LoanRequestStatus;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class LoanRequestAccess {
@@ -16,18 +17,24 @@ public class LoanRequestAccess {
    }
 
    public void createLoanRequest(LoanRequest loanRequest) throws SQLException {
+      createLoanRequests(Arrays.asList(loanRequest));
+   }
+
+   public void createLoanRequests(List<LoanRequest> loanRequests) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setInt(1, loanRequest.getSale().getId());
-         st.setString(2, loanRequest.getStatus().toString());
-         st.setInt(3, loanRequest.getStatusByEmployee().getId());
-         st.setDate(4, loanRequest.getDate());
-         st.setBigDecimal(5, loanRequest.getLoanAmount().asBigDecimal());
-         st.setBigDecimal(6,
-                 loanRequest.hasPreferredRepayment()
-                         ? loanRequest.getPreferredRepayment().asBigDecimal()
-                         : null);
-         st.setInt(7, loanRequest.getPreferredTerm());
-         st.executeUpdate();
+         for (LoanRequest loanRequest : loanRequests) {
+            st.setInt(1, loanRequest.getSale().getId());
+            st.setString(2, loanRequest.getStatus().toString());
+            st.setInt(3, loanRequest.getStatusByEmployee().getId());
+            st.setDate(4, loanRequest.getDate());
+            st.setBigDecimal(5, loanRequest.getLoanAmount().asBigDecimal());
+            st.setBigDecimal(6,
+                    loanRequest.hasPreferredRepayment()
+                            ? loanRequest.getPreferredRepayment().asBigDecimal()
+                            : null);
+            st.setInt(7, loanRequest.getPreferredTerm());
+            st.executeUpdate();
+         }
       }
    }
 

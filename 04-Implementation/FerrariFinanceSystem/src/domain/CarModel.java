@@ -1,6 +1,6 @@
 package domain;
 
-import logic.Money;
+import util.finance.Money;
 
 public class CarModel {
    private int id;

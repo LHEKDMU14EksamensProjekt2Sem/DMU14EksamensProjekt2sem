@@ -3,19 +3,26 @@ package util.jdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DefaultConnectionHandler implements ConnectionHandler {
    private String url;
+   private Properties properties;
    private Connection con;
 
-   public DefaultConnectionHandler(String url) {
+   public DefaultConnectionHandler(String url, Properties properties) {
       this.url = url;
+      this.properties = properties;
+   }
+
+   public DefaultConnectionHandler(String url) {
+      this(url, new Properties());
    }
 
    @Override
    public Connection get() throws SQLException {
       if (con == null) {
-         con = DriverManager.getConnection(url);
+         con = DriverManager.getConnection(url, properties);
          con.setAutoCommit(false);
       }
       return con;

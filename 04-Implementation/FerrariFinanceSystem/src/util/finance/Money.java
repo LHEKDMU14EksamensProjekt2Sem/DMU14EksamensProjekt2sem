@@ -1,4 +1,4 @@
-package logic;
+package util.finance;
 
 import java.math.BigDecimal;
 

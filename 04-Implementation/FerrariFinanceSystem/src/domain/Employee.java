@@ -1,7 +1,5 @@
 package domain;
 
-import logic.EmployeeRole;
-
 public class Employee {
    private Person person;
    private EmployeeRole role;

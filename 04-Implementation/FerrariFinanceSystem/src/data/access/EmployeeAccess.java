@@ -5,6 +5,8 @@ import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmployeeAccess {
    private ConnectionHandler con;
@@ -14,10 +16,16 @@ public class EmployeeAccess {
    }
 
    public void createEmployee(Employee employee) throws SQLException {
+      createEmployees(Arrays.asList(employee));
+   }
+
+   public void createEmployees(List<Employee> employees) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setInt(1, employee.getPerson().getId());
-         st.setString(2, employee.getRole().toString());
-         st.executeUpdate();
+         for (Employee employee : employees) {
+            st.setInt(1, employee.getPerson().getId());
+            st.setString(2, employee.getRole().toString());
+            st.executeUpdate();
+         }
       }
    }
 

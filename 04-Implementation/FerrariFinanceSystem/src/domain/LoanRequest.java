@@ -1,7 +1,6 @@
 package domain;
 
-import logic.LoanRequestStatus;
-import logic.Money;
+import util.finance.Money;
 
 import java.sql.Date;
 

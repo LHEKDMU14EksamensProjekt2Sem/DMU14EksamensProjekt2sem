@@ -1,9 +1,12 @@
 package data.access;
 
+import domain.EmployeeRole;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmployeeRoleAccess {
    private ConnectionHandler con;
@@ -12,10 +15,16 @@ public class EmployeeRoleAccess {
       this.con = con;
    }
 
-   public void createEmployeeRole(String role) throws SQLException {
+   public void createEmployeeRole(EmployeeRole role) throws SQLException {
+      createEmployeeRoles(Arrays.asList(role));
+   }
+
+   public void createEmployeeRoles(List<EmployeeRole> roles) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         st.setString(1, role);
-         st.executeUpdate();
+         for (EmployeeRole role : roles) {
+            st.setString(1, role.name());
+            st.executeUpdate();
+         }
       }
    }
 

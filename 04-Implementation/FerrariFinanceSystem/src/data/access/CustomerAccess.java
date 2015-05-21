@@ -1,8 +1,13 @@
 package data.access;
 
+import domain.Customer;
+import util.jdbc.ConnectionHandler;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import util.jdbc.ConnectionHandler;
 import domain.Customer;
@@ -15,13 +20,19 @@ public class CustomerAccess {
 		this.con = con;
 	}
 
-	public void createCustomer(Customer customer) throws SQLException {
-		try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-			st.setInt(1, customer.getPerson().getId());
-			st.setBoolean(2, customer.inGoodStanding());
-			st.executeUpdate();
-		}
-	}
+   public void createCustomer(Customer customer) throws SQLException {
+      createCustomers(Arrays.asList(customer));
+   }
+
+   public void createCustomers(List<Customer> customers) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
+         for (Customer customer : customers) {
+            st.setInt(1, customer.getPerson().getId());
+            st.setBoolean(2, customer.inGoodStanding());
+            st.executeUpdate();
+         }
+      }
+   }
 
 	// TODO
 	public Customer readCustomer(int id) throws SQLException {

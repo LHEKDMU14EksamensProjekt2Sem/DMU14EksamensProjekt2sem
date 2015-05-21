@@ -1,4 +1,4 @@
-package util.function;
+package util.command;
 
 @FunctionalInterface
 public interface Command {
