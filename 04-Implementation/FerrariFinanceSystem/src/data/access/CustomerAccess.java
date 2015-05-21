@@ -70,11 +70,12 @@ public class CustomerAccess {
 		static final String INSERT_ONE = "INSERT INTO customer(id, standing) VALUES (?, ?)";
 
 		// TODO
-		static final String SELECT_ONE = "SELECT id, standing, first_name, last_name, street, postal_code, phone, email"
+		static final String SELECT_ONE = "SELECT id, standing, first_name, last_name, street, postal_code, city, phone, email"
 				+ "FROM customer c"
 				+ "JOIN person p"
-				+ "on c.id = p.id"
-				+ "JOIN postal_code pc" + "on p.postal_code = pc.postal_code";
+				+ "ON c.id = p.id"
+				+ "JOIN postal_code pc" 
+				+ "ON p.postal_code = pc.postal_code";
 
 	}
 }
