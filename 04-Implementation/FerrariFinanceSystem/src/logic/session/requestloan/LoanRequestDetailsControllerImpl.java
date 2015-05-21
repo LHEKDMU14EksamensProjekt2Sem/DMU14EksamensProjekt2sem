@@ -1,18 +1,29 @@
 package logic.session.requestloan;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import logic.entity.CarModelLogic;
+import data.access.CarAccess;
 
 public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsController {
 
 	@Override
 	public void fetchModels() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public List getModels() {
 		// TODO Auto-generated method stub
+	   
+	   try {
+         return new CarModelLogic().readCarModel();
+      }
+      catch ( SQLException e ) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
 		return null;
 	}
 

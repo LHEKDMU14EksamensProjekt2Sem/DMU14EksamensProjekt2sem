@@ -1,7 +1,9 @@
 package dev.command;
 
+import domain.CarModel;
 import domain.Customer;
 import domain.Employee;
+import logic.entity.CarModelLogic;
 import logic.entity.CustomerLogic;
 import logic.entity.EmployeeLogic;
 import dev.util.SampleUtil;
@@ -21,6 +23,7 @@ public class CreateSampleCommand implements Command {
    public void execute() throws SQLException {
       createEmployees();
       createCustomers();
+      createCarModel();
    }
 
    private void createEmployees() throws SQLException {
@@ -40,4 +43,14 @@ public class CreateSampleCommand implements Command {
          logic.createCustomer(customers[i], cprs[i], con);
       }
    }
+   
+   private void createCarModel() throws SQLException {
+      CarModel[] carModels = SampleUtil.newCarModels();
+      CarModelLogic logic = new CarModelLogic();
+      for (CarModel carModel : carModels) {
+         logic.createCarModel(carModel, con);
+      }
+      
+   }
+   
 }

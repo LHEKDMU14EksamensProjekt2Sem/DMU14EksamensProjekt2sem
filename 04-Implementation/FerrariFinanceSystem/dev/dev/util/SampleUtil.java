@@ -88,7 +88,7 @@ public class SampleUtil {
       return pc;
    }
 
-   private static CarModel[] newCarModels() {
+   public static CarModel[] newCarModels() {
       return new CarModel[]{
               newCarModel(2014, "Ferrari California T", "description", "3395000"),
               newCarModel(2015, "488 GTB", "description", "7459000.00"),
