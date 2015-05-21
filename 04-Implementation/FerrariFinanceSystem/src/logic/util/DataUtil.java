@@ -27,7 +27,7 @@ public class DataUtil {
       this.con = con;
    }
 
-   private static String getDatabasePath() {
+   public static String getDatabasePath() {
       return DIR_PATH + "/" + FILENAME;
    }
 

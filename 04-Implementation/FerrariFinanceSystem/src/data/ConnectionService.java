@@ -1,5 +1,6 @@
 package data;
 
+import logic.util.DataUtil;
 import org.sqlite.SQLiteConfig;
 import util.jdbc.ConnectionHandler;
 import util.jdbc.DataQuery;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 
 public class ConnectionService {
    public static ConnectionHandler connect() {
-      String url = "jdbc:sqlite:" + DBPath.getPath();
+      String url = "jdbc:sqlite:" + DataUtil.getDatabasePath();
       SQLiteConfig config = new SQLiteConfig();
       config.enforceForeignKeys(true);
       return new DefaultConnectionHandler(url, config.toProperties());
