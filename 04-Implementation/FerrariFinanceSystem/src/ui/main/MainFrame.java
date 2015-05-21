@@ -36,6 +36,9 @@ public class MainFrame extends JFrame implements
       initComponents();
       layoutComponents();
       pack();
+
+      // Center on screen
+      setLocationRelativeTo(null);
    }
 
    private void initComponents() {
