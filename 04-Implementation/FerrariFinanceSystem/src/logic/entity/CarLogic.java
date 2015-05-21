@@ -9,7 +9,7 @@ import domain.Car;
 public interface CarLogic {
    void createCar(Car car, ConnectionHandler con) throws SQLException;
 
-   void createCarCar(Car car) throws SQLException;
+   void createCar(Car car) throws SQLException;
 
    List<Car> listCars() throws SQLException;
 }

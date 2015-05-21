@@ -105,4 +105,27 @@ public class SampleUtil {
       m.setBasePrice(new Money(price));
       return m;
    }
+   
+   public static List<CarComponantType> newCarComponantTypes(){
+      return Arrays.asList(
+            newCarComponantType("Paint"),
+            newCarComponantType("Radio"),
+            newCarComponantType("Engine"),
+            newCarComponantType("Rims"),)
+   }
+   
+   private static CarComponantType newCarComponantType(String type){
+      CarComponantType cpt = new CarComponantType();
+      cpt.setType(type);
+      return cpt;
+   }
+
+   
+   private static List<CarComponent> newCarComponant(){
+      return Arrays.asList(
+            )
+            
+   }
+   
+   private static CarComponant newCarComponant()
 }
