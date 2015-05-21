@@ -3,33 +3,33 @@ package logic.command;
 import domain.Employee;
 import util.auth.User;
 import util.auth.UserAuth;
-import util.command.Response;
-import util.function.AsyncCallback;
-import util.function.AsyncCommand;
+import util.command.AsyncCommand;
+import util.command.Callback;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.concurrent.Executor;
 
-public class LoginCommand implements AsyncCommand<User<Employee>, SQLException> {
+public class LoginCommand extends AsyncCommand {
    private final String username;
    private final char[] password;
+   private final Callback<Optional<User<Employee>>, SQLException> callback;
 
-   public LoginCommand(String username, char[] password) {
+   public LoginCommand(Executor executor, String username, char[] password,
+                       Callback<Optional<User<Employee>>, SQLException> callback) {
+      super(executor);
       this.username = username;
       this.password = password;
+      this.callback = callback;
    }
 
    @Override
-   public void execute(AsyncCallback<User<Employee>, SQLException> callback) {
-      new Thread(() -> {
-         Response<User<Employee>, SQLException> resp = new Response<>();
-
-         try {
-            resp.setOptional(new UserAuth().login(username, password));
-         } catch (SQLException e) {
-            resp.setException(e);
-         }
-
-         callback.call(resp);
-      }).start();
+   public void run() {
+      try {
+         callback.success(
+                 new UserAuth().login(username, password));
+      } catch (SQLException e) {
+         callback.failure(e);
+      }
    }
 }

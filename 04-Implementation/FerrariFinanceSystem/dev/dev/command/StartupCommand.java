@@ -4,7 +4,7 @@ import data.ConnectionHandlerFactory;
 import dev.option.Option;
 import logic.command.CreateDatabaseCommand;
 import logic.util.DataUtil;
-import util.function.Command;
+import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;

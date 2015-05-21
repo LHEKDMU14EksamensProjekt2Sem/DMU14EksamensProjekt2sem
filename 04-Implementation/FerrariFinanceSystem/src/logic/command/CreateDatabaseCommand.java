@@ -1,7 +1,7 @@
 package logic.command;
 
 import logic.util.DataUtil;
-import util.function.Command;
+import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;

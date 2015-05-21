@@ -5,7 +5,7 @@ import domain.Employee;
 import logic.entity.CustomerLogic;
 import logic.entity.EmployeeLogic;
 import logic.util.SampleUtil;
-import util.function.Command;
+import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;

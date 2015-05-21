@@ -1,7 +1,10 @@
 package ui.main;
 
+import domain.Employee;
 import logic.session.main.MainSessionFacade;
 import logic.session.main.MainView;
+import util.auth.User;
+import util.command.Callback;
 import util.session.SessionPresenter;
 
 import javax.swing.JButton;
@@ -13,6 +16,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Optional;
 
 import static java.awt.GridBagConstraints.*;
 import static logic.session.main.MainView.*;
@@ -51,11 +55,19 @@ public class LoginPanel extends JPanel {
          char[] password = pfPassword.getPassword();
 
          MainSessionFacade facade = presenter.getFacade();
-         facade.login(username, password, () -> {
-            if (facade.isLoggedIn())
-               presenter.go(MAIN_MENU);
-            else
-               lblMessage.setText("Brugernavn eller adgangskode er forkert :(");
+         facade.login(username, password, new Callback<Optional<User<Employee>>, Void>() {
+            @Override
+            public void success(Optional<User<Employee>> result) {
+               if (result.isPresent())
+                  presenter.go(MAIN_MENU);
+               else
+                  lblMessage.setText("Brugernavn eller adgangskode er forkert");
+            }
+
+            @Override
+            public void failure(Void exception) {
+               lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.");
+            }
          });
       });
    }
