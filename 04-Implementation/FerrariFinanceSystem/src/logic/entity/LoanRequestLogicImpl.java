@@ -1,8 +1,8 @@
 package logic.entity;
 
 import data.ConnectionService;
-import data.access.LoanRequestAccess;
-import data.access.SaleAccess;
+import data.access.LoanRequestAccessImpl;
+import data.access.SaleAccessImpl;
 import domain.LoanRequest;
 import util.jdbc.ConnectionHandler;
 
@@ -12,8 +12,8 @@ import java.util.List;
 public class LoanRequestLogicImpl implements LoanRequestLogic {
    @Override
    public void createLoanRequest(LoanRequest loanRequest, ConnectionHandler con) throws SQLException {
-      new SaleAccess(con).createSale(loanRequest.getSale());
-      new LoanRequestAccess(con).createLoanRequest(loanRequest);
+      new SaleAccessImpl(con).createSale(loanRequest.getSale());
+      new LoanRequestAccessImpl(con).createLoanRequest(loanRequest);
    }
 
    @Override

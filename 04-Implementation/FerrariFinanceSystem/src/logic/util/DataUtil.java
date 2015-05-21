@@ -1,11 +1,11 @@
 package logic.util;
 
-import data.access.EmployeeRoleAccess;
-import data.access.LoanRequestStatusAccess;
+import data.access.EmployeeRoleAccessImpl;
+import data.access.LoanRequestStatusAccessImpl;
 import data.access.PostalCodeAccess;
+import data.access.PostalCodeAccessImpl;
 import domain.EmployeeRole;
 import domain.LoanRequestStatus;
-import domain.PostalCode;
 import util.jdbc.ConnectionHandler;
 import util.jdbc.DDLDataAccess;
 
@@ -60,19 +60,17 @@ public class DataUtil {
    }
 
    public void importPostalCodes() throws IOException, SQLException {
-      PostalCodeAccess access = new PostalCodeAccess(con);
-      for (PostalCode pc : AssetsUtil.loadPostalCodes()) {
-         access.createPostalCode(pc);
-      }
+      PostalCodeAccess access = new PostalCodeAccessImpl(con);
+      access.createPostalCodes(AssetsUtil.loadPostalCodes());
    }
 
    public void storeEmployeeRoles() throws SQLException {
-      new EmployeeRoleAccess(con).createEmployeeRoles(
+      new EmployeeRoleAccessImpl(con).createEmployeeRoles(
               Arrays.asList(EmployeeRole.values()));
    }
 
    public void storeLoanRequestStatuses() throws SQLException {
-      new LoanRequestStatusAccess(con).createLoanRequestStatuses(
+      new LoanRequestStatusAccessImpl(con).createLoanRequestStatuses(
               Arrays.asList(LoanRequestStatus.values()));
    }
 }

@@ -2,23 +2,24 @@ package logic.entity;
 
 import java.sql.SQLException;
 
+import domain.Identity;
 import util.jdbc.ConnectionHandler;
 import data.ConnectionService;
-import data.access.CustomerAccess;
+import data.access.CustomerAccessImpl;
 import domain.Customer;
 
 public class CustomerLogicImpl implements CustomerLogic {
 	@Override
-	public void createCustomer(Customer customer, String cpr,
+	public void createCustomer(Customer customer, Identity identity,
 			ConnectionHandler con) throws SQLException {
-		new PersonLogicImpl().createPerson(customer.getPerson(), cpr, con);
-		new CustomerAccess(con).createCustomer(customer);
+		new PersonLogicImpl().createPerson(identity, con);
+		new CustomerAccessImpl(con).createCustomer(customer);
 	}
 
 	@Override
-	public void createCustomer(Customer customer, String cpr) throws SQLException {
+	public void createCustomer(Customer customer, Identity identity) throws SQLException {
 		ConnectionService.execute(con ->
-				  createCustomer(customer, cpr, con));
+				  createCustomer(customer, identity, con));
 	}
 
 	@Override

@@ -1,19 +1,20 @@
 package dev.command;
 
-import domain.CarModel;
+import dev.util.SampleUtil;
 import domain.Customer;
 import domain.Employee;
+import domain.Identity;
 import logic.entity.CarModelLogic;
 import logic.entity.CarModelLogicImpl;
 import logic.entity.CustomerLogic;
 import logic.entity.CustomerLogicImpl;
 import logic.entity.EmployeeLogic;
 import logic.entity.EmployeeLogicImpl;
-import dev.util.SampleUtil;
 import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class CreateSampleCommand implements Command {
    private final ConnectionHandler con;
@@ -30,30 +31,33 @@ public class CreateSampleCommand implements Command {
    }
 
    private void createEmployees() throws SQLException {
-      Employee[] employees = SampleUtil.newEmployees();
-      String[] cprs = SampleUtil.newEmployeeCPRs();
+      List<Employee> employees = SampleUtil.newEmployees();
+      List<String> cprs = SampleUtil.newEmployeeCPRs();
       EmployeeLogic logic = new EmployeeLogicImpl();
-      for (int i = 0; i < cprs.length; i++) {
-         logic.createEmployee(employees[i], cprs[i], con);
+      for (int i = 0; i < cprs.size(); i++) {
+         Employee em = employees.get(i);
+         Identity identity = new Identity();
+         identity.setCpr(cprs.get(i));
+         identity.setPerson(em.getPerson());
+         logic.createEmployee(em, identity, con);
       }
    }
 
    private void createCustomers() throws SQLException {
-      Customer[] customers = SampleUtil.newCustomers();
-      String[] cprs = SampleUtil.newEmployeeCPRs();
+      List<Customer> customers = SampleUtil.newCustomers();
+      List<String> cprs = SampleUtil.newEmployeeCPRs();
       CustomerLogic logic = new CustomerLogicImpl();
-      for (int i = 0; i < cprs.length; i++) {
-         logic.createCustomer(customers[i], cprs[i], con);
+      for (int i = 0; i < cprs.size(); i++) {
+         Customer c = customers.get(i);
+         Identity identity = new Identity();
+         identity.setCpr(cprs.get(i));
+         identity.setPerson(c.getPerson());
+         logic.createCustomer(c, identity, con);
       }
    }
-   
+
    private void createCarModel() throws SQLException {
-      CarModel[] carModels = SampleUtil.newCarModels();
       CarModelLogic logic = new CarModelLogicImpl();
-      for (CarModel carModel : carModels) {
-         logic.createCarModel(carModel, con);
-      }
-      
+      logic.createCarModels(SampleUtil.newCarModels(), con);
    }
-   
 }

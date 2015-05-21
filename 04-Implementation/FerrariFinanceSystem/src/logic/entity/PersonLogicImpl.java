@@ -2,29 +2,30 @@ package logic.entity;
 
 import java.sql.SQLException;
 
+import domain.Identity;
 import util.jdbc.ConnectionHandler;
 import data.ConnectionService;
-import data.access.CPRAccess;
-import data.access.PersonAccess;
+import data.access.IdentityAccessImpl;
+import data.access.PersonAccessImpl;
 import domain.Person;
 
 public class PersonLogicImpl implements PersonLogic {
 	@Override
-	public void createPerson(Person person, String cpr, ConnectionHandler con)
+	public void createPerson(Identity identity, ConnectionHandler con)
 			throws SQLException {
-		new CPRAccess(con).createCPR(cpr, person);
-		new PersonAccess(con).createPerson(person);
+		new IdentityAccessImpl(con).createIdentity(identity);
+		new PersonAccessImpl(con).createPerson(identity.getPerson());
 	}
 
 	@Override
-	public void createPerson(Person person, String cpr) throws SQLException {
+	public void createPerson(Identity identity) throws SQLException {
 		ConnectionService.execute(con ->
-				  createPerson(person, cpr, con));
+				  createPerson(identity, con));
 	}
 
 	@Override
 	public void updatePerson(Person person) throws SQLException {
 		ConnectionService.execute(con ->
-				  new PersonAccess(con).updatePerson(person));
+				  new PersonAccessImpl(con).updatePerson(person));
 	}
 }
