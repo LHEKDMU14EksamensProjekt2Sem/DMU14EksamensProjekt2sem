@@ -45,7 +45,7 @@ public class CreateSampleCommand implements Command {
 
    private void createCustomers() throws SQLException {
       List<Customer> customers = SampleUtil.newCustomers();
-      List<String> cprs = SampleUtil.newEmployeeCPRs();
+      List<String> cprs = SampleUtil.newCustomerCPRs();
       CustomerLogic logic = new CustomerLogicImpl();
       for (int i = 0; i < cprs.size(); i++) {
          Customer c = customers.get(i);
