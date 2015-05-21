@@ -1,5 +1,7 @@
 package dev.util;
 
+import domain.CarComponant;
+import domain.CarComponantType;
 import domain.CarModel;
 import domain.Customer;
 import domain.Employee;
@@ -9,6 +11,7 @@ import domain.PostalCode;
 import util.finance.Money;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static domain.EmployeeRole.*;
@@ -111,7 +114,7 @@ public class SampleUtil {
             newCarComponantType("Paint"),
             newCarComponantType("Radio"),
             newCarComponantType("Engine"),
-            newCarComponantType("Rims"),)
+            newCarComponantType("Rims"));
    }
    
    private static CarComponantType newCarComponantType(String type){
@@ -120,12 +123,12 @@ public class SampleUtil {
       return cpt;
    }
 
-   
-   private static List<CarComponent> newCarComponant(){
-      return Arrays.asList(
-            )
-            
+
+   private static List<CarComponant> newCarComponants(){
+      return Collections.emptyList();
    }
-   
-   private static CarComponant newCarComponant()
+
+   private static CarComponant newCarComponant() {
+      return null;
+   }
 }
