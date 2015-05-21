@@ -41,7 +41,9 @@ public class UIFactory {
    }
 
    public static <E> JComboBox<E> createComboBox() {
-      return new JComboBox<E>();
+      JComboBox<E> cb = new JComboBox<E>();
+      cb.setFont(PLAIN_FONT);
+      return cb;
    }
 
    public static Border createContentBorder() {
