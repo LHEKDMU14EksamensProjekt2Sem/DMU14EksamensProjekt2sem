@@ -21,13 +21,13 @@ public class DataUtil {
            DIR_PATH = "data",
            FILENAME = "ffs.db";
 
-   private ConnectionHandler con;
+   private final ConnectionHandler con;
 
    public DataUtil(ConnectionHandler con) {
       this.con = con;
    }
 
-   public static String getDatabasePath() {
+   private static String getDatabasePath() {
       return DIR_PATH + "/" + FILENAME;
    }
 
