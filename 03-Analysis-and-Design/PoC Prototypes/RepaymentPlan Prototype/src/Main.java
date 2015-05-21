@@ -8,15 +8,15 @@ import java.util.Calendar;
 
 public class Main {
    public static void main(String[] args) {
-      BigDecimal principal = new BigDecimal("1000");
+      BigDecimal principal = new BigDecimal("1800000");
       BigDecimal payment = new BigDecimal("150");
-      double interestRate = 0.0754223;
-//      int term = 12;
+      double interestRate = 0.1;
+      int term = 12;
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.DATE, 1);
 
-//      RepaymentPlan plan = new RepaymentPlan(new RepaymentCalculator(), principal, interestRate, term, cal);
-      RepaymentPlan plan = new RepaymentPlan(new RepaymentCalculator(), principal, interestRate, payment, cal);
+      RepaymentPlan plan = new RepaymentPlan(new RepaymentCalculator(), principal, interestRate, term, cal);
+//      RepaymentPlan plan = new RepaymentPlan(new RepaymentCalculator(), principal, interestRate, payment, cal);
 
       print(plan);
    }
