@@ -1,36 +1,14 @@
 package logic.entity;
 
+import domain.Customer;
+import util.jdbc.ConnectionHandler;
+
 import java.sql.SQLException;
 
-import util.jdbc.ConnectionHandler;
-import data.ConnectionHandlerFactory;
-import data.access.CustomerAccess;
-import domain.Customer;
+public interface CustomerLogic {
+   void createCustomer(Customer customer, String cpr, ConnectionHandler con) throws SQLException;
 
-public class CustomerLogic {
+   void createCustomer(Customer customer, String cpr) throws SQLException;
 
-	public void createCustomer(Customer customer, String cpr,
-			ConnectionHandler con) throws SQLException {
-		new PersonLogic().createPerson(customer.getPerson(), cpr, con);
-		new CustomerAccess(con).createCustomer(customer);
-	}
-
-	public void createCustomer(Customer customer, String cpr)
-			throws SQLException {
-		try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-			try {
-				createCustomer(customer, cpr, con);
-				con.commit();
-			} catch (SQLException e) {
-				con.rollback();
-				throw e;
-			}
-		}
-	}
-
-	public Customer readCustomer(String cpr, ConnectionHandler con)
-			throws SQLException {
-		Customer customer = new Customer();
-		return customer;
-	}
+   Customer readCustomer(String cpr, ConnectionHandler con) throws SQLException;
 }

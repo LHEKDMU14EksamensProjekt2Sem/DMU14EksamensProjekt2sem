@@ -1,34 +1,14 @@
 package logic.entity;
 
+import domain.Person;
+import util.jdbc.ConnectionHandler;
+
 import java.sql.SQLException;
 
-import util.jdbc.ConnectionHandler;
-import data.ConnectionHandlerFactory;
-import data.access.CPRAccess;
-import data.access.PersonAccess;
-import domain.Person;
+public interface PersonLogic {
+   void createPerson(Person person, String cpr, ConnectionHandler con) throws SQLException;
 
-public class PersonLogic {
-	public void createPerson(Person person, String cpr, ConnectionHandler con)
-			throws SQLException {
-		new CPRAccess(con).createCPR(cpr, person);
-		new PersonAccess(con).createPerson(person);
-	}
+   void createPerson(Person person, String cpr) throws SQLException;
 
-	public void createPerson(Person person, String cpr) throws SQLException {
-		try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-			try {
-				createPerson(person, cpr, con);
-				con.commit();
-			} catch (SQLException e) {
-				con.rollback();
-				throw e;
-			}
-		}
-	}
-
-	public void updatePerson(Person person, ConnectionHandler con)
-			throws SQLException {
-		new PersonAccess(con).updatePerson(person);
-	}
+   void updatePerson(Person person, ConnectionHandler con) throws SQLException;
 }

@@ -3,8 +3,7 @@ package logic.session.requestloan;
 import java.sql.SQLException;
 import java.util.List;
 
-import logic.entity.CarModelLogic;
-import data.access.CarAccess;
+import logic.entity.CarModelLogicImpl;
 
 public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsController {
 
@@ -16,7 +15,7 @@ public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsContr
 	@Override
 	public List getModels() {
 	   try {
-         return new CarModelLogic().readCarModel();
+         return new CarModelLogicImpl().readCarModel();
       }
       catch ( SQLException e ) {
          e.printStackTrace();
