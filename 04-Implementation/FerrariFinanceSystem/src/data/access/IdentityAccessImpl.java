@@ -20,7 +20,7 @@ public class IdentityAccessImpl implements IdentityAccess {
    public void createIdentity(Identity identity) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(
               SQL.INSERT_ONE, RETURN_GENERATED_KEYS)) {
-         st.setString(1, identity.getCpr());
+         st.setString(1, identity.getCPR());
          st.executeUpdate();
 
          try (ResultSet rs = st.getGeneratedKeys()) {

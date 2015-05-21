@@ -2,5 +2,9 @@ package logic.session.requestloan;
 
 import util.session.SessionFacade;
 
-public interface RequestLoanSessionFacade extends SessionFacade<RequestLoanView>, LoanRequestDetailsController {
+import java.util.concurrent.Executor;
+
+public interface RequestLoanSessionFacade extends
+        SessionFacade<RequestLoanView>, CPRController, LoanRequestDetailsController {
+   Executor getExecutor();
 }

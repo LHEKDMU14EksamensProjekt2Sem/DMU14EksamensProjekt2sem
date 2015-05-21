@@ -37,7 +37,7 @@ public class CreateSampleCommand implements Command {
       for (int i = 0; i < cprs.size(); i++) {
          Employee em = employees.get(i);
          Identity identity = new Identity();
-         identity.setCpr(cprs.get(i));
+         identity.setCPR(cprs.get(i));
          identity.setPerson(em.getPerson());
          logic.createEmployee(em, identity, con);
       }
@@ -50,7 +50,7 @@ public class CreateSampleCommand implements Command {
       for (int i = 0; i < cprs.size(); i++) {
          Customer c = customers.get(i);
          Identity identity = new Identity();
-         identity.setCpr(cprs.get(i));
+         identity.setCPR(cprs.get(i));
          identity.setPerson(c.getPerson());
          logic.createCustomer(c, identity, con);
       }

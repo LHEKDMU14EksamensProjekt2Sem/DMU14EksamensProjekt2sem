@@ -7,16 +7,22 @@ import util.auth.User;
 import util.command.Callback;
 
 import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 public class MainSessionFacadeImpl implements MainSessionFacade {
-   private final ExecutorService executor;
+   private final Executor executor;
    private final LoginController loginController;
    private MainView view;
 
-   public MainSessionFacadeImpl(ExecutorService executor) {
+   public MainSessionFacadeImpl(Executor executor) {
       this.executor = executor;
-      loginController = new LoginControllerImpl(executor);
+      loginController = new LoginControllerImpl(this);
+   }
+
+   @Override
+   public Executor getExecutor() {
+      return executor;
    }
 
    @Override

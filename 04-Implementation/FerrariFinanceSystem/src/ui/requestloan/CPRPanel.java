@@ -1,14 +1,19 @@
 package ui.requestloan;
 
+import com.ferrari.finances.dk.rki.Rating;
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanView;
+import util.command.Callback;
 import util.session.SessionPresenter;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -34,11 +39,19 @@ public class CPRPanel extends JPanel {
       lblCPR = createLabel("CPR:");
       tfCPR = createTextField(12);
       // TODO: Use a document filter to restrict input to 0-10 digits
+
+      CreditRatingCallback callback = new CreditRatingCallback((Window) presenter);
       tfCPR.addKeyListener(new KeyAdapter() {
          @Override
          public void keyTyped(KeyEvent e) {
-            if (tfCPR.getText().length() == 9)
-               presenter.go(CUSTOMER_DETAILS);
+            SwingUtilities.invokeLater(() -> {
+               String cpr = tfCPR.getText();
+               if (cpr.length() == 10) {
+                  presenter.go(CUSTOMER_DETAILS);
+                  presenter.getFacade().specifyCPR(cpr);
+                  presenter.getFacade().fetchCreditRating(callback);
+               }
+            });
          }
       });
    }
@@ -60,5 +73,31 @@ public class CPRPanel extends JPanel {
 
    public void update() {
       // No-op
+   }
+
+   private class CreditRatingCallback implements Callback<Rating, Void> {
+      private Window parent;
+
+      private CreditRatingCallback(Window parent) {
+         this.parent = parent;
+      }
+
+      @Override
+      public void success(Rating result) {
+         System.out.println("Credit rating: " + result);
+
+         if (result == Rating.D) {
+            JOptionPane.showMessageDialog(parent,
+                    String.format("Kundens kreditværdighed er D.%nLåneanmodning afvist."),
+                    "Låneanmodning afvist",
+                    JOptionPane.WARNING_MESSAGE);
+            parent.dispose();
+         }
+      }
+
+      @Override
+      public void failure(Void exception) {
+         System.out.println("Failed to fetch credit rating: " + exception);
+      }
    }
 }

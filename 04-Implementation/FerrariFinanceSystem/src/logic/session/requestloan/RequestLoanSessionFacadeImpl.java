@@ -1,16 +1,30 @@
 package logic.session.requestloan;
 
+import com.ferrari.finances.dk.rki.Rating;
+import domain.Customer;
+import domain.Identity;
+import util.command.Callback;
+
+import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.Optional;
+import java.util.concurrent.Executor;
 
-public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
-   private final ExecutorService executor;
+public class RequestLoanSessionFacadeImpl implements CPRController, RequestLoanSessionFacade {
+   private final Executor executor;
+   private final CPRController cprController;
+   private final LoanRequestDetailsController loanRequestController;
    private RequestLoanView view;
-   private LoanRequestDetailsController loanRequestController;
 
-   public RequestLoanSessionFacadeImpl(ExecutorService executor) {
+   public RequestLoanSessionFacadeImpl(Executor executor) {
       this.executor = executor;
+      this.cprController = new CPRControllerImpl(this);
       this.loanRequestController = new LoanRequestDetailsControllerImpl();
+   }
+
+   @Override
+   public Executor getExecutor() {
+      return executor;
    }
 
    @Override
@@ -26,7 +40,7 @@ public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
    @Override
    public void fetchModels() {
       // TODO Auto-generated method stub
-      
+
    }
 
    @Override
@@ -36,9 +50,9 @@ public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
    }
 
    @Override
-   public void fetchCars( Object car ) {
+   public void fetchCars(Object car) {
       // TODO Auto-generated method stub
-      
+
    }
 
    @Override
@@ -56,7 +70,7 @@ public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
    @Override
    public void setDownpayment() {
       // TODO Auto-generated method stub
-      
+
    }
 
    @Override
@@ -68,7 +82,39 @@ public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
    @Override
    public void save() {
       // TODO Auto-generated method stub
-      
+
    }
- 
+
+   // CPRController
+   //////////////////
+
+   @Override
+   public Identity getIdentity() {
+      return cprController.getIdentity();
+   }
+
+   @Override
+   public Customer getCustomer() {
+      return cprController.getCustomer();
+   }
+
+   @Override
+   public Rating getCreditRating() {
+      return cprController.getCreditRating();
+   }
+
+   @Override
+   public void specifyCPR(String cpr) {
+      cprController.specifyCPR(cpr);
+   }
+
+   @Override
+   public void fetchCustomer(Callback<Optional<Customer>, SQLException> callback) {
+      cprController.fetchCustomer(callback);
+   }
+
+   @Override
+   public void fetchCreditRating(Callback<Rating, Void> callback) {
+      cprController.fetchCreditRating(callback);
+   }
 }

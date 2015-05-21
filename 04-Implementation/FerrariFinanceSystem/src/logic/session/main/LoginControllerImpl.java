@@ -7,14 +7,13 @@ import util.command.Callback;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.concurrent.Executor;
 
 public class LoginControllerImpl implements LoginController {
-   private final Executor executor;
+   private final MainSessionFacade facade;
    private User<Employee> user;
 
-   public LoginControllerImpl(Executor executor) {
-      this.executor = executor;
+   public LoginControllerImpl(MainSessionFacade facade) {
+      this.facade = facade;
    }
 
    @Override
@@ -30,7 +29,7 @@ public class LoginControllerImpl implements LoginController {
    @Override
    public void login(String username, char[] password,
                      Callback<Optional<User<Employee>>, Void> callback) {
-      new LoginCommand(executor, username, password,
+      new LoginCommand(facade.getExecutor(), username, password,
               new Callback<Optional<User<Employee>>, SQLException>() {
                  @Override
                  public void success(Optional<User<Employee>> result) {

@@ -4,11 +4,11 @@ public class Identity {
    private String cpr;
    private Person person;
 
-   public String getCpr() {
+   public String getCPR() {
       return cpr;
    }
 
-   public void setCpr(String cpr) {
+   public void setCPR(String cpr) {
       this.cpr = cpr;
    }
 
