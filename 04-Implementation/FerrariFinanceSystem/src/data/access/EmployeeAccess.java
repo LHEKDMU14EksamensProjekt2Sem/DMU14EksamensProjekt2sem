@@ -33,7 +33,6 @@ public class EmployeeAccess {
 		}
 	}
 
-	// TODO
 	public Employee readEmployee(int id) throws SQLException {
 
 		Employee employee = new Employee();

@@ -28,7 +28,6 @@ public class CustomerLogic {
 		}
 	}
 
-	// TODO
 	public Customer readCustomer(String cpr, ConnectionHandler con)
 			throws SQLException {
 		Customer customer = new Customer();
