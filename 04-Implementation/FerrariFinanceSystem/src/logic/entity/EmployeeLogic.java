@@ -10,5 +10,5 @@ public interface EmployeeLogic {
 
    void createEmployee(Employee employee, String cpr) throws SQLException;
 
-   Employee readEmployee(String id, ConnectionHandler con) throws SQLException;
+   Employee readEmployee(int id) throws SQLException;
 }

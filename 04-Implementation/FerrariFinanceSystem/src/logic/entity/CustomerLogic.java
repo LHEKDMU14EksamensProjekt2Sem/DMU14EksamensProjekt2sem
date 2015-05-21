@@ -10,5 +10,7 @@ public interface CustomerLogic {
 
    void createCustomer(Customer customer, String cpr) throws SQLException;
 
-   Customer readCustomer(String cpr, ConnectionHandler con) throws SQLException;
+   Customer readCustomer(int id) throws SQLException;
+
+   void updateCustomer(Customer customer) throws SQLException;
 }

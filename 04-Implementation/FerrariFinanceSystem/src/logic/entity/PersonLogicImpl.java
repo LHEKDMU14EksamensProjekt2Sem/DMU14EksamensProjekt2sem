@@ -3,7 +3,7 @@ package logic.entity;
 import java.sql.SQLException;
 
 import util.jdbc.ConnectionHandler;
-import data.ConnectionHandlerFactory;
+import data.ConnectionService;
 import data.access.CPRAccess;
 import data.access.PersonAccess;
 import domain.Person;
@@ -18,20 +18,13 @@ public class PersonLogicImpl implements PersonLogic {
 
 	@Override
 	public void createPerson(Person person, String cpr) throws SQLException {
-		try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-			try {
-				createPerson(person, cpr, con);
-				con.commit();
-			} catch (SQLException e) {
-				con.rollback();
-				throw e;
-			}
-		}
+		ConnectionService.execute(con ->
+				  createPerson(person, cpr, con));
 	}
 
 	@Override
-	public void updatePerson(Person person, ConnectionHandler con)
-			throws SQLException {
-		new PersonAccess(con).updatePerson(person);
+	public void updatePerson(Person person) throws SQLException {
+		ConnectionService.execute(con ->
+				  new PersonAccess(con).updatePerson(person));
 	}
 }

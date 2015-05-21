@@ -11,7 +11,5 @@ public interface CarModelLogic {
 
    void createCarModel(CarModel carModel) throws SQLException;
 
-   List readCarModel(ConnectionHandler con) throws SQLException;
-
-   List readCarModel() throws SQLException;
+   List<CarModel> listCarModels() throws SQLException;
 }

@@ -1,6 +1,6 @@
 package logic.command;
 
-import data.ConnectionHandlerFactory;
+import data.ConnectionService;
 import logic.util.DataUtil;
 import util.command.Command;
 import util.jdbc.ConnectionHandler;
@@ -12,7 +12,7 @@ public class StartupCommand implements Command {
    @Override
    public void execute() throws IOException, SQLException {
       if (!DataUtil.databaseExists()) {
-         try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
+         try (ConnectionHandler con = ConnectionService.connect()) {
             try {
                new CreateDatabaseCommand(con).execute();
                con.commit();

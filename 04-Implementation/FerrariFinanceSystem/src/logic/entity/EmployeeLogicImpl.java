@@ -3,7 +3,7 @@ package logic.entity;
 import java.sql.SQLException;
 
 import util.jdbc.ConnectionHandler;
-import data.ConnectionHandlerFactory;
+import data.ConnectionService;
 import data.access.EmployeeAccess;
 import domain.Employee;
 
@@ -16,22 +16,13 @@ public class EmployeeLogicImpl implements EmployeeLogic {
 	}
 
 	@Override
-	public void createEmployee(Employee employee, String cpr)
-			throws SQLException {
-		try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-			try {
-				createEmployee(employee, cpr, con);
-				con.commit();
-			} catch (SQLException e) {
-				con.rollback();
-				throw e;
-			}
-		}
+	public void createEmployee(Employee employee, String cpr) throws SQLException {
+		ConnectionService.execute(con ->
+				  createEmployee(employee, cpr, con));
 	}
 
 	@Override
-	public Employee readEmployee(String id, ConnectionHandler con)
-			throws SQLException {
+	public Employee readEmployee(int id) throws SQLException {
 		Employee employee = new Employee();
 		return employee;
 	}

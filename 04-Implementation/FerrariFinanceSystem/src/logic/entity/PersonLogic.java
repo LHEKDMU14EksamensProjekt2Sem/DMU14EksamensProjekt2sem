@@ -10,5 +10,5 @@ public interface PersonLogic {
 
    void createPerson(Person person, String cpr) throws SQLException;
 
-   void updatePerson(Person person, ConnectionHandler con) throws SQLException;
+   void updatePerson(Person person) throws SQLException;
 }

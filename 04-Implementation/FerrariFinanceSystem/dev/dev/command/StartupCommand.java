@@ -1,6 +1,6 @@
 package dev.command;
 
-import data.ConnectionHandlerFactory;
+import data.ConnectionService;
 import dev.option.Option;
 import logic.command.CreateDatabaseCommand;
 import logic.util.DataUtil;
@@ -28,7 +28,7 @@ public class StartupCommand implements Command {
          DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
-         try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
+         try (ConnectionHandler con = ConnectionService.connect()) {
             try {
                new CreateDatabaseCommand(con).execute();
 

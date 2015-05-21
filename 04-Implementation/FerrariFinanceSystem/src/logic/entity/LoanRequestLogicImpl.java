@@ -1,12 +1,13 @@
 package logic.entity;
 
-import data.ConnectionHandlerFactory;
+import data.ConnectionService;
 import data.access.LoanRequestAccess;
 import data.access.SaleAccess;
 import domain.LoanRequest;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class LoanRequestLogicImpl implements LoanRequestLogic {
    @Override
@@ -17,14 +18,22 @@ public class LoanRequestLogicImpl implements LoanRequestLogic {
 
    @Override
    public void createLoanRequest(LoanRequest loanRequest) throws SQLException {
-      try (ConnectionHandler con = ConnectionHandlerFactory.create()) {
-         try {
-            createLoanRequest(loanRequest);
-            con.commit();
-         } catch (SQLException e) {
-            con.rollback();
-            throw e;
-         }
-      }
+      ConnectionService.execute(con ->
+              createLoanRequest(loanRequest));
+   }
+
+   @Override
+   public List<LoanRequest> listLoanRequests() throws SQLException {
+      return null;
+   }
+
+   @Override
+   public void approveLoanRequest(LoanRequest loanRequest) throws SQLException {
+
+   }
+
+   @Override
+   public void declineLoanRequest(LoanRequest loanRequest) throws SQLException {
+
    }
 }
