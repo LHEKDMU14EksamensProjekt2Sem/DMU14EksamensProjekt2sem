@@ -45,6 +45,9 @@ public class CustomerAccess {
 				customer = new Customer();
 				person = new Person();
 				postalCode = new PostalCode();
+				
+				person.setPostalCode(postalCode);
+				customer.setPerson(person);
 
 				while (rs.next()) {
 					person.setId(id);
