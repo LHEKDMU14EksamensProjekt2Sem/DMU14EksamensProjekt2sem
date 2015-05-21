@@ -1,14 +1,11 @@
 package logic.session.requestloan;
 
+import domain.Customer;
+
 import java.util.Observer;
 
 public class CustomerDetailsControllerImpl implements CustomerDetailsController {
-
-	@Override
-	public void specifyCpr(String cpr) {
-		// TODO Auto-generated method stub
-		
-	}
+	private Customer customer;
 
 	@Override
 	public Object getCustomer() {
@@ -22,9 +19,33 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
 	}
 
 	@Override
-	public String getCity(int postalCode) {
-		// TODO Auto-generated method stub
-		return null;
+	public void specifyFirstName(String firstName) {
+
+	}
+
+	@Override
+	public void specifyLastName(String lastName) {
+
+	}
+
+	@Override
+	public void specifyStreet(String street) {
+
+	}
+
+	@Override
+	public void specifyPostalCode(int postalCode) {
+
+	}
+
+	@Override
+	public void specifyPhone(int phone) {
+
+	}
+
+	@Override
+	public void specifyEmail(String email) {
+
 	}
 
 	@Override

@@ -3,13 +3,6 @@ package logic.session.requestloan;
 import java.util.Observer;
 
 public interface CustomerDetailsController {
-
-	/**
-	 * Denne metode skal registrerer et cpr-nummer og henter en instance af customer
-	 * @param cpr
-	 */
-	public void specifyCpr(String cpr);
-	
 	/**
 	 * Denne metode returnerer al information om den pågaeldende kunde
 	 * @return Kundeinformation, der matcher cpr
@@ -18,14 +11,19 @@ public interface CustomerDetailsController {
 
 	// TODO: javadoc
 	void fetchCreditworthiness(Observer observer);
-	
-	/**
-	 * Denne metode returnerer en by, der matcher det indtastede postnummer 
-	 * @param postalCode
-	 * @return Bynavn
-	 */
-	public String getCity(int postalCode);
-	
+
+	void specifyFirstName(String firstName);
+
+	void specifyLastName(String lastName);
+
+	void specifyStreet(String street);
+
+	void specifyPostalCode(int postalCode);
+
+	void specifyPhone(int phone);
+
+	void specifyEmail(String email);
+
 	/**
 	 * Denne metode skal resette datakernen
 	 */
