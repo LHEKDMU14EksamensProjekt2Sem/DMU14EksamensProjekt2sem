@@ -11,9 +11,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 
 import static java.awt.GridBagConstraints.*;
 import static ui.UIConstants.*;
@@ -48,6 +50,11 @@ public class RequestDetailsPanel extends JPanel {
    private void initComponents() {
       lblCarModel = createLabel("Model:");
       cbCarModel = createComboBox();
+      List<CarModel> list;
+      list = presenter.getFacade().getModels();
+      for (CarModel model : list ) {
+         cbCarModel.addItem( model );
+      }
 
       lblCar = createLabel("Bil:");
       cbCar = createComboBox();

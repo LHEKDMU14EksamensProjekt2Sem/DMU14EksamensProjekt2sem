@@ -3,6 +3,11 @@ package domain;
 import util.finance.Money;
 
 public class CarModel {
+   @Override
+   public String toString() {
+      return name;
+   }
+
    private int id;
    private int year;
    private String name;

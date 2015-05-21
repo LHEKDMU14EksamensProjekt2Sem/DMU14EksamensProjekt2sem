@@ -15,13 +15,10 @@ public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsContr
 
 	@Override
 	public List getModels() {
-		// TODO Auto-generated method stub
-	   
 	   try {
          return new CarModelLogic().readCarModel();
       }
       catch ( SQLException e ) {
-         // TODO Auto-generated catch block
          e.printStackTrace();
       }
 		return null;
