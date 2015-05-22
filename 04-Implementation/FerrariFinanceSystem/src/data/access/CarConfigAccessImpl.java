@@ -53,7 +53,7 @@ public class CarConfigAccessImpl implements CarConfigAccess {
 
             while (rs.next()) {
                config.setId(id);
-               config.setModel(rs.getModel("model"));
+               config.setModel(rs.getModel("model_id"));
                config.setName(rs.getString("name"));
                config.setDescription(rs.getString("description"));
                model.setId(rs.getInt("id"));
@@ -95,11 +95,11 @@ public class CarConfigAccessImpl implements CarConfigAccess {
       
    // TODO Auto-generated method stub
       static final String SELECT_ONE
-      = "SELECT id, model, name, description"
+      = "SELECT id, model_id, name, description"
             + " FROM car_config conf"
             + " WHERE conf.id = ?"
             + " JOIN car_model model"
-            + " ON conf.model = model.id";
+            + " ON conf.model_id = model.id";
    }
 
       static final String INSERT_ONE = "INSERT INTO car_config (id, model, name, description) VALUES (?, ?, ?, ?)";
