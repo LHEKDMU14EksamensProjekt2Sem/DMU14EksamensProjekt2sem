@@ -15,7 +15,7 @@ import java.util.List;
  * @author Louise
  *
  */
-public interface LoanRequestDetailsController {
+public interface RequestDetailsController {
 
 	/**
 	 * Denne metode henter alle modeller i databasen 

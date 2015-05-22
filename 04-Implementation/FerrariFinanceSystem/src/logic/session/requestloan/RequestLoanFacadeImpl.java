@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 
-public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
+public class RequestLoanFacadeImpl implements RequestLoanFacade {
    private final Executor executor;
    private final CPRController cprController;
-   private final LoanRequestDetailsController loanRequestController;
+   private final RequestDetailsController loanRequestController;
    private RequestLoanView view;
 
-   public RequestLoanSessionFacadeImpl(Executor executor) {
+   public RequestLoanFacadeImpl(Executor executor) {
       this.executor = executor;
       this.cprController = new CPRControllerImpl(this);
-      this.loanRequestController = new LoanRequestDetailsControllerImpl();
+      this.loanRequestController = new RequestDetailsControllerImpl();
    }
 
    @Override

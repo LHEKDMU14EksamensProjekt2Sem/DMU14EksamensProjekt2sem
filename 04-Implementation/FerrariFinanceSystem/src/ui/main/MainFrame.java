@@ -1,6 +1,6 @@
 package ui.main;
 
-import logic.session.main.MainSessionFacade;
+import logic.session.main.MainFacade;
 import logic.session.main.MainView;
 import logic.util.AssetsUtil;
 import util.session.SessionPresenter;
@@ -17,15 +17,15 @@ import java.io.IOException;
 import static logic.session.main.MainView.*;
 
 public class MainFrame extends JFrame implements
-        SessionPresenter<MainView, MainSessionFacade> {
+        SessionPresenter<MainView, MainFacade> {
 
-   private MainSessionFacade facade;
+   private MainFacade facade;
 
    private CardLayout layout;
    private LoginPanel loginPanel;
    private MainMenuPanel mainMenuPanel;
 
-   public MainFrame(MainSessionFacade facade, String title) {
+   public MainFrame(MainFacade facade, String title) {
       super(title);
       this.facade = facade;
 
@@ -83,7 +83,7 @@ public class MainFrame extends JFrame implements
    }
 
    @Override
-   public MainSessionFacade getFacade() {
+   public MainFacade getFacade() {
       return facade;
    }
 }

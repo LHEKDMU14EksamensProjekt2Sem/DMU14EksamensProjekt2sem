@@ -9,12 +9,12 @@ import util.command.Receiver;
 import java.util.Optional;
 
 public class CPRControllerImpl implements CPRController {
-   private final RequestLoanSessionFacade facade;
+   private final RequestLoanFacade facade;
    private final Identity identity;
    private Customer customer;
    private Rating creditRating;
 
-   public CPRControllerImpl(RequestLoanSessionFacade facade) {
+   public CPRControllerImpl(RequestLoanFacade facade) {
       this.facade = facade;
       identity = new Identity();
    }

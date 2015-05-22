@@ -4,7 +4,7 @@ import util.session.SessionFacade;
 
 import java.util.concurrent.Executor;
 
-public interface RequestLoanSessionFacade extends
-        SessionFacade<RequestLoanView>, CPRController, LoanRequestDetailsController {
+public interface RequestLoanFacade extends
+        SessionFacade<RequestLoanView>, CPRController, RequestDetailsController {
    Executor getExecutor();
 }

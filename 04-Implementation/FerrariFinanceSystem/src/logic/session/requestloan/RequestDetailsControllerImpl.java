@@ -5,7 +5,7 @@ import java.util.List;
 
 import logic.entity.CarModelLogicImpl;
 
-public class LoanRequestDetailsControllerImpl implements LoanRequestDetailsController {
+public class RequestDetailsControllerImpl implements RequestDetailsController {
 
 	@Override
 	public void fetchModels() {

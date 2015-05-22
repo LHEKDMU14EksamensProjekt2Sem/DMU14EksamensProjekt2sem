@@ -2,7 +2,7 @@ package ui.requestloan;
 
 import domain.Car;
 import domain.CarModel;
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanView;
 import ui.UIFactory;
 import util.session.SessionPresenter;
@@ -22,7 +22,7 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class RequestDetailsPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter;
+   private SessionPresenter<RequestLoanView, RequestLoanFacade> presenter;
 
    private JLabel
            lblCarModel, lblCar,
@@ -40,7 +40,7 @@ public class RequestDetailsPanel extends JPanel {
 
    private JButton btnSend;
 
-   public RequestDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
+   public RequestDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanFacade> presenter) {
       this.presenter = presenter;
 
       setOpaque(false);

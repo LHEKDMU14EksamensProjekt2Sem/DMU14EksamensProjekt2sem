@@ -1,8 +1,8 @@
 package ui.main;
 
-import logic.session.main.MainSessionFacade;
+import logic.session.main.MainFacade;
 import logic.session.main.MainView;
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import ui.requestloan.RequestLoanDialog;
 import util.session.SessionPresenter;
 
@@ -20,12 +20,12 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class MainMenuPanel extends JPanel {
-   private SessionPresenter<MainView, MainSessionFacade> presenter;
+   private SessionPresenter<MainView, MainFacade> presenter;
 
    private JLabel lblCurrentUser;
    private JButton btnRequestLoan;
 
-   public MainMenuPanel(SessionPresenter<MainView, MainSessionFacade> presenter) {
+   public MainMenuPanel(SessionPresenter<MainView, MainFacade> presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -39,7 +39,7 @@ public class MainMenuPanel extends JPanel {
       btnRequestLoan = createButton("Anmod om lån");
       btnRequestLoan.addActionListener(e -> {
          String title = "Anmod om lån";
-         RequestLoanSessionFacade facade = presenter.getFacade().getRequestLoanSessionFacade();
+         RequestLoanFacade facade = presenter.getFacade().getRequestLoanSessionFacade();
          new RequestLoanDialog((Window) presenter, facade, title).setVisible(true);
       });
    }

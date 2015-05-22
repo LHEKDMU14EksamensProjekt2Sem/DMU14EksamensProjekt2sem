@@ -1,7 +1,7 @@
 package ui.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanView;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
@@ -26,13 +26,13 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class CPRPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter;
+   private SessionPresenter<RequestLoanView, RequestLoanFacade> presenter;
 
    private JLabel lblCPR;
    private JTextField tfCPR;
    private JButton btnSearch;
 
-   public CPRPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
+   public CPRPanel(SessionPresenter<RequestLoanView, RequestLoanFacade> presenter) {
       this.presenter = presenter;
 
       setOpaque(false);

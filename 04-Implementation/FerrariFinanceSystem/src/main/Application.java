@@ -1,7 +1,7 @@
 package main;
 
-import logic.session.main.MainSessionFacade;
-import logic.session.main.MainSessionFacadeImpl;
+import logic.session.main.MainFacade;
+import logic.session.main.MainFacadeImpl;
 import ui.main.MainFrame;
 import util.command.Command;
 
@@ -15,14 +15,14 @@ public class Application {
            NAME = "Ferrari Finance System",
            VERSION = "0.2";
 
-   private MainSessionFacade facade;
+   private MainFacade facade;
 
    public Application(Command startup) {
       try {
          startup.execute();
 
          ExecutorService executor = Executors.newCachedThreadPool();
-         facade = new MainSessionFacadeImpl(executor);
+         facade = new MainFacadeImpl(executor);
 
          setSystemLookAndFeel();
          invokeMainFrame();

@@ -1,7 +1,6 @@
 package ui.requestloan;
 
-import logic.session.requestloan.CustomerDetailsController;
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanView;
 import util.session.SessionPresenter;
 
@@ -22,7 +21,7 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class CustomerDetailsPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter;
+   private SessionPresenter<RequestLoanView, RequestLoanFacade> presenter;
 
    private JLabel
            lblFirstName, lblLastName,
@@ -36,7 +35,7 @@ public class CustomerDetailsPanel extends JPanel {
 
    private JButton btnNext;
 
-   public CustomerDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
+   public CustomerDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanFacade> presenter) {
       this.presenter = presenter;
 
       setOpaque(false);

@@ -8,10 +8,10 @@ import util.command.Receiver;
 import java.util.Optional;
 
 public class LoginControllerImpl implements LoginController {
-   private final MainSessionFacade facade;
+   private final MainFacade facade;
    private User<Employee> user;
 
-   public LoginControllerImpl(MainSessionFacade facade) {
+   public LoginControllerImpl(MainFacade facade) {
       this.facade = facade;
    }
 

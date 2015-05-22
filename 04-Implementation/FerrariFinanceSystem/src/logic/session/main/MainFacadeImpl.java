@@ -1,20 +1,20 @@
 package logic.session.main;
 
 import domain.Employee;
-import logic.session.requestloan.RequestLoanSessionFacade;
-import logic.session.requestloan.RequestLoanSessionFacadeImpl;
+import logic.session.requestloan.RequestLoanFacade;
+import logic.session.requestloan.RequestLoanFacadeImpl;
 import util.auth.User;
 import util.command.Receiver;
 
 import java.util.Optional;
 import java.util.concurrent.Executor;
 
-public class MainSessionFacadeImpl implements MainSessionFacade {
+public class MainFacadeImpl implements MainFacade {
    private final Executor executor;
    private final LoginController loginController;
    private MainView view;
 
-   public MainSessionFacadeImpl(Executor executor) {
+   public MainFacadeImpl(Executor executor) {
       this.executor = executor;
       loginController = new LoginControllerImpl(this);
    }
@@ -52,7 +52,7 @@ public class MainSessionFacadeImpl implements MainSessionFacade {
    }
 
    @Override
-   public RequestLoanSessionFacade getRequestLoanSessionFacade() {
-      return new RequestLoanSessionFacadeImpl(executor);
+   public RequestLoanFacade getRequestLoanSessionFacade() {
+      return new RequestLoanFacadeImpl(executor);
    }
 }

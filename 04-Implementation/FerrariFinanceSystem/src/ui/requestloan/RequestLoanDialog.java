@@ -1,6 +1,6 @@
 package ui.requestloan;
 
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanView;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
@@ -23,9 +23,9 @@ import static java.awt.GridBagConstraints.*;
 import static logic.session.requestloan.RequestLoanView.*;
 
 public class RequestLoanDialog extends JDialog implements
-        SessionPresenter<RequestLoanView, RequestLoanSessionFacade> {
+        SessionPresenter<RequestLoanView, RequestLoanFacade> {
 
-   private RequestLoanSessionFacade facade;
+   private RequestLoanFacade facade;
    private JPanel contentPanel;
    private JLabel messageLabel;
 
@@ -34,7 +34,7 @@ public class RequestLoanDialog extends JDialog implements
    private CustomerDetailsPanel customerDetailsPanel;
    private RequestDetailsPanel requestDetailsPanel;
 
-   public RequestLoanDialog(Window owner, RequestLoanSessionFacade facade, String title) {
+   public RequestLoanDialog(Window owner, RequestLoanFacade facade, String title) {
       super(owner, title, ModalityType.APPLICATION_MODAL);
       this.facade = facade;
 
@@ -114,7 +114,7 @@ public class RequestLoanDialog extends JDialog implements
    }
 
    @Override
-   public RequestLoanSessionFacade getFacade() {
+   public RequestLoanFacade getFacade() {
       return facade;
    }
 

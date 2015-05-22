@@ -1,13 +1,13 @@
 package logic.session.main;
 
-import logic.session.requestloan.RequestLoanSessionFacade;
+import logic.session.requestloan.RequestLoanFacade;
 import util.session.SessionFacade;
 
 import java.util.concurrent.Executor;
 
-public interface MainSessionFacade extends
+public interface MainFacade extends
         SessionFacade<MainView>, LoginController {
    Executor getExecutor();
 
-   RequestLoanSessionFacade getRequestLoanSessionFacade();
+   RequestLoanFacade getRequestLoanSessionFacade();
 }
