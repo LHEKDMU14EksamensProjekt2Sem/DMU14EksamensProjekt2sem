@@ -1,5 +1,6 @@
 package ui.requestloan;
 
+import logic.session.requestloan.CustomerDetailsController;
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanView;
 import util.session.SessionPresenter;
@@ -8,9 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import static java.awt.GridBagConstraints.*;
 import static logic.session.requestloan.RequestLoanView.*;
@@ -52,6 +56,20 @@ public class CustomerDetailsPanel extends JPanel {
 
       lblPostalCode = createLabel("Postnummer:");
       tfPostalCode = createTextField(4);
+      tfPostalCode.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+					CustomerDetailsController cdc = presenter.getFacade().getCustomerDetailsController();
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+      
 
       lblPhone = createLabel("Telefon:");
       tfPhone = createTextField(11);
