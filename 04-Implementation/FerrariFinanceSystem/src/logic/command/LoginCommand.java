@@ -4,32 +4,33 @@ import domain.Employee;
 import util.auth.User;
 import util.auth.UserAuth;
 import util.command.AsyncCommand;
-import util.command.Callback;
+import util.command.Receiver;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.concurrent.Executor;
 
-public class LoginCommand extends AsyncCommand {
+public class LoginCommand implements AsyncCommand {
    private final String username;
    private final char[] password;
-   private final Callback<Optional<User<Employee>>, SQLException> callback;
+   private final Receiver<Optional<User<Employee>>> resultReceiver;
+   private final Receiver<SQLException> faultReceiver;
 
-   public LoginCommand(Executor executor, String username, char[] password,
-                       Callback<Optional<User<Employee>>, SQLException> callback) {
-      super(executor);
+   public LoginCommand(String username, char[] password,
+                       Receiver<Optional<User<Employee>>> resultReceiver,
+                       Receiver<SQLException> faultReceiver) {
       this.username = username;
       this.password = password;
-      this.callback = callback;
+      this.resultReceiver = resultReceiver;
+      this.faultReceiver = faultReceiver;
    }
 
    @Override
-   public void run() {
+   public void execute() {
       try {
-         callback.success(
+         resultReceiver.receive(
                  new UserAuth().login(username, password));
       } catch (SQLException e) {
-         callback.failure(e);
+         faultReceiver.receive(e);
       }
    }
 }

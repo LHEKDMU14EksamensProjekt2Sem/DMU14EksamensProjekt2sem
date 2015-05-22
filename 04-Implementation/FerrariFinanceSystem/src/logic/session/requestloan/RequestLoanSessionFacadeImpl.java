@@ -3,14 +3,13 @@ package logic.session.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
-import util.command.Callback;
+import util.command.Receiver;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 
-public class RequestLoanSessionFacadeImpl implements CPRController, RequestLoanSessionFacade {
+public class RequestLoanSessionFacadeImpl implements RequestLoanSessionFacade {
    private final Executor executor;
    private final CPRController cprController;
    private final LoanRequestDetailsController loanRequestController;
@@ -109,12 +108,13 @@ public class RequestLoanSessionFacadeImpl implements CPRController, RequestLoanS
    }
 
    @Override
-   public void fetchCustomer(Callback<Optional<Customer>, SQLException> callback) {
-      cprController.fetchCustomer(callback);
+   public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
+                             Receiver<Exception> faultReceiver) {
+      cprController.fetchCustomer(resultReceiver, faultReceiver);
    }
 
    @Override
-   public void fetchCreditRating(Callback<Rating, Void> callback) {
-      cprController.fetchCreditRating(callback);
+   public void fetchCreditRating(Receiver<Rating> receiver) {
+      cprController.fetchCreditRating(receiver);
    }
 }

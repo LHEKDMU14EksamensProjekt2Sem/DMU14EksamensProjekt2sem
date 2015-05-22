@@ -1,16 +1,12 @@
 package util.command;
 
-import java.util.concurrent.Executor;
-
-public abstract class AsyncCommand implements Command, Runnable {
-   private final Executor executor;
-
-   protected AsyncCommand(Executor executor) {
-      this.executor = executor;
-   }
+@FunctionalInterface
+public interface AsyncCommand extends Command, Runnable {
+   @Override
+   void execute();
 
    @Override
-   public void execute() {
-      executor.execute(this);
+   default void run() {
+      execute();
    }
 }

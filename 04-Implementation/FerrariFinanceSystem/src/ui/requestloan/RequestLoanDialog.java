@@ -38,12 +38,14 @@ public class RequestLoanDialog extends JDialog implements
       super(owner, title, ModalityType.APPLICATION_MODAL);
       this.facade = facade;
 
-      setLocationRelativeTo(owner);
       setResizable(false);
       setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       initComponents();
       layoutComponents();
       pack();
+
+      // Center on screen
+      setLocationRelativeTo(null);
    }
 
    private void initComponents() {

@@ -3,9 +3,8 @@ package logic.session.main;
 import domain.Employee;
 import logic.command.LoginCommand;
 import util.auth.User;
-import util.command.Callback;
+import util.command.Receiver;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 public class LoginControllerImpl implements LoginController {
@@ -28,19 +27,15 @@ public class LoginControllerImpl implements LoginController {
 
    @Override
    public void login(String username, char[] password,
-                     Callback<Optional<User<Employee>>, Void> callback) {
-      new LoginCommand(facade.getExecutor(), username, password,
-              new Callback<Optional<User<Employee>>, SQLException>() {
-                 @Override
-                 public void success(Optional<User<Employee>> result) {
-                    user = result.orElse(null);
-                    callback.success(result);
-                 }
-
-                 @Override
-                 public void failure(SQLException exception) {
-                    callback.failure(null);
-                 }
-              }).execute();
+                     Receiver<Optional<User<Employee>>> resultReceiver,
+                     Receiver<Exception> faultReceiver) {
+      facade.getExecutor().execute(
+              new LoginCommand(username, password,
+                      r -> {
+                         user = r.orElse(null);
+                         resultReceiver.receive(r);
+                      },
+                      faultReceiver::receive
+              ));
    }
 }

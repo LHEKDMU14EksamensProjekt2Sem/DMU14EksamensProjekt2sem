@@ -4,11 +4,10 @@ import domain.Employee;
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanSessionFacadeImpl;
 import util.auth.User;
-import util.command.Callback;
+import util.command.Receiver;
 
 import java.util.Optional;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 
 public class MainSessionFacadeImpl implements MainSessionFacade {
    private final Executor executor;
@@ -47,8 +46,9 @@ public class MainSessionFacadeImpl implements MainSessionFacade {
 
    @Override
    public void login(String username, char[] password,
-                     Callback<Optional<User<Employee>>, Void> callback) {
-      loginController.login(username, password, callback);
+                     Receiver<Optional<User<Employee>>> resultReceiver,
+                     Receiver<Exception> faultReceiver) {
+      loginController.login(username, password, resultReceiver, faultReceiver);
    }
 
    @Override

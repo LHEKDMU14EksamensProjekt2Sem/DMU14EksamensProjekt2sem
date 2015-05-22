@@ -3,9 +3,8 @@ package logic.session.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
-import util.command.Callback;
+import util.command.Receiver;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 public interface CPRController {
@@ -17,7 +16,8 @@ public interface CPRController {
 
    void specifyCPR(String cpr);
 
-   void fetchCustomer(Callback<Optional<Customer>, SQLException> callback);
+   void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
+                      Receiver<Exception> faultReceiver);
 
-   void fetchCreditRating(Callback<Rating, Void> callback);
+   void fetchCreditRating(Receiver<Rating> receiver);
 }

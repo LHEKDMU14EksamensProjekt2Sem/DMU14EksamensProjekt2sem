@@ -2,12 +2,14 @@ package logic.session.main;
 
 import domain.Employee;
 import util.auth.User;
-import util.command.Callback;
+import util.command.Receiver;
 
 import java.util.Optional;
 
 public interface LoginController {
-   void login(String username, char[] password, Callback<Optional<User<Employee>>, Void> callback);
+   void login(String username, char[] password,
+              Receiver<Optional<User<Employee>>> resultReceiver,
+              Receiver<Exception> faultReceiver);
 
    boolean isLoggedIn();
 

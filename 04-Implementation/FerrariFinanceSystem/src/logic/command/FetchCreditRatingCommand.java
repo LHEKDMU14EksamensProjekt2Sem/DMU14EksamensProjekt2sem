@@ -3,23 +3,19 @@ package logic.command;
 import com.ferrari.finances.dk.rki.CreditRator;
 import com.ferrari.finances.dk.rki.Rating;
 import util.command.AsyncCommand;
-import util.command.Callback;
+import util.command.Receiver;
 
-import java.util.concurrent.Executor;
-
-public class FetchCreditRatingCommand extends AsyncCommand {
+public class FetchCreditRatingCommand implements AsyncCommand {
    private final String cpr;
-   private final Callback<Rating, Void> callback;
+   private final Receiver<Rating> receiver;
 
-   public FetchCreditRatingCommand(Executor executor, String cpr,
-                                   Callback<Rating, Void> callback) {
-      super(executor);
+   public FetchCreditRatingCommand(String cpr, Receiver<Rating> receiver) {
       this.cpr = cpr;
-      this.callback = callback;
+      this.receiver = receiver;
    }
 
    @Override
-   public void run() {
-      callback.success(CreditRator.i().rate(cpr));
+   public void execute() {
+      receiver.receive(CreditRator.i().rate(cpr));
    }
 }

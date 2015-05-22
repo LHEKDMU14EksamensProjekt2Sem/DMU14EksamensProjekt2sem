@@ -4,9 +4,8 @@ import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
 import logic.command.FetchCreditRatingCommand;
-import util.command.Callback;
+import util.command.Receiver;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 public class CPRControllerImpl implements CPRController {
@@ -41,12 +40,19 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public void fetchCustomer(Callback<Optional<Customer>, SQLException> callback) {
-
+   public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
+                             Receiver<Exception> faultReceiver) {
+      // TODO
    }
 
    @Override
-   public void fetchCreditRating(Callback<Rating, Void> callback) {
-      new FetchCreditRatingCommand(facade.getExecutor(), identity.getCPR(), callback).execute();
+   public void fetchCreditRating(Receiver<Rating> receiver) {
+      facade.getExecutor().execute(
+              new FetchCreditRatingCommand(identity.getCPR(),
+                      r -> {
+                         creditRating = r;
+                         receiver.receive(r);
+                      }
+              ));
    }
 }

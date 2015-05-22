@@ -45,8 +45,6 @@ public class CustomerDetailsPanel extends JPanel {
    }
 
    private void initComponents() {
-			CustomerDetailsController cdc = presenter.getFacade().getCustomerDetailsController();
-  	 
       lblFirstName = createLabel("Fornavn:");
       tfFirstName = createTextField(18);
       tfFirstName.addFocusListener(new FocusListener() {
