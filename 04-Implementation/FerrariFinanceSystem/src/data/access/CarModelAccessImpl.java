@@ -53,7 +53,6 @@ public class CarModelAccessImpl implements CarModelAccess {
                carModel.setId(rs.getInt(1));
             }
          }
-         
       }
    }
    

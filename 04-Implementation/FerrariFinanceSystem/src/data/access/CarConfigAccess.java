@@ -7,7 +7,7 @@ import domain.Car;
 import domain.CarConfig;
 
 public interface CarConfigAccess {
-   void createCarConfigs(List<Car> cars) throws SQLException;
+   void createCarConfigs(List<CarConfig> carConfigs) throws SQLException;
 
    Car readCarConfig(int id) throws SQLException;
 
