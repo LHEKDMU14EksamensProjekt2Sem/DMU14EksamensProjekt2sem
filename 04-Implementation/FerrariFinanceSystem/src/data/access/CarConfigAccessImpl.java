@@ -28,7 +28,7 @@ public class CarConfigAccessImpl implements CarConfigAccess {
    public void createCarConfigs( List<CarConfig> carConfigs ) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE, RETURN_GENERATED_KEYS)) {
          for (CarConfig carConfig : carConfigs) {
-            st.setModel(2, carConfig.getModel());
+//            st.setModel(2, carConfig.getModel());
             st.setString(3, carConfig.getName());
             st.setString(4, carConfig.getDescription());
             st.executeUpdate();
@@ -53,7 +53,7 @@ public class CarConfigAccessImpl implements CarConfigAccess {
 
             while (rs.next()) {
                config.setId(id);
-               config.setModel(rs.getModel("model_id"));
+//               config.setModel(rs.getModel("model_id"));
                config.setName(rs.getString("name"));
                config.setDescription(rs.getString("description"));
                model.setId(rs.getInt("id"));
@@ -70,14 +70,14 @@ public class CarConfigAccessImpl implements CarConfigAccess {
    }
 
    @Override
-   public List<CarConfig> listCarConfigss( CarConfig carConfig ) throws SQLException {
+   public List<CarConfig> listCarConfigs( CarConfig carConfig ) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL)){
          try(ResultSet resultset = st.executeQuery()){
             List<CarConfig> list = new ArrayList<>();
             while (resultset.next()) {
                CarConfig config = new CarConfig();
                config.setId(resultset.getInt("id"));
-               config.setModel(resultset.getModel("model"));
+//               config.setModel(resultset.getModel("model"));
                config.setName(resultset.getString("name"));
                config.setDescription(resultset.getString("description"));
                list.add(config);
@@ -88,8 +88,6 @@ public class CarConfigAccessImpl implements CarConfigAccess {
    }
    
    private static class SQL {
-      public static String INSERT_ONE;
-
       static final String SELECT_ALL
                 = "SELECT id, year, name, description, base_price FROM car_model";
       
@@ -100,7 +98,6 @@ public class CarConfigAccessImpl implements CarConfigAccess {
             + " WHERE conf.id = ?"
             + " JOIN car_model model"
             + " ON conf.model_id = model.id";
-   }
 
       static final String INSERT_ONE = "INSERT INTO car_config (id, model, name, description) VALUES (?, ?, ?, ?)";
    }
