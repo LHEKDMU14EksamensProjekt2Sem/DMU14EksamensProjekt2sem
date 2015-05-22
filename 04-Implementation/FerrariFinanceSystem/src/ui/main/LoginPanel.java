@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Optional;
 
 import static java.awt.GridBagConstraints.*;
@@ -77,7 +78,7 @@ public class LoginPanel extends JPanel {
       GridBagConstraints gbc = new GridBagConstraints();
 
       // Add labels
-      gbc.insets = DEFAULT_GBC_INSETS;
+      gbc.insets = new Insets(8, 8, 8, 8);
       gbc.gridx = 0;
       gbc.gridy = -1;
       gbc.anchor = EAST;
@@ -95,6 +96,10 @@ public class LoginPanel extends JPanel {
       gbc.gridwidth = 2;
       gbc.anchor = CENTER;
       addNext(lblMessage, gbc);
+
+      gbc.gridx++;
+      gbc.gridwidth = 1;
+      gbc.anchor = WEST;
       addNext(btnLogin, gbc);
    }
 

@@ -34,6 +34,7 @@ public class CPRPanel extends JPanel {
    public CPRPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
       this.presenter = presenter;
 
+      setOpaque(false);
       initComponents();
       layoutComponents();
    }

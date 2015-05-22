@@ -35,6 +35,7 @@ public class CustomerDetailsPanel extends JPanel {
    public CustomerDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
       this.presenter = presenter;
 
+      setOpaque(false);
       initComponents();
       layoutComponents();
    }

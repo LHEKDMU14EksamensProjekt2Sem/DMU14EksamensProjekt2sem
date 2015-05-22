@@ -43,6 +43,7 @@ public class RequestDetailsPanel extends JPanel {
    public RequestDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
       this.presenter = presenter;
 
+      setOpaque(false);
       initComponents();
       layoutComponents();
    }
@@ -50,8 +51,7 @@ public class RequestDetailsPanel extends JPanel {
    private void initComponents() {
       lblCarModel = createLabel("Model:");
       cbCarModel = createComboBox();
-      List<CarModel> list;
-      list = presenter.getFacade().getModels();
+      List<CarModel> list = presenter.getFacade().getModels();
       for (CarModel model : list) {
          cbCarModel.addItem(model);
       }

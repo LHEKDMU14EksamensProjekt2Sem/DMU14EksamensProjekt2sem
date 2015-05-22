@@ -3,7 +3,9 @@ package logic.util;
 import domain.PostalCode;
 import util.io.FileIO;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssetsUtil {
+   private static Image bgImage;
+
    private static URL getURL(String path) {
       return ClassLoader.getSystemResource(path);
    }
@@ -73,5 +77,12 @@ public class AssetsUtil {
 
    public static ImageIcon loadLoaderIcon() throws IOException {
       return new ImageIcon(getURL("assets/images/loader.gif"));
+   }
+
+   public static Image loadBackgroundImage() throws IOException {
+      if (bgImage == null)
+         bgImage = ImageIO.read(getStream("assets/images/bg3.png"));
+
+      return bgImage;
    }
 }

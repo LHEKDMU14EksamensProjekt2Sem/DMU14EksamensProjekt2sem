@@ -2,21 +2,19 @@ package ui.main;
 
 import logic.session.main.MainSessionFacade;
 import logic.session.main.MainView;
+import logic.util.AssetsUtil;
 import util.session.SessionPresenter;
 import util.session.UnsupportedViewException;
 import util.swing.ImagePanel;
 
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import java.awt.CardLayout;
-import java.awt.Image;
-import java.awt.Point;
 import java.io.IOException;
 
-import static java.lang.ClassLoader.*;
 import static logic.session.main.MainView.*;
-import static ui.UIFactory.*;
 
 public class MainFrame extends JFrame implements
         SessionPresenter<MainView, MainSessionFacade> {
@@ -32,7 +30,7 @@ public class MainFrame extends JFrame implements
       this.facade = facade;
 
       setResizable(false);
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       initComponents();
       layoutComponents();
       pack();
@@ -44,13 +42,13 @@ public class MainFrame extends JFrame implements
    private void initComponents() {
       // Attempt to load background image
       try {
-         Image bg = ImageIO.read(getSystemResourceAsStream("assets/images/bg3.png"));
-         setContentPane(new ImagePanel(bg, new Point(-220, -210)));
+         setContentPane(new ImagePanel(AssetsUtil.loadBackgroundImage()));
       } catch (IOException e) {
          // No-op
       }
 
-      ((JPanel) getContentPane()).setBorder(createContentBorder());
+      ((JPanel) getContentPane()).setBorder(
+              BorderFactory.createEmptyBorder(60, 30, 30, 30));
 
       loginPanel = new LoginPanel(this);
       mainMenuPanel = new MainMenuPanel(this);

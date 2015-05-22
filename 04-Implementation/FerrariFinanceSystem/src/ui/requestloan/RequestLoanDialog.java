@@ -2,9 +2,11 @@ package ui.requestloan;
 
 import logic.session.requestloan.RequestLoanSessionFacade;
 import logic.session.requestloan.RequestLoanView;
+import logic.util.AssetsUtil;
 import ui.UIFactory;
 import util.session.SessionPresenter;
 import util.session.UnsupportedViewException;
+import util.swing.ImagePanel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -15,6 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
+import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
 import static logic.session.requestloan.RequestLoanView.*;
@@ -44,8 +47,16 @@ public class RequestLoanDialog extends JDialog implements
    }
 
    private void initComponents() {
+      // Attempt to load background image
+      try {
+         setContentPane(new ImagePanel(AssetsUtil.loadBackgroundImage()));
+      } catch (IOException e) {
+         // No-op
+      }
+
       layout = new CardLayout();
       contentPanel = new JPanel(layout);
+      contentPanel.setOpaque(false);
       contentPanel.setBorder(UIFactory.createContentBorder());
       messageLabel = UIFactory.createLabel("");
 
@@ -63,7 +74,7 @@ public class RequestLoanDialog extends JDialog implements
       gbc.weightx = 1;
       gbc.fill = HORIZONTAL;
       gbc.anchor = WEST;
-      gbc.insets = new Insets(20,12,20,12);
+      gbc.insets = new Insets(20, 12, 20, 12);
       add(messageLabel, gbc);
 
       gbc.gridy++;
