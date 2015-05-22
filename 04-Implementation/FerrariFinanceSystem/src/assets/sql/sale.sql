@@ -3,6 +3,6 @@ CREATE TABLE sale (
   seller_id INTEGER NOT NULL REFERENCES employee(id),
   customer_id INTEGER NOT NULL REFERENCES customer(id),
   car_id INTEGER NOT NULL REFERENCES car(id),
-  selling_price DECIMAL(11,2) NOT NULL,
-  discount DECIMAL(8,2) NOT NULL
+  selling_price NUMERIC NOT NULL,
+  discount NUMERIC NOT NULL
 );

@@ -3,5 +3,5 @@ CREATE TABLE car_model (
   year INTEGER NOT NULL,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
-  base_price DECIMAL(11,2) NOT NULL
+  base_price NUMERIC NOT NULL
 );
