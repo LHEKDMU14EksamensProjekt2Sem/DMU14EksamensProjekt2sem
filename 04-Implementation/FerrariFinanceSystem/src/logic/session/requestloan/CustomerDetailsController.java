@@ -3,6 +3,7 @@ package logic.session.requestloan;
 import java.util.Observer;
 
 import ui.requestloan.CustomerDetailsPanel;
+
 public interface CustomerDetailsController {
 	/**
 	 * Denne metode returnerer al information om den pågaeldende kunde
@@ -19,7 +20,10 @@ public interface CustomerDetailsController {
 
 	void specifyStreet(String street);
 
-	void specifyPostalCode(int postalCode);
+	static void specifyPostalCode(String postalCode) {
+			if(postalCode.matches("[0-9]{4}")) {
+				
+				System.out.println("OK");
 				
 			}
 	}
