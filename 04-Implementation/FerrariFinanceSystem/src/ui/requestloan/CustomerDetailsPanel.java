@@ -45,14 +45,46 @@ public class CustomerDetailsPanel extends JPanel {
    }
 
    private void initComponents() {
+			CustomerDetailsController cdc = presenter.getFacade().getCustomerDetailsController();
+  	 
       lblFirstName = createLabel("Fornavn:");
       tfFirstName = createTextField(18);
+      tfFirstName.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
 
       lblLastName = createLabel("Efternavn:");
       tfLastName = createTextField(18);
+      tfLastName.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
 
       lblStreet = createLabel("Adresse:");
       tfStreet = createTextField(18);
+      tfStreet.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
 
       lblPostalCode = createLabel("Postnummer:");
       tfPostalCode = createTextField(4);
@@ -60,22 +92,38 @@ public class CustomerDetailsPanel extends JPanel {
 				
 				@Override
 				public void focusLost(FocusEvent e) {
-					CustomerDetailsController cdc = presenter.getFacade().getCustomerDetailsController();
 				}
 				
 				@Override
 				public void focusGained(FocusEvent e) {
-					// TODO Auto-generated method stub
-					
 				}
 			});
       
-
       lblPhone = createLabel("Telefon:");
       tfPhone = createTextField(11);
+      tfPhone.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
 
       lblEmail = createLabel("Email:");
       tfEmail = createTextField(18);
+      tfEmail.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
 
       btnNext = createButton("Næste >");
       btnNext.addActionListener(e ->
