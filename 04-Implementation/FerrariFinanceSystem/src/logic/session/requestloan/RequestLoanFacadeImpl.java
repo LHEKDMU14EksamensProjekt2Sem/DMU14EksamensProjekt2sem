@@ -1,29 +1,33 @@
 package logic.session.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
+import domain.CarModel;
 import domain.Customer;
 import domain.Identity;
+import logic.session.main.MainFacade;
 import util.command.Receiver;
+import util.finance.Money;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 
 public class RequestLoanFacadeImpl implements RequestLoanFacade {
-   private final Executor executor;
+   private final MainFacade owner;
    private final CPRController cprController;
-   private final RequestDetailsController loanRequestController;
+   private final CustomerDetailsController customerDetailsController;
+   private final RequestDetailsController requestDetailsController;
    private RequestLoanView view;
 
-   public RequestLoanFacadeImpl(Executor executor) {
-      this.executor = executor;
+   public RequestLoanFacadeImpl(MainFacade owner) {
+      this.owner = owner;
       this.cprController = new CPRControllerImpl(this);
-      this.loanRequestController = new RequestDetailsControllerImpl();
+      this.customerDetailsController = new CustomerDetailsControllerImpl(this);
+      this.requestDetailsController = new RequestDetailsControllerImpl(this);
    }
 
    @Override
    public Executor getExecutor() {
-      return executor;
+      return owner.getExecutor();
    }
 
    @Override
@@ -34,54 +38,6 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    @Override
    public void setView(RequestLoanView view) {
       this.view = view;
-   }
-
-   @Override
-   public void fetchModels() {
-      // TODO Auto-generated method stub
-
-   }
-
-   @Override
-   public List getModels() {
-      // TODO Auto-generated method stub
-      return loanRequestController.getModels();
-   }
-
-   @Override
-   public void fetchCars(Object car) {
-      // TODO Auto-generated method stub
-
-   }
-
-   @Override
-   public List getCars() {
-      // TODO Auto-generated method stub
-      return null;
-   }
-
-   @Override
-   public double getSalesprice() {
-      // TODO Auto-generated method stub
-      return 0;
-   }
-
-   @Override
-   public void setDownpayment() {
-      // TODO Auto-generated method stub
-
-   }
-
-   @Override
-   public double getFinancing() {
-      // TODO Auto-generated method stub
-      return 0;
-   }
-
-   @Override
-   public void save() {
-      // TODO Auto-generated method stub
-
    }
 
    // CPRController
@@ -114,7 +70,104 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public void fetchCreditRating(Receiver<Rating> receiver) {
-      cprController.fetchCreditRating(receiver);
+   public void fetchCreditRating(Receiver<Rating> resultReceiver,
+                                 Receiver<Exception> faultReceiver) {
+      cprController.fetchCreditRating(resultReceiver, faultReceiver);
+   }
+
+   // CustomerDetailsController
+   //////////////////////////////
+
+   @Override
+   public void specifyFirstName(String firstName) {
+      customerDetailsController.specifyFirstName(firstName);
+   }
+
+   @Override
+   public void specifyLastName(String lastName) {
+      customerDetailsController.specifyLastName(lastName);
+   }
+
+   @Override
+   public void specifyStreet(String street) {
+      customerDetailsController.specifyStreet(street);
+   }
+
+   @Override
+   public void specifyPostalCode(String postalCode) {
+      customerDetailsController.specifyPostalCode(postalCode);
+   }
+
+   @Override
+   public void specifyPhone(String phone) {
+      customerDetailsController.specifyPhone(phone);
+   }
+
+   @Override
+   public void specifyEmail(String email) {
+      customerDetailsController.specifyEmail(email);
+   }
+
+   @Override
+   public void saveCustomer() {
+      customerDetailsController.saveCustomer();
+   }
+
+   // RequestDetailsController
+   /////////////////////////////
+
+   @Override
+   public void fetchCarModels() {
+      requestDetailsController.fetchCarModels();
+   }
+
+   @Override
+   public void fetchCars(CarModel model) {
+      requestDetailsController.fetchCars(model);
+   }
+
+   @Override
+   public Money getBasePrice() {
+      return requestDetailsController.getBasePrice();
+   }
+
+   @Override
+   public void specifyDiscount(String discount) {
+      requestDetailsController.specifyDiscount(discount);
+   }
+
+   @Override
+   public void specifyDiscountPct(String discountPct) {
+      requestDetailsController.specifyDiscountPct(discountPct);
+   }
+
+   @Override
+   public void specifySellingPrice(String sellingPrice) {
+      requestDetailsController.specifySellingPrice(sellingPrice);
+   }
+
+   @Override
+   public void specifyDownPayment(String downPayment) {
+      requestDetailsController.specifyDownPayment(downPayment);
+   }
+
+   @Override
+   public Money getLoanAmount() {
+      return requestDetailsController.getLoanAmount();
+   }
+
+   @Override
+   public void specifyPreferredRepayment(String prefRepayment) {
+      requestDetailsController.specifyPreferredRepayment(prefRepayment);
+   }
+
+   @Override
+   public void specifyPreferredTerm(String prefTerm) {
+      requestDetailsController.specifyPreferredTerm(prefTerm);
+   }
+
+   @Override
+   public void sendLoanRequest() {
+      requestDetailsController.sendLoanRequest();
    }
 }

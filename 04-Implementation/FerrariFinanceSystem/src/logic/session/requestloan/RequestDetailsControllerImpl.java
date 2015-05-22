@@ -1,62 +1,75 @@
 package logic.session.requestloan;
 
-import java.sql.SQLException;
-import java.util.List;
+import domain.CarConfig;
+import domain.CarModel;
+import util.finance.Money;
 
-import logic.entity.CarModelLogicImpl;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestDetailsControllerImpl implements RequestDetailsController {
+   private final RequestLoanFacade facade;
+   private final Map<Integer, CarModel> carModels;
+   private final Map<Integer, CarConfig> carConfigs;
 
-	@Override
-	public void fetchModels() {
-		// TODO Auto-generated method stub
-	}
+   public RequestDetailsControllerImpl(RequestLoanFacade facade) {
+      this.facade = facade;
+      carModels = new HashMap<>();
+      carConfigs = new HashMap<>();
+   }
 
-	@Override
-	public List getModels() {
-	   try {
-         return new CarModelLogicImpl().listCarModels();
-      }
-      catch ( SQLException e ) {
-         e.printStackTrace();
-      }
-		return null;
-	}
+   @Override
+   public void fetchCarModels() {
 
-	@Override
-	public void fetchCars(Object car) {
-		// TODO Auto-generated method stub
-		
-	}
+   }
 
-	@Override
-	public List getCars() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+   @Override
+   public void fetchCars(CarModel model) {
 
-	@Override
-	public double getSalesprice() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+   }
 
-	@Override
-	public void setDownpayment() {
-		// TODO Auto-generated method stub
-		
-	}
+   @Override
+   public Money getBasePrice() {
+      return null;
+   }
 
-	@Override
-	public double getFinancing() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+   @Override
+   public void specifyDiscount(String discount) {
 
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-		
-	}
+   }
 
+   @Override
+   public void specifyDiscountPct(String discountPct) {
+
+   }
+
+   @Override
+   public void specifySellingPrice(String sellingPrice) {
+
+   }
+
+   @Override
+   public void specifyDownPayment(String downPayment) {
+
+   }
+
+   @Override
+   public Money getLoanAmount() {
+      return null;
+   }
+
+   @Override
+   public void specifyPreferredRepayment(String prefRepayment) {
+
+   }
+
+   @Override
+   public void specifyPreferredTerm(String prefTerm) {
+
+   }
+
+   @Override
+   public void sendLoanRequest() {
+
+   }
 }

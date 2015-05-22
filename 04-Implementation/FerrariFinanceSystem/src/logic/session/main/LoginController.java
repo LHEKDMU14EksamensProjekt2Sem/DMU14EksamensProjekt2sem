@@ -7,11 +7,11 @@ import util.command.Receiver;
 import java.util.Optional;
 
 public interface LoginController {
-   void login(String username, char[] password,
-              Receiver<Optional<User<Employee>>> resultReceiver,
-              Receiver<Exception> faultReceiver);
+   User<Employee> getUser();
 
    boolean isLoggedIn();
 
-   User<Employee> getUser();
+   void login(String username, char[] password,
+              Receiver<Optional<User<Employee>>> resultReceiver,
+              Receiver<Exception> faultReceiver);
 }

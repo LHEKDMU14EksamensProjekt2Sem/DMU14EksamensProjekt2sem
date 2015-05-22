@@ -25,6 +25,11 @@ public class MainFacadeImpl implements MainFacade {
    }
 
    @Override
+   public RequestLoanFacade newRequestLoanFacade() {
+      return new RequestLoanFacadeImpl(this);
+   }
+
+   @Override
    public MainView getView() {
       return view;
    }
@@ -33,6 +38,9 @@ public class MainFacadeImpl implements MainFacade {
    public void setView(MainView view) {
       this.view = view;
    }
+
+   // LoginController
+   ////////////////////
 
    @Override
    public User<Employee> getUser() {
@@ -49,10 +57,5 @@ public class MainFacadeImpl implements MainFacade {
                      Receiver<Optional<User<Employee>>> resultReceiver,
                      Receiver<Exception> faultReceiver) {
       loginController.login(username, password, resultReceiver, faultReceiver);
-   }
-
-   @Override
-   public RequestLoanFacade getRequestLoanSessionFacade() {
-      return new RequestLoanFacadeImpl(executor);
    }
 }

@@ -19,5 +19,6 @@ public interface CPRController {
    void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
                       Receiver<Exception> faultReceiver);
 
-   void fetchCreditRating(Receiver<Rating> receiver);
+   void fetchCreditRating(Receiver<Rating> resultReceiver,
+                          Receiver<Exception> faultReceiver);
 }

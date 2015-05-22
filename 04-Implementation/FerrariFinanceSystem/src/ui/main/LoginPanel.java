@@ -1,9 +1,5 @@
 package ui.main;
 
-import logic.session.main.MainFacade;
-import logic.session.main.MainView;
-import util.session.SessionPresenter;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,14 +17,14 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class LoginPanel extends JPanel {
-   private SessionPresenter<MainView, MainFacade> presenter;
+   private MainFrame presenter;
 
    private JLabel lblUsername, lblPassword, lblMessage;
    private JTextField tfUsername;
    private JPasswordField pfPassword;
    private JButton btnLogin;
 
-   public LoginPanel(SessionPresenter<MainView, MainFacade> presenter) {
+   public LoginPanel(MainFrame presenter) {
       this.presenter = presenter;
 
       setOpaque(false);

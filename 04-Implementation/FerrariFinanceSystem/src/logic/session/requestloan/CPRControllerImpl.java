@@ -46,13 +46,15 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public void fetchCreditRating(Receiver<Rating> receiver) {
+   public void fetchCreditRating(Receiver<Rating> resultReceiver,
+                                 Receiver<Exception> faultReceiver) {
       facade.getExecutor().execute(
               new FetchCreditRatingCommand(identity.getCPR(),
                       r -> {
                          creditRating = r;
-                         receiver.receive(r);
-                      }
+                         resultReceiver.receive(r);
+                      },
+                      faultReceiver::receive
               ));
    }
 }

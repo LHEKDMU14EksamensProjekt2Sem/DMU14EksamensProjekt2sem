@@ -1,11 +1,8 @@
 package ui.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
-import logic.session.requestloan.RequestLoanFacade;
-import logic.session.requestloan.RequestLoanView;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
-import util.session.SessionPresenter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -26,13 +22,13 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class CPRPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanFacade> presenter;
+   private RequestLoanDialog presenter;
 
    private JLabel lblCPR;
    private JTextField tfCPR;
    private JButton btnSearch;
 
-   public CPRPanel(SessionPresenter<RequestLoanView, RequestLoanFacade> presenter) {
+   public CPRPanel(RequestLoanDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -91,25 +87,29 @@ public class CPRPanel extends JPanel {
       presenter.getFacade().specifyCPR(tfCPR.getText());
       presenter.getFacade().fetchCreditRating(
               r -> {
-                 ((RequestLoanDialog) presenter).clearMessage();
+                 presenter.clearMessage();
 
                  if (r == Rating.D) {
-                    JOptionPane.showMessageDialog((Window) presenter,
+                    JOptionPane.showMessageDialog(presenter,
                             String.format("Kreditværdighed %s.%nLåneanmodning afvist.", r),
                             "Låneanmodning afvist",
                             JOptionPane.WARNING_MESSAGE);
-                    ((Window) presenter).dispose();
+                    presenter.dispose();
                  } else {
                     String msg = "✓ Kreditværdighed " + r;
-                    ((RequestLoanDialog) presenter).setMessage(msg);
+                    presenter.setMessage(msg);
                  }
+              },
+              f -> {
+                 String msg = "Fejl: Kunne ikke hente kreditværdighed";
+                 presenter.setMessage(msg);
               }
       );
 
       try {
          String msg = "Henter kreditværdighed...";
          ImageIcon icon = AssetsUtil.loadLoaderIcon();
-         ((RequestLoanDialog) presenter).setMessage(icon, msg);
+         presenter.setMessage(icon, msg);
       } catch (IOException ex) {
          // No-op
       }
