@@ -4,6 +4,7 @@ import domain.Employee;
 import logic.command.LoginCommand;
 import util.auth.User;
 import util.command.Receiver;
+import util.command.SwingCommand;
 
 import java.util.Optional;
 
@@ -28,14 +29,14 @@ public class LoginControllerImpl implements LoginController {
    @Override
    public void login(String username, char[] password,
                      Receiver<Optional<User<Employee>>> resultReceiver,
-                     Receiver<Exception> faultReceiver) {
-      facade.getExecutor().execute(
-              new LoginCommand(username, password,
-                      r -> {
-                         user = r.orElse(null);
-                         resultReceiver.receive(r);
-                      },
-                      faultReceiver::receive
-              ));
+                     Receiver<Throwable> exceptionReceiver) {
+      new SwingCommand<>(
+              new LoginCommand(username, password),
+              r -> {
+                 user = r.orElse(null);
+                 resultReceiver.receive(r);
+              },
+              exceptionReceiver::receive
+      ).execute();
    }
 }

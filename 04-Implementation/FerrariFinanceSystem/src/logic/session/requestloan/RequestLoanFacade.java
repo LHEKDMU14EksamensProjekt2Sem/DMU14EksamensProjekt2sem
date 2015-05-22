@@ -9,5 +9,4 @@ public interface RequestLoanFacade extends
         CPRController,
         CustomerDetailsController,
         RequestDetailsController {
-   Executor getExecutor();
 }

@@ -9,7 +9,6 @@ import util.command.Receiver;
 import util.finance.Money;
 
 import java.util.Optional;
-import java.util.concurrent.Executor;
 
 public class RequestLoanFacadeImpl implements RequestLoanFacade {
    private final MainFacade owner;
@@ -23,11 +22,6 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
       this.cprController = new CPRControllerImpl(this);
       this.customerDetailsController = new CustomerDetailsControllerImpl(this);
       this.requestDetailsController = new RequestDetailsControllerImpl(this);
-   }
-
-   @Override
-   public Executor getExecutor() {
-      return owner.getExecutor();
    }
 
    @Override
@@ -49,11 +43,6 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public Customer getCustomer() {
-      return cprController.getCustomer();
-   }
-
-   @Override
    public Rating getCreditRating() {
       return cprController.getCreditRating();
    }
@@ -65,14 +54,14 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
 
    @Override
    public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
-                             Receiver<Exception> faultReceiver) {
-      cprController.fetchCustomer(resultReceiver, faultReceiver);
+                             Receiver<Throwable> exceptionReceiver) {
+      cprController.fetchCustomer(resultReceiver, exceptionReceiver);
    }
 
    @Override
    public void fetchCreditRating(Receiver<Rating> resultReceiver,
-                                 Receiver<Exception> faultReceiver) {
-      cprController.fetchCreditRating(resultReceiver, faultReceiver);
+                                 Receiver<Throwable> exceptionReceiver) {
+      cprController.fetchCreditRating(resultReceiver, exceptionReceiver);
    }
 
    // CustomerDetailsController

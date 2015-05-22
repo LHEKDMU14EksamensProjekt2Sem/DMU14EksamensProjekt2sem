@@ -10,7 +10,7 @@ import util.jdbc.ConnectionHandler;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class StartupCommand implements Command {
+public class StartupCommand implements Command<Void> {
    /**
     * Sets up the database and stores initial data. If a database file
     * already exists, and <code>Option.DESTROY</code> is set to <code>false</code>,
@@ -23,7 +23,7 @@ public class StartupCommand implements Command {
     * @throws SQLException
     */
    @Override
-   public void execute() throws IOException, SQLException {
+   public Void execute() throws IOException, SQLException {
       if (Option.DESTROY.get())
          DataUtil.destroyDatabase();
 
@@ -42,5 +42,7 @@ public class StartupCommand implements Command {
             }
          }
       }
+
+      return null;
    }
 }

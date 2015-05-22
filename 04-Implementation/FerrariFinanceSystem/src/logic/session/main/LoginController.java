@@ -13,5 +13,5 @@ public interface LoginController {
 
    void login(String username, char[] password,
               Receiver<Optional<User<Employee>>> resultReceiver,
-              Receiver<Exception> faultReceiver);
+              Receiver<Throwable> exceptionReceiver);
 }

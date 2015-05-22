@@ -1,6 +1,6 @@
 package util.command;
 
 @FunctionalInterface
-public interface Command {
-   void execute() throws Exception;
+public interface Command<R> {
+   R execute() throws Exception;
 }

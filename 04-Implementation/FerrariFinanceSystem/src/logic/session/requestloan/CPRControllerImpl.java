@@ -5,13 +5,13 @@ import domain.Customer;
 import domain.Identity;
 import logic.command.FetchCreditRatingCommand;
 import util.command.Receiver;
+import util.command.SwingCommand;
 
 import java.util.Optional;
 
 public class CPRControllerImpl implements CPRController {
    private final RequestLoanFacade facade;
    private final Identity identity;
-   private Customer customer;
    private Rating creditRating;
 
    public CPRControllerImpl(RequestLoanFacade facade) {
@@ -22,11 +22,6 @@ public class CPRControllerImpl implements CPRController {
    @Override
    public Identity getIdentity() {
       return identity;
-   }
-
-   @Override
-   public Customer getCustomer() {
-      return customer;
    }
 
    @Override
@@ -41,20 +36,20 @@ public class CPRControllerImpl implements CPRController {
 
    @Override
    public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
-                             Receiver<Exception> faultReceiver) {
+                             Receiver<Throwable> exceptionReceiver) {
       // TODO
    }
 
    @Override
    public void fetchCreditRating(Receiver<Rating> resultReceiver,
-                                 Receiver<Exception> faultReceiver) {
-      facade.getExecutor().execute(
-              new FetchCreditRatingCommand(identity.getCPR(),
-                      r -> {
-                         creditRating = r;
-                         resultReceiver.receive(r);
-                      },
-                      faultReceiver::receive
-              ));
+                                 Receiver<Throwable> exceptionReceiver) {
+      new SwingCommand<>(
+              new FetchCreditRatingCommand(identity.getCPR()),
+              r -> {
+                 creditRating = r;
+                 resultReceiver.receive(r);
+              },
+              exceptionReceiver::receive
+      ).execute();
    }
 }

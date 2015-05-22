@@ -7,8 +7,6 @@ import util.command.Command;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Application {
    private static final String
@@ -19,11 +17,8 @@ public class Application {
 
    public Application(Command startup) {
       try {
+         facade = new MainFacadeImpl();
          startup.execute();
-
-         ExecutorService executor = Executors.newCachedThreadPool();
-         facade = new MainFacadeImpl(executor);
-
          setSystemLookAndFeel();
          invokeMainFrame();
       } catch (Exception e) {

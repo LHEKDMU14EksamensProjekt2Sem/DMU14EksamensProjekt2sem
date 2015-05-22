@@ -7,21 +7,13 @@ import util.auth.User;
 import util.command.Receiver;
 
 import java.util.Optional;
-import java.util.concurrent.Executor;
 
 public class MainFacadeImpl implements MainFacade {
-   private final Executor executor;
    private final LoginController loginController;
    private MainView view;
 
-   public MainFacadeImpl(Executor executor) {
-      this.executor = executor;
+   public MainFacadeImpl() {
       loginController = new LoginControllerImpl(this);
-   }
-
-   @Override
-   public Executor getExecutor() {
-      return executor;
    }
 
    @Override
@@ -55,7 +47,7 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public void login(String username, char[] password,
                      Receiver<Optional<User<Employee>>> resultReceiver,
-                     Receiver<Exception> faultReceiver) {
-      loginController.login(username, password, resultReceiver, faultReceiver);
+                     Receiver<Throwable> exceptionReceiver) {
+      loginController.login(username, password, resultReceiver, exceptionReceiver);
    }
 }

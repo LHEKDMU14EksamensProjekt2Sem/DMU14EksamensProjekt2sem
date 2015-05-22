@@ -8,7 +8,5 @@ import java.util.concurrent.Executor;
 public interface MainFacade extends
         SessionFacade<MainView>,
         LoginController {
-   Executor getExecutor();
-
    RequestLoanFacade newRequestLoanFacade();
 }
