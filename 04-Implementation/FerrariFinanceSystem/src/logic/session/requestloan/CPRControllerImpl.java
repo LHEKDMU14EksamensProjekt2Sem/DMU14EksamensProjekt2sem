@@ -4,18 +4,17 @@ import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
 import logic.command.FetchCreditRatingCommand;
-import util.command.Callback;
+import util.command.SwingCommand;
 
-import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
-   private final RequestLoanSessionFacade facade;
+   private final RequestLoanFacade facade;
    private final Identity identity;
-   private Customer customer;
    private Rating creditRating;
 
-   public CPRControllerImpl(RequestLoanSessionFacade facade) {
+   public CPRControllerImpl(RequestLoanFacade facade) {
       this.facade = facade;
       identity = new Identity();
    }
@@ -23,11 +22,6 @@ public class CPRControllerImpl implements CPRController {
    @Override
    public Identity getIdentity() {
       return identity;
-   }
-
-   @Override
-   public Customer getCustomer() {
-      return customer;
    }
 
    @Override
@@ -41,12 +35,21 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public void fetchCustomer(Callback<Optional<Customer>, SQLException> callback) {
-
+   public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                             Consumer<Throwable> exceptionConsumer) {
+      // TODO
    }
 
    @Override
-   public void fetchCreditRating(Callback<Rating, Void> callback) {
-      new FetchCreditRatingCommand(facade.getExecutor(), identity.getCPR(), callback).execute();
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      new SwingCommand<>(
+              new FetchCreditRatingCommand(identity.getCPR()),
+              r -> {
+                 creditRating = r;
+                 resultConsumer.accept(r);
+              },
+              exceptionConsumer::accept
+      ).execute();
    }
 }

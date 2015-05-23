@@ -1,21 +1,17 @@
 package ui.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
-import logic.session.requestloan.RequestLoanSessionFacade;
-import logic.session.requestloan.RequestLoanView;
 import logic.util.AssetsUtil;
-import util.command.Callback;
-import util.session.SessionPresenter;
+import ui.UIFactory;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -26,12 +22,13 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class CPRPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter;
+   private RequestLoanDialog presenter;
 
    private JLabel lblCPR;
    private JTextField tfCPR;
+   private JButton btnSearch;
 
-   public CPRPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
+   public CPRPanel(RequestLoanDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -44,28 +41,19 @@ public class CPRPanel extends JPanel {
       tfCPR = createTextField(12);
       // TODO: Use a document filter to restrict input to 0-10 digits
 
-      CreditRatingCallback callback = new CreditRatingCallback((Window) presenter);
       tfCPR.addKeyListener(new KeyAdapter() {
          @Override
-         public void keyTyped(KeyEvent e) {
-            SwingUtilities.invokeLater(() -> {
-               String cpr = tfCPR.getText();
-               if (cpr.length() == 10) {
-                  presenter.go(CUSTOMER_DETAILS);
-                  presenter.getFacade().specifyCPR(cpr);
-                  presenter.getFacade().fetchCreditRating(callback);
-
-                  try {
-                     String msg = "Henter kreditværdighed...";
-                     ImageIcon icon = AssetsUtil.loadLoaderIcon();
-                     ((RequestLoanDialog) presenter).setMessage(icon, msg);
-                  } catch (IOException ex) {
-                     // No-op
-                  }
-               }
-            });
+         public void keyReleased(KeyEvent e) {
+            updateSearchButton();
+            if (e.getKeyCode() == KeyEvent.VK_ENTER
+                    && tfCPR.getText().length() == 10)
+               fetchCreditRating();
          }
       });
+
+      btnSearch = UIFactory.createButton("Søg");
+      btnSearch.addActionListener(e -> fetchCreditRating());
+      updateSearchButton();
    }
 
    private void layoutComponents() {
@@ -81,40 +69,49 @@ public class CPRPanel extends JPanel {
       gbc.gridx++;
       gbc.anchor = WEST;
       add(tfCPR, gbc);
+
+      gbc.gridx++;
+      add(btnSearch, gbc);
    }
 
    public void update() {
       // No-op
    }
 
-   private class CreditRatingCallback implements Callback<Rating, Void> {
-      private Window parent;
+   private void updateSearchButton() {
+      btnSearch.setEnabled(tfCPR.getText().length() == 10);
+   }
 
-      private CreditRatingCallback(Window parent) {
-         this.parent = parent;
-      }
+   private void fetchCreditRating() {
+      presenter.go(CUSTOMER_DETAILS);
+      presenter.getFacade().specifyCPR(tfCPR.getText());
+      presenter.getFacade().fetchCreditRating(
+              r -> {
+                 presenter.clearMessage();
 
-      @Override
-      public void success(Rating result) {
-         ((RequestLoanDialog) presenter).clearMessage();
-         System.out.println("Credit rating: " + result);
+                 if (r == Rating.D) {
+                    JOptionPane.showMessageDialog(presenter,
+                            String.format("Kreditværdighed %s.%nLåneanmodning afvist.", r),
+                            "Låneanmodning afvist",
+                            JOptionPane.WARNING_MESSAGE);
+                    presenter.dispose();
+                 } else {
+                    String msg = "✓ Kreditværdighed " + r;
+                    presenter.setMessage(msg);
+                 }
+              },
+              f -> {
+                 String msg = "Fejl: Kunne ikke hente kreditværdighed";
+                 presenter.setMessage(msg);
+              }
+      );
 
-         if (result == Rating.D) {
-            JOptionPane.showMessageDialog(parent,
-                    String.format("Kreditværdighed %s.%nLåneanmodning afvist.", result),
-                    "Låneanmodning afvist",
-                    JOptionPane.WARNING_MESSAGE);
-            parent.dispose();
-         } else {
-            String msg = "✓ Kreditværdighed " + result;
-            ((RequestLoanDialog) presenter).setMessage(msg);
-         }
-      }
-
-      @Override
-      public void failure(Void exception) {
-         ((RequestLoanDialog) presenter).clearMessage();
-         System.out.println("Failed to fetch credit rating: " + exception);
+      try {
+         String msg = "Henter kreditværdighed...";
+         ImageIcon icon = AssetsUtil.loadLoaderIcon();
+         presenter.setMessage(icon, msg);
+      } catch (IOException ex) {
+         // No-op
       }
    }
 }

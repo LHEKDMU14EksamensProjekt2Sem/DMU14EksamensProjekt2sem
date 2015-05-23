@@ -3,21 +3,20 @@ package logic.session.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
-import util.command.Callback;
 
-import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public interface CPRController {
    Identity getIdentity();
-
-   Customer getCustomer();
 
    Rating getCreditRating();
 
    void specifyCPR(String cpr);
 
-   void fetchCustomer(Callback<Optional<Customer>, SQLException> callback);
+   void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                      Consumer<Throwable> exceptionConsumer);
 
-   void fetchCreditRating(Callback<Rating, Void> callback);
+   void fetchCreditRating(Consumer<Rating> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer);
 }

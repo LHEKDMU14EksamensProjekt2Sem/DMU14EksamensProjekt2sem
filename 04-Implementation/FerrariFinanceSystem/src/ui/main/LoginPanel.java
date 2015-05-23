@@ -1,12 +1,5 @@
 package ui.main;
 
-import domain.Employee;
-import logic.session.main.MainSessionFacade;
-import logic.session.main.MainView;
-import util.auth.User;
-import util.command.Callback;
-import util.session.SessionPresenter;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +10,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.Optional;
 
 import static java.awt.GridBagConstraints.*;
 import static logic.session.main.MainView.*;
@@ -25,14 +17,14 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class LoginPanel extends JPanel {
-   private SessionPresenter<MainView, MainSessionFacade> presenter;
+   private MainFrame presenter;
 
    private JLabel lblUsername, lblPassword, lblMessage;
    private JTextField tfUsername;
    private JPasswordField pfPassword;
    private JButton btnLogin;
 
-   public LoginPanel(SessionPresenter<MainView, MainSessionFacade> presenter) {
+   public LoginPanel(MainFrame presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -51,26 +43,16 @@ public class LoginPanel extends JPanel {
       lblMessage.setForeground(Color.RED);
 
       btnLogin = createButton("Log ind");
-      btnLogin.addActionListener(e -> {
-         String username = tfUsername.getText();
-         char[] password = pfPassword.getPassword();
-
-         MainSessionFacade facade = presenter.getFacade();
-         facade.login(username, password, new Callback<Optional<User<Employee>>, Void>() {
-            @Override
-            public void success(Optional<User<Employee>> result) {
-               if (result.isPresent())
-                  presenter.go(MAIN_MENU);
-               else
-                  lblMessage.setText("Brugernavn eller adgangskode er forkert");
-            }
-
-            @Override
-            public void failure(Void exception) {
-               lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.");
-            }
-         });
-      });
+      btnLogin.addActionListener(e ->
+              presenter.getFacade().login(tfUsername.getText(), pfPassword.getPassword(),
+                      r -> {
+                         if (r.isPresent())
+                            presenter.go(MAIN_MENU);
+                         else
+                            lblMessage.setText("Brugernavn eller adgangskode er forkert");
+                      },
+                      f -> lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.")
+              ));
    }
 
    private void layoutComponents() {

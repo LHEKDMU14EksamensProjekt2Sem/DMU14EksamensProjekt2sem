@@ -8,9 +8,9 @@ import util.jdbc.ConnectionHandler;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class StartupCommand implements Command {
+public class StartupCommand implements Command<Void> {
    @Override
-   public void execute() throws IOException, SQLException {
+   public Void execute() throws IOException, SQLException {
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionService.connect()) {
             try {
@@ -22,5 +22,7 @@ public class StartupCommand implements Command {
             }
          }
       }
+
+      return null;
    }
 }

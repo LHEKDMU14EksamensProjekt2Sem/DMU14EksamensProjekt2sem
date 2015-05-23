@@ -3,16 +3,16 @@ package logic.session.main;
 import domain.Employee;
 import logic.command.LoginCommand;
 import util.auth.User;
-import util.command.Callback;
+import util.command.SwingCommand;
 
-import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class LoginControllerImpl implements LoginController {
-   private final MainSessionFacade facade;
+   private final MainFacade facade;
    private User<Employee> user;
 
-   public LoginControllerImpl(MainSessionFacade facade) {
+   public LoginControllerImpl(MainFacade facade) {
       this.facade = facade;
    }
 
@@ -28,19 +28,15 @@ public class LoginControllerImpl implements LoginController {
 
    @Override
    public void login(String username, char[] password,
-                     Callback<Optional<User<Employee>>, Void> callback) {
-      new LoginCommand(facade.getExecutor(), username, password,
-              new Callback<Optional<User<Employee>>, SQLException>() {
-                 @Override
-                 public void success(Optional<User<Employee>> result) {
-                    user = result.orElse(null);
-                    callback.success(result);
-                 }
-
-                 @Override
-                 public void failure(SQLException exception) {
-                    callback.failure(null);
-                 }
-              }).execute();
+                     Consumer<Optional<User<Employee>>> resultConsumer,
+                     Consumer<Throwable> exceptionConsumer) {
+      new SwingCommand<>(
+              new LoginCommand(username, password),
+              r -> {
+                 user = r.orElse(null);
+                 resultConsumer.accept(r);
+              },
+              exceptionConsumer::accept
+      ).execute();
    }
 }

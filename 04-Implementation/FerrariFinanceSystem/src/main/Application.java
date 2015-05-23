@@ -1,29 +1,24 @@
 package main;
 
-import logic.session.main.MainSessionFacade;
-import logic.session.main.MainSessionFacadeImpl;
+import logic.session.main.MainFacade;
+import logic.session.main.MainFacadeImpl;
 import ui.main.MainFrame;
 import util.command.Command;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Application {
    private static final String
            NAME = "Ferrari Finance System",
            VERSION = "0.2";
 
-   private MainSessionFacade facade;
+   private MainFacade facade;
 
    public Application(Command startup) {
       try {
+         facade = new MainFacadeImpl();
          startup.execute();
-
-         ExecutorService executor = Executors.newCachedThreadPool();
-         facade = new MainSessionFacadeImpl(executor);
-
          setSystemLookAndFeel();
          invokeMainFrame();
       } catch (Exception e) {

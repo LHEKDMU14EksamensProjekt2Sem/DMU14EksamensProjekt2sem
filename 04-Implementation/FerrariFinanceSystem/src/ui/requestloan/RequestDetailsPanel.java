@@ -2,10 +2,7 @@ package ui.requestloan;
 
 import domain.Car;
 import domain.CarModel;
-import logic.session.requestloan.RequestLoanSessionFacade;
-import logic.session.requestloan.RequestLoanView;
 import ui.UIFactory;
-import util.session.SessionPresenter;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,14 +12,13 @@ import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.List;
 
 import static java.awt.GridBagConstraints.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class RequestDetailsPanel extends JPanel {
-   private SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter;
+   private RequestLoanDialog presenter;
 
    private JLabel
            lblCarModel, lblCar,
@@ -40,7 +36,7 @@ public class RequestDetailsPanel extends JPanel {
 
    private JButton btnSend;
 
-   public RequestDetailsPanel(SessionPresenter<RequestLoanView, RequestLoanSessionFacade> presenter) {
+   public RequestDetailsPanel(RequestLoanDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -51,10 +47,6 @@ public class RequestDetailsPanel extends JPanel {
    private void initComponents() {
       lblCarModel = createLabel("Model:");
       cbCarModel = createComboBox();
-      List<CarModel> list = presenter.getFacade().getModels();
-      for (CarModel model : list) {
-         cbCarModel.addItem(model);
-      }
 
       lblCar = createLabel("Bil:");
       cbCar = createComboBox();

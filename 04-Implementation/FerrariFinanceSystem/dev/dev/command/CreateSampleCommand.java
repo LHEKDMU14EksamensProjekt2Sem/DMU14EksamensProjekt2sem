@@ -16,7 +16,7 @@ import util.jdbc.ConnectionHandler;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CreateSampleCommand implements Command {
+public class CreateSampleCommand implements Command<Void> {
    private final ConnectionHandler con;
 
    public CreateSampleCommand(ConnectionHandler con) {
@@ -24,10 +24,11 @@ public class CreateSampleCommand implements Command {
    }
 
    @Override
-   public void execute() throws SQLException {
+   public Void execute() throws SQLException {
       createEmployees();
       createCustomers();
       createCarModel();
+      return null;
    }
 
    private void createEmployees() throws SQLException {
