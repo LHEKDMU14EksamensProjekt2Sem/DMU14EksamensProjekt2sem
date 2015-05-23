@@ -12,6 +12,8 @@ public interface CPRController {
 
    Rating getCreditRating();
 
+   boolean validateCPR(String cpr);
+
    void specifyCPR(String cpr);
 
    void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,

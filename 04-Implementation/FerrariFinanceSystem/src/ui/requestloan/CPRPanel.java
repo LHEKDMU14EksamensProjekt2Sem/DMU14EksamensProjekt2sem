@@ -46,7 +46,7 @@ public class CPRPanel extends JPanel {
          public void keyReleased(KeyEvent e) {
             updateSearchButton();
             if (e.getKeyCode() == KeyEvent.VK_ENTER
-                    && tfCPR.getText().length() == 10)
+                    && validateCPR())
                fetchCreditRating();
          }
       });
@@ -79,7 +79,11 @@ public class CPRPanel extends JPanel {
    }
 
    private void updateSearchButton() {
-      btnSearch.setEnabled(tfCPR.getText().length() == 10);
+      btnSearch.setEnabled(validateCPR());
+   }
+
+   private boolean validateCPR() {
+      return presenter.getFacade().validateCPR(tfCPR.getText());
    }
 
    private void fetchCreditRating() {
@@ -100,7 +104,7 @@ public class CPRPanel extends JPanel {
                     presenter.setMessage(msg);
                  }
               },
-              f -> {
+              x -> {
                  String msg = "Fejl: Kunne ikke hente kreditværdighed";
                  presenter.setMessage(msg);
               }

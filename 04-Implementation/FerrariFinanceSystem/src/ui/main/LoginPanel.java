@@ -43,16 +43,7 @@ public class LoginPanel extends JPanel {
       lblMessage.setForeground(Color.RED);
 
       btnLogin = createButton("Log ind");
-      btnLogin.addActionListener(e ->
-              presenter.getFacade().login(tfUsername.getText(), pfPassword.getPassword(),
-                      r -> {
-                         if (r.isPresent())
-                            presenter.go(MAIN_MENU);
-                         else
-                            lblMessage.setText("Brugernavn eller adgangskode er forkert");
-                      },
-                      f -> lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.")
-              ));
+      btnLogin.addActionListener(e -> login());
    }
 
    private void layoutComponents() {
@@ -92,5 +83,17 @@ public class LoginPanel extends JPanel {
 
    public void update() {
       // No-op
+   }
+
+   private void login() {
+      presenter.getFacade().login(tfUsername.getText(), pfPassword.getPassword(),
+              r -> {
+                 if (r.isPresent())
+                    presenter.go(MAIN_MENU);
+                 else
+                    lblMessage.setText("Brugernavn eller adgangskode er forkert");
+              },
+              x -> lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.")
+      );
    }
 }

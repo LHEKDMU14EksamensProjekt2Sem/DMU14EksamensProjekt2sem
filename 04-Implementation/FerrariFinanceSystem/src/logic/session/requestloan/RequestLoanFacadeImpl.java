@@ -48,6 +48,11 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
+   public boolean validateCPR(String cpr) {
+      return cprController.validateCPR(cpr);
+   }
+
+   @Override
    public void specifyCPR(String cpr) {
       cprController.specifyCPR(cpr);
    }

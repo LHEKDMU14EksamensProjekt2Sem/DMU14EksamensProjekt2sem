@@ -30,7 +30,14 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
+   public boolean validateCPR(String cpr) {
+      return cpr.matches("[0-9]{10}|[0-9]{6}-[0-9]{4}");
+   }
+
+   @Override
    public void specifyCPR(String cpr) {
+      // Normalize
+      cpr = cpr.replace("-", "");
       identity.setCPR(cpr);
    }
 
