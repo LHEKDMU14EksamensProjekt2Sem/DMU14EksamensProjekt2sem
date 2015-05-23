@@ -5,10 +5,10 @@ import domain.CarModel;
 import domain.Customer;
 import domain.Identity;
 import logic.session.main.MainFacade;
-import util.command.Receiver;
 import util.finance.Money;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class RequestLoanFacadeImpl implements RequestLoanFacade {
    private final MainFacade owner;
@@ -53,15 +53,15 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
-                             Receiver<Throwable> exceptionReceiver) {
-      cprController.fetchCustomer(resultReceiver, exceptionReceiver);
+   public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                             Consumer<Throwable> exceptionConsumer) {
+      cprController.fetchCustomer(resultConsumer, exceptionConsumer);
    }
 
    @Override
-   public void fetchCreditRating(Receiver<Rating> resultReceiver,
-                                 Receiver<Throwable> exceptionReceiver) {
-      cprController.fetchCreditRating(resultReceiver, exceptionReceiver);
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      cprController.fetchCreditRating(resultConsumer, exceptionConsumer);
    }
 
    // CustomerDetailsController

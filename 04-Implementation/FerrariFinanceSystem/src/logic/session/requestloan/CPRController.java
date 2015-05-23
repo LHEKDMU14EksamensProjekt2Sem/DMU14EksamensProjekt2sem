@@ -3,9 +3,9 @@ package logic.session.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
-import util.command.Receiver;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public interface CPRController {
    Identity getIdentity();
@@ -14,9 +14,9 @@ public interface CPRController {
 
    void specifyCPR(String cpr);
 
-   void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
-                      Receiver<Throwable> exceptionReceiver);
+   void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                      Consumer<Throwable> exceptionConsumer);
 
-   void fetchCreditRating(Receiver<Rating> resultReceiver,
-                          Receiver<Throwable> exceptionReceiver);
+   void fetchCreditRating(Consumer<Rating> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer);
 }

@@ -4,9 +4,9 @@ import domain.Employee;
 import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanFacadeImpl;
 import util.auth.User;
-import util.command.Receiver;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class MainFacadeImpl implements MainFacade {
    private final LoginController loginController;
@@ -46,8 +46,8 @@ public class MainFacadeImpl implements MainFacade {
 
    @Override
    public void login(String username, char[] password,
-                     Receiver<Optional<User<Employee>>> resultReceiver,
-                     Receiver<Throwable> exceptionReceiver) {
-      loginController.login(username, password, resultReceiver, exceptionReceiver);
+                     Consumer<Optional<User<Employee>>> resultConsumer,
+                     Consumer<Throwable> exceptionConsumer) {
+      loginController.login(username, password, resultConsumer, exceptionConsumer);
    }
 }

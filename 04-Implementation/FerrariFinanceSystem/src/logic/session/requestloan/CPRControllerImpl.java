@@ -4,10 +4,10 @@ import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
 import logic.command.FetchCreditRatingCommand;
-import util.command.Receiver;
 import util.command.SwingCommand;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
    private final RequestLoanFacade facade;
@@ -35,21 +35,21 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public void fetchCustomer(Receiver<Optional<Customer>> resultReceiver,
-                             Receiver<Throwable> exceptionReceiver) {
+   public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                             Consumer<Throwable> exceptionConsumer) {
       // TODO
    }
 
    @Override
-   public void fetchCreditRating(Receiver<Rating> resultReceiver,
-                                 Receiver<Throwable> exceptionReceiver) {
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
       new SwingCommand<>(
               new FetchCreditRatingCommand(identity.getCPR()),
               r -> {
                  creditRating = r;
-                 resultReceiver.receive(r);
+                 resultConsumer.accept(r);
               },
-              exceptionReceiver::receive
+              exceptionConsumer::accept
       ).execute();
    }
 }

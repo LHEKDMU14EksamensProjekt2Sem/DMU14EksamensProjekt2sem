@@ -2,18 +2,19 @@ package util.command;
 
 import javax.swing.SwingWorker;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 public class SwingCommand<R> extends SwingWorker<R, Void> {
    private final Command<R> command;
-   private final Receiver<R> resultReceiver;
-   private final Receiver<Throwable> exceptionReceiver;
+   private final Consumer<R> resultConsumer;
+   private final Consumer<Throwable> exceptionConsumer;
 
    public SwingCommand(Command<R> command,
-                       Receiver<R> resultReceiver,
-                       Receiver<Throwable> exceptionReceiver) {
+                       Consumer<R> resultConsumer,
+                       Consumer<Throwable> exceptionConsumer) {
       this.command = command;
-      this.resultReceiver = resultReceiver;
-      this.exceptionReceiver = exceptionReceiver;
+      this.resultConsumer = resultConsumer;
+      this.exceptionConsumer = exceptionConsumer;
    }
 
    @Override
@@ -24,9 +25,9 @@ public class SwingCommand<R> extends SwingWorker<R, Void> {
    @Override
    public void done() {
       try {
-         resultReceiver.receive(get());
+         resultConsumer.accept(get());
       } catch (ExecutionException e) {
-         exceptionReceiver.receive(e.getCause());
+         exceptionConsumer.accept(e.getCause());
       } catch (InterruptedException ignore) {
          // No-op
       }
