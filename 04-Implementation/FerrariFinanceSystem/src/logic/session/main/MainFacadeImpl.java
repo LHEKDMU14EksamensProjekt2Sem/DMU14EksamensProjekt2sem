@@ -3,7 +3,7 @@ package logic.session.main;
 import domain.Employee;
 import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanFacadeImpl;
-import util.auth.User;
+import domain.User;
 
 import java.util.Optional;
 import java.util.function.Consumer;

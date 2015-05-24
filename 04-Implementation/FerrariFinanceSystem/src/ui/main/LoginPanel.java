@@ -81,7 +81,7 @@ public class LoginPanel extends JPanel {
       add(comp, gbc);
    }
 
-   public void update() {
+   public void enter() {
       // No-op
    }
 

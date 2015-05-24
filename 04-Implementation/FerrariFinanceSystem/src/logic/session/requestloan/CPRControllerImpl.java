@@ -1,22 +1,26 @@
 package logic.session.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
-import domain.Customer;
 import domain.Identity;
+import domain.Person;
 import logic.command.FetchCreditRatingCommand;
+import logic.session.requestloan.validation.CPRValidator;
+import logic.session.requestloan.validation.CPRValidatorImpl;
 import util.command.SwingCommand;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
    private final RequestLoanFacade facade;
+   private final CPRValidator validator;
    private final Identity identity;
    private Rating creditRating;
 
    public CPRControllerImpl(RequestLoanFacade facade) {
       this.facade = facade;
+      validator = new CPRValidatorImpl();
       identity = new Identity();
+      identity.setPerson(new Person());
    }
 
    @Override
@@ -31,20 +35,16 @@ public class CPRControllerImpl implements CPRController {
 
    @Override
    public boolean validateCPR(String cpr) {
-      return cpr.matches("[0-9]{10}|[0-9]{6}-[0-9]{4}");
+      return validator.validateCPR(cpr);
    }
 
    @Override
    public void specifyCPR(String cpr) {
-      // Normalize
-      cpr = cpr.replace("-", "");
-      identity.setCPR(cpr);
-   }
-
-   @Override
-   public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
-                             Consumer<Throwable> exceptionConsumer) {
-      // TODO
+      if (validator.validateCPR(cpr)) {
+         // Normalize
+         cpr = cpr.replace("-", "");
+         identity.setCPR(cpr);
+      }
    }
 
    @Override

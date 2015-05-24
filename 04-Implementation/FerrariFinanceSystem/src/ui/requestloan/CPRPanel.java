@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -41,6 +42,10 @@ public class CPRPanel extends JPanel {
       tfCPR = createTextField(12);
       // TODO: Use a document filter to restrict input to 0-10 digits
 
+      // Remove default action listener
+      for (ActionListener l : tfCPR.getActionListeners())
+         tfCPR.removeActionListener(l);
+
       tfCPR.addKeyListener(new KeyAdapter() {
          @Override
          public void keyReleased(KeyEvent e) {
@@ -50,6 +55,9 @@ public class CPRPanel extends JPanel {
                fetchCreditRating();
          }
       });
+
+      // TODO REMOVE
+      tfCPR.setText("1504619887");
 
       btnSearch = UIFactory.createButton("Søg");
       btnSearch.addActionListener(e -> fetchCreditRating());
@@ -74,7 +82,7 @@ public class CPRPanel extends JPanel {
       add(btnSearch, gbc);
    }
 
-   public void update() {
+   public void enter() {
       // No-op
    }
 
@@ -105,7 +113,7 @@ public class CPRPanel extends JPanel {
                  }
               },
               x -> {
-                 String msg = "Fejl: Kunne ikke hente kreditværdighed";
+                 String msg = ":( Fejl: Kunne ikke hente kreditværdighed";
                  presenter.setMessage(msg);
               }
       );

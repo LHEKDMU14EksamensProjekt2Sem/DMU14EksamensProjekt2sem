@@ -97,13 +97,13 @@ public class RequestLoanDialog extends JDialog implements
    public void go(RequestLoanView view) {
       switch (view) {
          case CPR:
-            cprPanel.update();
+            cprPanel.enter();
             break;
          case CUSTOMER_DETAILS:
-            customerDetailsPanel.update();
+            customerDetailsPanel.enter();
             break;
          case REQUEST_DETAILS:
-            requestDetailsPanel.update();
+            requestDetailsPanel.enter();
             break;
          default:
             throw new UnsupportedViewException(view);

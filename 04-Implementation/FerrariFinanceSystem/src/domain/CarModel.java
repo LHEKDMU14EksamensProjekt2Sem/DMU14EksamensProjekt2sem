@@ -3,11 +3,6 @@ package domain;
 import util.finance.Money;
 
 public class CarModel {
-   @Override
-   public String toString() {
-      return name;
-   }
-
    private int id;
    private int year;
    private String name;
@@ -52,5 +47,10 @@ public class CarModel {
 
    public void setBasePrice(Money basePrice) {
       this.basePrice = basePrice;
+   }
+
+   @Override
+   public String toString() {
+      return name;
    }
 }

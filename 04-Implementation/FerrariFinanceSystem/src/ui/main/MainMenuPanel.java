@@ -63,7 +63,7 @@ public class MainMenuPanel extends JPanel {
       add(comp, gbc);
    }
 
-   public void update() {
+   public void enter() {
       String fullName = presenter.getFacade().getUser().getEntity().getPerson().getFullName();
       lblCurrentUser.setText(fullName);
    }

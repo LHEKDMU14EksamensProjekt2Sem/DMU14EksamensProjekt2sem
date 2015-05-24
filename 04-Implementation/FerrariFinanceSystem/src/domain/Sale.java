@@ -2,12 +2,15 @@ package domain;
 
 import util.finance.Money;
 
+import java.util.Optional;
+
 public class Sale {
    private int id;
    private Employee seller;
    private Customer customer;
+   private Optional<Car> car;
+   private Money basePrice;
    private Money sellingPrice;
-   private Money discount;
 
    public int getId() {
       return id;
@@ -33,6 +36,30 @@ public class Sale {
       this.customer = customer;
    }
 
+   public boolean hasCar() {
+      return car.isPresent();
+   }
+
+   public Car getCar() {
+      return car.get();
+   }
+
+   public void setCar(Car car) {
+      this.car = Optional.ofNullable(car);
+      if (hasCar()) {
+         basePrice = car.getBasePrice();
+         sellingPrice = basePrice;
+      }
+   }
+
+   public Money getBasePrice() {
+      return basePrice;
+   }
+
+   public void setBasePrice(Money basePrice) {
+      this.basePrice = basePrice;
+   }
+
    public Money getSellingPrice() {
       return sellingPrice;
    }
@@ -42,10 +69,18 @@ public class Sale {
    }
 
    public Money getDiscount() {
-      return discount;
+      return basePrice.subtract(sellingPrice);
    }
 
    public void setDiscount(Money discount) {
-      this.discount = discount;
+      sellingPrice = basePrice.subtract(discount);
+   }
+
+   public double getDiscountPct() {
+      return (1 - sellingPrice.doubleValue() / basePrice.doubleValue());
+   }
+
+   public void setDiscountPct(double pct) {
+      sellingPrice = new Money(basePrice.doubleValue() * (1 - pct));
    }
 }

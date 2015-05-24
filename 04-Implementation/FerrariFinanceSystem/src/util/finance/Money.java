@@ -5,9 +5,15 @@ import java.math.BigDecimal;
 import static java.math.RoundingMode.*;
 
 public final class Money {
+   public static final Money ZERO = new Money(BigDecimal.ZERO);
+
    private final BigDecimal amount;
 
    public Money(String amount) {
+      this(new BigDecimal(amount));
+   }
+
+   public Money(double amount) {
       this(new BigDecimal(amount));
    }
 
@@ -38,6 +44,21 @@ public final class Money {
 
    public BigDecimal asBigDecimal() {
       return amount;
+   }
+
+   public double doubleValue() {
+      return amount.doubleValue();
+   }
+
+   @Override
+   public boolean equals(Object object) {
+      if (this == object)
+         return true;
+      else if (!(object instanceof Money))
+         return false;
+
+      Money other = (Money) object;
+      return amount.equals(other.amount);
    }
 
    @Override

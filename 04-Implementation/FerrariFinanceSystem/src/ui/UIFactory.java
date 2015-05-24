@@ -4,22 +4,22 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import java.awt.Color;
 import java.awt.Font;
 
 import static ui.UIConstants.*;
 
 public class UIFactory {
-   public static JTextField createTextField(int columns) {
-      JTextField tf = new JTextField(columns);
+   public static XTextField createTextField(int columns) {
+      XTextField tf = new XTextField(columns);
       configTextField(tf);
       return tf;
    }
 
-   public static JPasswordField createPasswordField(int columns) {
-      JPasswordField pf = new JPasswordField(columns);
+   public static XPasswordField createPasswordField(int columns) {
+      XPasswordField pf = new XPasswordField(columns);
       configTextField(pf);
       return pf;
    }
@@ -40,6 +40,23 @@ public class UIFactory {
       return lbl;
    }
 
+   public static JLabel createLabel(Color color) {
+      JLabel lbl = createLabel("");
+      lbl.setForeground(color);
+      return lbl;
+   }
+
+   public static JLabel createErrorLabel(String msg) {
+      JLabel lbl = createLabel(ERROR_COLOR);
+      lbl.setText(msg);
+      lbl.setVisible(false);
+      return lbl;
+   }
+
+   public static JLabel createErrorLabel() {
+      return createErrorLabel("");
+   }
+
    public static <E> JComboBox<E> createComboBox() {
       JComboBox<E> cb = new JComboBox<E>();
       cb.setFont(PLAIN_FONT);
@@ -51,14 +68,6 @@ public class UIFactory {
    }
 
    private static void configTextField(JTextField tf) {
-      Border emptyBorder = BorderFactory.createEmptyBorder(
-              TEXT_FIELD_PADDING,
-              TEXT_FIELD_PADDING,
-              TEXT_FIELD_PADDING,
-              TEXT_FIELD_PADDING);
-
-      Border border = BorderFactory.createCompoundBorder(tf.getBorder(), emptyBorder);
-      tf.setBorder(border);
       tf.setFont(PLAIN_FONT);
    }
 

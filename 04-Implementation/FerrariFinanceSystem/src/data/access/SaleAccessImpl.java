@@ -22,8 +22,9 @@ public class SaleAccessImpl implements SaleAccess {
               SQL.INSERT_ONE, RETURN_GENERATED_KEYS)) {
          st.setInt(1, sale.getSeller().getId());
          st.setInt(2, sale.getCustomer().getId());
-         st.setBigDecimal(3, sale.getSellingPrice().asBigDecimal());
-         st.setBigDecimal(4, sale.getDiscount().asBigDecimal());
+         st.setInt(3, sale.getCar().getId());
+         st.setBigDecimal(4, sale.getBasePrice().asBigDecimal());
+         st.setBigDecimal(5, sale.getSellingPrice().asBigDecimal());
          st.executeUpdate();
 
          try (ResultSet rs = st.getGeneratedKeys()) {
@@ -35,7 +36,7 @@ public class SaleAccessImpl implements SaleAccess {
 
    private static class SQL {
       static final String INSERT_ONE
-              = "INSERT INTO sale(seller_id, customer_id, selling_price, discount)"
-              + "VALUES (?, ?, ?, ?)";
+              = "INSERT INTO sale(seller_id, customer_id, car_id, base_price, selling_price)"
+              + "VALUES (?, ?, ?, ?, ?)";
    }
 }

@@ -16,9 +16,6 @@ public interface CPRController {
 
    void specifyCPR(String cpr);
 
-   void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
-                      Consumer<Throwable> exceptionConsumer);
-
    void fetchCreditRating(Consumer<Rating> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);
 }
