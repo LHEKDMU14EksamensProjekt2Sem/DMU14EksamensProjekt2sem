@@ -1,0 +1,22 @@
+FFS-OC-01: fetchCustomer
+
+Systemoperation
+fetchCustomer( cpr )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+Ingen.
+
+Slutbetingelser
+Hvis cpr matchede en kundes CPR-nr., og der er registreret problemer med kunden, blev problemerne præsenteret; ellers:
+En instans c af Customer blev skabt.
+Hvis cpr matchede en kundes CPR-nr., blev
+- c.firstName sat til kundens fornavn
+- c.lastName sat til kundens efternavn
+- c.street sat til kundens adresse
+- c.postalCode sat til kundens postnummer
+- c.phone sat til kundens telefonnummer
+- c.email sat til kundens email-adresse
+De nævnte kundedata blev præsenteret.

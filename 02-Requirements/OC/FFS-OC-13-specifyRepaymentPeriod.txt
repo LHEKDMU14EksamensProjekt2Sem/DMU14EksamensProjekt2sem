@@ -1,0 +1,13 @@
+FFS-OC-13: specifyRepaymentPeriod
+
+Systemoperation
+specifyRepaymentPeriod( repaymentPeriod )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans lr af LoanRequest eksisterer.
+
+Slutbetingelser
+lr.repaymentPeriod blev sat til repaymentPeriod.

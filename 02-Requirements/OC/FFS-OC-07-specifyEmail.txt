@@ -1,0 +1,13 @@
+FFS-OC-07: specifyEmail
+
+Systemoperation
+specifyEmail( email )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af email er gyldig, blev c.email sat til email; ellers blev en fejlbesked præsenteret.

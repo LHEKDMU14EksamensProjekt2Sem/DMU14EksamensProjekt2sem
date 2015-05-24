@@ -1,9 +1,19 @@
+*.db
+*.csv
+
+#################
+## IntelliJ IDEA
+#################
+
+.idea/
+out/
+*.iml
+
 #################
 ## Eclipse
 #################
 
 *.pydevproject
-.project
 .metadata
 bin/
 tmp/
@@ -15,6 +25,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.project
 
 # External tool builders
 .externalToolBuilders/
@@ -141,7 +152,6 @@ csx
 AppPackages/
 
 # Others
-sql/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*

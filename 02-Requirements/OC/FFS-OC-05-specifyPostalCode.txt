@@ -1,0 +1,16 @@
+FFS-OC-05: specifyPostalCode
+
+Systemoperation
+specifyPostalCode( postalCode )
+
+Krydsreferencer
+FFS-01: Anmod om lån
+
+Forudsætninger
+En instans c af Customer eksisterer.
+
+Slutbetingelser
+Hvis værdien af postalCode er gyldig, blev
+- c.postalCode sat til postalCode
+- den tilsvarende by præsenteret
+ellers blev en fejlbesked præsenteret.
