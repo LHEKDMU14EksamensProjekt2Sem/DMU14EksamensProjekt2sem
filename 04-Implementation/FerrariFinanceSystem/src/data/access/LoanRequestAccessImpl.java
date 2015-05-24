@@ -6,6 +6,7 @@ import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,11 +31,17 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
             st.setInt(3, loanRequest.getStatusByEmployee().getId());
             st.setDate(4, loanRequest.getDate());
             st.setBigDecimal(5, loanRequest.getLoanAmount().asBigDecimal());
-            st.setBigDecimal(6,
-                    (loanRequest.hasPreferredRepayment()
-                            ? loanRequest.getPreferredRepayment().asBigDecimal()
-                            : null));
-            st.setInt(7, loanRequest.getPreferredTerm());
+
+            if (loanRequest.hasPreferredRepayment())
+               st.setBigDecimal(6, loanRequest.getPreferredRepayment().asBigDecimal());
+            else
+               st.setNull(6, Types.NUMERIC);
+
+            if (loanRequest.hasPreferredTerm())
+               st.setInt(7, loanRequest.getPreferredTerm());
+            else
+               st.setNull(7, Types.INTEGER);
+
             st.executeUpdate();
          }
       }

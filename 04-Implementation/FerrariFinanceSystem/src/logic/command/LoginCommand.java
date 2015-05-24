@@ -1,8 +1,8 @@
 package logic.command;
 
 import domain.Employee;
-import util.auth.User;
-import util.auth.UserAuth;
+import domain.User;
+import logic.service.UserServiceImpl;
 import util.command.Command;
 
 import java.sql.SQLException;
@@ -19,6 +19,6 @@ public class LoginCommand implements Command<Optional<User<Employee>>> {
 
    @Override
    public Optional<User<Employee>> execute() throws SQLException {
-      return new UserAuth().login(username, password);
+      return new UserServiceImpl().login(username, password);
    }
 }

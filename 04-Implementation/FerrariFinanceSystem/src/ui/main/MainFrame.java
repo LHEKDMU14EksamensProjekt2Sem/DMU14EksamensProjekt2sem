@@ -69,10 +69,10 @@ public class MainFrame extends JFrame implements
    public void go(MainView view) {
       switch (view) {
          case LOGIN:
-            loginPanel.update();
+            loginPanel.enter();
             break;
          case MAIN_MENU:
-            mainMenuPanel.update();
+            mainMenuPanel.enter();
             break;
          default:
             throw new UnsupportedViewException(view);

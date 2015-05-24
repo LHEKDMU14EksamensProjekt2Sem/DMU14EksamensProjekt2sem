@@ -1,7 +1,7 @@
 package logic.session.main;
 
 import domain.Employee;
-import util.auth.User;
+import domain.User;
 
 import java.util.Optional;
 import java.util.function.Consumer;

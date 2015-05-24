@@ -3,6 +3,7 @@ package domain;
 import util.finance.Money;
 
 import java.sql.Date;
+import java.util.Optional;
 
 public class LoanRequest {
    private Sale sale;
@@ -10,8 +11,13 @@ public class LoanRequest {
    private Employee statusByEmployee;
    private Date date;
    private Money loanAmount;
-   private Money preferredRepayment;
-   private Integer preferredTerm;
+   private Optional<Money> prefRepayment;
+   private Optional<Integer> prefTerm;
+
+   public LoanRequest() {
+      prefRepayment = Optional.empty();
+      prefTerm = Optional.empty();
+   }
 
    public Sale getSale() {
       return sale;
@@ -53,27 +59,43 @@ public class LoanRequest {
       this.loanAmount = loanAmount;
    }
 
+   public Money getDownPayment() {
+      return sale.getSellingPrice().subtract(loanAmount);
+   }
+
+   public void setDownPayment(Money downPayment) {
+      loanAmount = sale.getSellingPrice().subtract(downPayment);
+   }
+
+   public double getDownPaymentPct() {
+      return (getDownPayment().doubleValue() / sale.getSellingPrice().doubleValue());
+   }
+
+   public void setDownPaymentPct(double pct) {
+      loanAmount = new Money(sale.getSellingPrice().doubleValue() * (1 - pct));
+   }
+
    public boolean hasPreferredRepayment() {
-      return (preferredRepayment != null);
+      return prefRepayment.isPresent();
    }
 
    public Money getPreferredRepayment() {
-      return preferredRepayment;
+      return prefRepayment.get();
    }
 
-   public void setPreferredRepayment(Money preferredRepayment) {
-      this.preferredRepayment = preferredRepayment;
+   public void setPreferredRepayment(Money prefRepayment) {
+      this.prefRepayment = Optional.ofNullable(prefRepayment);
    }
 
    public boolean hasPreferredTerm() {
-      return (preferredTerm != null);
+      return prefTerm.isPresent();
    }
 
    public Integer getPreferredTerm() {
-      return preferredTerm;
+      return prefTerm.get();
    }
 
-   public void setPreferredTerm(Integer preferredTerm) {
-      this.preferredTerm = preferredTerm;
+   public void setPreferredTerm(Integer prefTerm) {
+      this.prefTerm = Optional.ofNullable(prefTerm);
    }
 }

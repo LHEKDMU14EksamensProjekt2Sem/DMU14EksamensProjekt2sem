@@ -2,7 +2,7 @@ package logic.session.main;
 
 import domain.Employee;
 import logic.command.LoginCommand;
-import util.auth.User;
+import domain.User;
 import util.command.SwingCommand;
 
 import java.util.Optional;

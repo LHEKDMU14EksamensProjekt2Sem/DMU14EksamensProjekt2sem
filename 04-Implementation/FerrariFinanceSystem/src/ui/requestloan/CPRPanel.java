@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -41,15 +42,22 @@ public class CPRPanel extends JPanel {
       tfCPR = createTextField(12);
       // TODO: Use a document filter to restrict input to 0-10 digits
 
+      // Remove default action listener
+      for (ActionListener l : tfCPR.getActionListeners())
+         tfCPR.removeActionListener(l);
+
       tfCPR.addKeyListener(new KeyAdapter() {
          @Override
          public void keyReleased(KeyEvent e) {
             updateSearchButton();
             if (e.getKeyCode() == KeyEvent.VK_ENTER
-                    && tfCPR.getText().length() == 10)
+                    && validateCPR())
                fetchCreditRating();
          }
       });
+
+      // TODO REMOVE
+      tfCPR.setText("1504619887");
 
       btnSearch = UIFactory.createButton("Søg");
       btnSearch.addActionListener(e -> fetchCreditRating());
@@ -74,12 +82,16 @@ public class CPRPanel extends JPanel {
       add(btnSearch, gbc);
    }
 
-   public void update() {
+   public void enter() {
       // No-op
    }
 
    private void updateSearchButton() {
-      btnSearch.setEnabled(tfCPR.getText().length() == 10);
+      btnSearch.setEnabled(validateCPR());
+   }
+
+   private boolean validateCPR() {
+      return presenter.getFacade().validateCPR(tfCPR.getText());
    }
 
    private void fetchCreditRating() {
@@ -100,8 +112,8 @@ public class CPRPanel extends JPanel {
                     presenter.setMessage(msg);
                  }
               },
-              f -> {
-                 String msg = "Fejl: Kunne ikke hente kreditværdighed";
+              x -> {
+                 String msg = ":( Fejl: Kunne ikke hente kreditværdighed";
                  presenter.setMessage(msg);
               }
       );

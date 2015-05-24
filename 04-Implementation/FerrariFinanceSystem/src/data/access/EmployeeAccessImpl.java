@@ -67,10 +67,12 @@ public class EmployeeAccessImpl implements EmployeeAccess {
 	}
 
 	private static class SQL {
-		static final String INSERT_ONE = "INSERT INTO employee(id, role_id)"
-				+ "VALUES (?, (SELECT id FROM employee_role WHERE role = ?))";
+		static final String INSERT_ONE
+				= "INSERT INTO employee(id, role_id)"
+				+ " VALUES (?, (SELECT id FROM employee_role WHERE role = ?))";
 
-		static final String SELECT_ONE = "SELECT id, first_name, last_name, street, postal_code, city, phone, email, role"
+		static final String SELECT_ONE
+				= "SELECT id, first_name, last_name, street, postal_code, city, phone, email, role"
 				+ " FROM employee e"
 				+ " WHERE e.id = ?"
 				+ " JOIN person p"

@@ -12,10 +12,9 @@ public interface CPRController {
 
    Rating getCreditRating();
 
-   void specifyCPR(String cpr);
+   boolean validateCPR(String cpr);
 
-   void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
-                      Consumer<Throwable> exceptionConsumer);
+   void specifyCPR(String cpr);
 
    void fetchCreditRating(Consumer<Rating> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);

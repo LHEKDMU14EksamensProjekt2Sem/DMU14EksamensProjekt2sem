@@ -24,7 +24,7 @@ public class StartupCommand implements Command<Void> {
     */
    @Override
    public Void execute() throws IOException, SQLException {
-      if (Option.DESTROY.get())
+//      if (Option.DESTROY.get())
          DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
@@ -32,7 +32,7 @@ public class StartupCommand implements Command<Void> {
             try {
                new CreateDatabaseCommand(con).execute();
 
-               if (Option.SAMPLE.get())
+//               if (Option.SAMPLE.get())
                   new CreateSampleCommand(con).execute();
 
                con.commit();

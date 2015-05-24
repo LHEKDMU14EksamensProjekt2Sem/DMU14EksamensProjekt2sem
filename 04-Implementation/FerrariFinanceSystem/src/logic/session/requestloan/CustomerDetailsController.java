@@ -1,20 +1,41 @@
 package logic.session.requestloan;
 
+import domain.Customer;
+import domain.PostalCode;
+import exceptions.InvalidEmailException;
+import exceptions.InvalidNameException;
+import exceptions.InvalidPhoneException;
+import exceptions.InvalidPostalCodeException;
+import exceptions.InvalidStreetException;
+import exceptions.StreetMissingHouseNumberException;
+import exceptions.ValueRequiredException;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+
 public interface CustomerDetailsController {
-   void specifyFirstName(String firstName);
+   Customer getCustomer();
 
-   void specifyLastName(String lastName);
+   void specifyFirstName(String firstName) throws
+           InvalidNameException, ValueRequiredException;
 
-   void specifyStreet(String street);
+   void specifyLastName(String lastName) throws
+           InvalidNameException, ValueRequiredException;
 
-   void specifyPostalCode(String postalCode);
+   void specifyStreet(String street) throws
+           InvalidStreetException, StreetMissingHouseNumberException, ValueRequiredException;
 
-   void specifyPhone(String phone);
+   void specifyPostalCode(String postalCode,
+                          Consumer<Optional<PostalCode>> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer)
+           throws InvalidPostalCodeException, ValueRequiredException;
 
-   void specifyEmail(String email);
+   void specifyPhone(String phone) throws
+           InvalidPhoneException, ValueRequiredException;
 
-   /**
-    * Denne metode skal gemme den indtastede information i databasen
-    */
-   void saveCustomer();
+   void specifyEmail(String email) throws
+           InvalidEmailException, ValueRequiredException;
+
+   void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
+                      Consumer<Throwable> exceptionConsumer);
 }
