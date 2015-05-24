@@ -12,6 +12,8 @@ public interface RequestDetailsValidator {
 
    double getMaxDiscountPct();
 
+   int getMaxTermLength();
+
    Money validateDiscount(String discount, Money sellingPrice) throws
            ParseException, DiscountPctTooHighException;
 

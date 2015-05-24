@@ -9,6 +9,7 @@ import domain.LoanRequestStatus;
 import domain.Sale;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
+import exceptions.TermTooLongException;
 import logic.command.FetchCarModelsCommand;
 import logic.command.FetchCarsCommand;
 import logic.command.SubmitLoanRequestCommand;
@@ -209,13 +210,24 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    @Override
    public void specifyPreferredRepayment(String prefRepayment) throws
            ParseException {
-
+      String s = prefRepayment.trim();
+      Money amount = (s.isEmpty() ? null : validator.validatePreferredRepayment(s));
+      loanRequest.setPreferredRepayment(amount);
    }
 
    @Override
    public void specifyPreferredTerm(String prefTerm) throws
            ParseException {
-
+      String s = prefTerm.trim();
+      Integer term = null;
+      if (!s.isEmpty()) {
+         try {
+            term = validator.validatePreferredTerm(s);
+         } catch (TermTooLongException e) {
+            term = validator.getMaxTermLength();
+         }
+      }
+      loanRequest.setPreferredTerm(term);
    }
 
    @Override

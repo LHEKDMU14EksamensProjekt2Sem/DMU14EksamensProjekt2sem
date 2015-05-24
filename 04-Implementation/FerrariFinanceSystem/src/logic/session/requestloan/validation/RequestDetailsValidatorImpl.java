@@ -35,6 +35,11 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    }
 
    @Override
+   public int getMaxTermLength() {
+      return MAX_TERM_LENGTH;
+   }
+
+   @Override
    public Money validateDiscount(String discount, Money sellingPrice) throws
            ParseException, DiscountPctTooHighException {
       Money amount = new Money((BigDecimal) moneyFormat.parse(discount));
