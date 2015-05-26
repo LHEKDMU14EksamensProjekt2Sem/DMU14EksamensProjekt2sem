@@ -17,6 +17,20 @@ public class InterestRateCalculatorTest {
       calc = new InterestRateCalculator();
    }
 
+   @Test // TC-16
+   public void testDownPaymentPctBelow20ThrowsIllegalArgumentException() {
+      thrown.expect(IllegalArgumentException.class);
+      thrown.expectMessage("Down payment pct. must be >= 20%");
+
+      double overnightRate = 0.01;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 0.1999;
+      int term = 37;
+
+      double interestRate = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+   }
+
    @Test // TC-17
    public void testZeroTermThrowsIllegalArgumentException() {
       thrown.expect(IllegalArgumentException.class);
