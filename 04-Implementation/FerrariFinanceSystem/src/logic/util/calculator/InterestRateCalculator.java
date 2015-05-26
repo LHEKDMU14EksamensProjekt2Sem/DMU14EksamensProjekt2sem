@@ -34,6 +34,9 @@ public class InterestRateCalculator {
          case B:
             r += 2 * ONE_PCT;
             break;
+         case C:
+            r += 3 * ONE_PCT;
+            break;
          default:
             throw new IllegalArgumentException("Credit rating must be A, B, or C");
       }
