@@ -241,4 +241,20 @@ public class AnnuityCalculatorTest {
       Payment p = calc.computePayment(principal, interest, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
+
+   @Test // 16
+   public void test10TermPeriod10() {
+      Money principal = new Money(1000);
+      double interest = 0.10;
+      int term = 10;
+      int period = 1;
+
+      Money expAmount = new Money(104.64);
+      Money expPrincipalPaid = new Money(103.78);
+      Money expInterestPaid = new Money(0.86);
+      Money expEndingBalance = new Money(0);
+
+      Payment p = calc.computePayment(principal, interest, term, period);
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
+   }
 }
