@@ -14,6 +14,9 @@ public class InterestRateCalculator {
       if (creditRating == Rating.D)
          throw new IllegalArgumentException("Credit rating must be A, B, or C");
 
+      if (Double.isNaN(overnightRate))
+         throw new IllegalArgumentException("Overnight rate cannot be Double.NaN");
+
       return 0;
    }
 }
