@@ -26,6 +26,17 @@ public class InterestRateCalculator {
       if (overnightRate == Double.NEGATIVE_INFINITY)
          throw new IllegalArgumentException("Overnight rate cannot be Double.NEGATIVE_INFINITY");
 
-      return 0.03;
+      double r = overnightRate;
+
+      switch (creditRating) {
+         case A:
+            r += 0.01;
+            break;
+      }
+
+      if (term > 36)
+         r += 0.01;
+
+      return r;
    }
 }
