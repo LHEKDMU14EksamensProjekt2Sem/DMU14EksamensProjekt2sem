@@ -18,7 +18,7 @@ public class AnnuityCalculatorTest {
       calc = new AnnuityCalculator();
    }
 
-   @Test
+   @Test // TC-01
    public void testDefaultPaymentPeriod1() {
       Money principal = new Money(1000);
       double interest = 0.10;
@@ -37,7 +37,26 @@ public class AnnuityCalculatorTest {
       assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
    }
 
-   @Test
+   @Test // TC-02
+   public void testDefaultPaymentPeriod2() {
+      Money principal = new Money(1000);
+      double interest = 0.10;
+      int term = 2;
+      int period = 2;
+
+      Money expectedAmount = new Money(506.26);
+      Money expectedPrincipalPaid = new Money(502.07);
+      Money expectedInterestPaid = new Money(4.18);
+      Money expectedEndingBalance = new Money(0);
+
+      Payment p = calc.computePayment(principal, interest, term, period);
+      assertEquals("Amount", expectedAmount, p.getAmount());
+      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
+      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
+      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+   }
+
+   @Test // TC-08
    public void testPoint0049PrincipalThrowsIllegalArgumentException() {
       Money principal = new Money(0.0049);
       double interest = 0.10;
@@ -49,7 +68,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-09
    public void testZeroInterestThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = 0;
@@ -61,7 +80,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-10
    public void testZeroTermsThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = 0.10;
@@ -73,7 +92,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-11
    public void testPeriodZeroThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = 0.10;
@@ -85,7 +104,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-12
    public void testInterestPositiveInfinityThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = Double.POSITIVE_INFINITY;
@@ -97,7 +116,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-13
    public void testInterestNaNThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = Double.NaN;
@@ -109,7 +128,7 @@ public class AnnuityCalculatorTest {
       calc.computePayment(principal, interest, term, period);
    }
 
-   @Test
+   @Test // TC-14
    public void testPeriodGreaterThanTermThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
       double interest = 0.10;
