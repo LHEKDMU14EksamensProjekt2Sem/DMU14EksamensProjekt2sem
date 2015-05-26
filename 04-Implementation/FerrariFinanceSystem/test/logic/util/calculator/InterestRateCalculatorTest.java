@@ -30,4 +30,18 @@ public class InterestRateCalculatorTest {
       double interestRate = calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
+
+   @Test // TC-18
+   public void test100PctDownPaymentThrowsIllegalArgumentException() {
+      thrown.expect(IllegalArgumentException.class);
+      thrown.expectMessage("Down payment pct. must be < 100%");
+
+      double overnightRate = 0.01;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 1.00;
+      int term = 37;
+
+      double interestRate = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+   }
 }
