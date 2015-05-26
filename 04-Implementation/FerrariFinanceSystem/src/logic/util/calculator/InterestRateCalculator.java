@@ -11,6 +11,9 @@ public class InterestRateCalculator {
       if (downPaymentPct >= 1.00)
          throw new IllegalArgumentException("Down payment pct. must be < 100%");
 
+      if (creditRating == Rating.D)
+         throw new IllegalArgumentException("Credit rating must be A, B, or C");
+
       return 0;
    }
 }
