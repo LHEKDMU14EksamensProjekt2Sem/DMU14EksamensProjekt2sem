@@ -44,7 +44,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.1999;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -58,7 +58,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.50;
       int term = 0;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -72,7 +72,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 1.00;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -86,7 +86,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.50;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -100,7 +100,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.50;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -114,7 +114,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.50;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 
@@ -128,7 +128,7 @@ public class InterestRateCalculatorTest {
       double downPaymentPct = 0.50;
       int term = 37;
 
-      double interestRate = calc.computeInterestRate(
+      calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
 }
