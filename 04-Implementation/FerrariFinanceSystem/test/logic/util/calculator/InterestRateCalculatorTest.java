@@ -6,7 +6,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.*;
+
 public class InterestRateCalculatorTest {
+   final double DELTA = 0.00001;
+
    @Rule
    public ExpectedException thrown = ExpectedException.none();
 
@@ -15,6 +19,19 @@ public class InterestRateCalculatorTest {
    @Before
    public void setup() {
       calc = new InterestRateCalculator();
+   }
+
+   @Test // TC-01
+   public void testOvernight1PctCreditADown50PctTerm37Gives3PctRate() {
+      double overnightRate = 0.01;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 0.50;
+      int term = 37;
+
+      double expected = 0.03;
+      double actual = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+      assertEquals(expected, actual, DELTA);
    }
 
    @Test // TC-16
