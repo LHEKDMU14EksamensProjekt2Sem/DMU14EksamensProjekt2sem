@@ -58,4 +58,18 @@ public class InterestRateCalculatorTest {
       double interestRate = calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
+
+   @Test // TC-20
+   public void testNaNOvernightRateThrowsIllegalArgumentException() {
+      thrown.expect(IllegalArgumentException.class);
+      thrown.expectMessage("Overnight rate cannot be Double.NaN");
+
+      double overnightRate = Double.NaN;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 0.50;
+      int term = 37;
+
+      double interestRate = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+   }
 }
