@@ -17,6 +17,9 @@ public class InterestRateCalculator {
       if (Double.isNaN(overnightRate))
          throw new IllegalArgumentException("Overnight rate cannot be Double.NaN");
 
+      if (overnightRate == Double.POSITIVE_INFINITY)
+         throw new IllegalArgumentException("Overnight rate cannot be Double.POSITIVE_INFINITY");
+
       return 0;
    }
 }
