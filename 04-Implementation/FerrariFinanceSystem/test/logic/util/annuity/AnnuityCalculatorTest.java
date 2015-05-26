@@ -95,8 +95,8 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-08
-   public void testPoint01PrincipalThrowsIllegalArgumentException() {
-      Money principal = new Money(0.01);
+   public void testPoint0949PrincipalThrowsIllegalArgumentException() {
+      Money principal = new Money(0.0949);
       double interest = 0.10;
       int term = 2;
       int period = 1;
