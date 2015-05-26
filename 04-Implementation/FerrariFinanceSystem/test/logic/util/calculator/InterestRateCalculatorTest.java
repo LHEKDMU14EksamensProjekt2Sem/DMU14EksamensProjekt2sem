@@ -34,6 +34,19 @@ public class InterestRateCalculatorTest {
       assertEquals(expected, actual, DELTA);
    }
 
+   @Test // TC-02
+   public void testOvernight1PctCreditADown50PctTerm36Gives2PctRate() {
+      double overnightRate = 0.01;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 0.50;
+      int term = 36;
+
+      double expected = 0.02;
+      double actual = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+      assertEquals(expected, actual, DELTA);
+   }
+
    @Test // TC-16
    public void testDownPaymentPctBelow20ThrowsIllegalArgumentException() {
       thrown.expect(IllegalArgumentException.class);
