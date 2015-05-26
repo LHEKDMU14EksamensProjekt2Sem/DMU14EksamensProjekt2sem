@@ -20,6 +20,9 @@ public class InterestRateCalculator {
       if (overnightRate == Double.POSITIVE_INFINITY)
          throw new IllegalArgumentException("Overnight rate cannot be Double.POSITIVE_INFINITY");
 
+      if (overnightRate == Double.NEGATIVE_INFINITY)
+         throw new IllegalArgumentException("Overnight rate cannot be Double.NEGATIVE_INFINITY");
+
       return 0;
    }
 }
