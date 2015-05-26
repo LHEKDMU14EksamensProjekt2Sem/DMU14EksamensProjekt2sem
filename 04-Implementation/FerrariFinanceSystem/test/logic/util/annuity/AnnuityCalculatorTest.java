@@ -11,11 +11,23 @@ import static org.junit.Assert.*;
 public class AnnuityCalculatorTest {
    @Rule
    public ExpectedException thrown = ExpectedException.none();
+
    AnnuityCalculator calc;
 
    @Before
    public void setup() {
       calc = new AnnuityCalculator();
+   }
+
+   private void doAsserts(Payment p,
+                          Money expAmount,
+                          Money expPrincipalPaid,
+                          Money expInterestPaid,
+                          Money expEndingBalance) {
+      assertEquals("Amount", expAmount, p.getAmount());
+      assertEquals("Principal paid", expPrincipalPaid, p.getPrincipalPaid());
+      assertEquals("Interest paid", expInterestPaid, p.getInterestPaid());
+      assertEquals("Ending balance", expEndingBalance, p.getEndingBalance());
    }
 
    @Test // TC-01
@@ -25,16 +37,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 1;
 
-      Money expectedAmount = new Money(506.26);
-      Money expectedPrincipalPaid = new Money(497.93);
-      Money expectedInterestPaid = new Money(8.33);
-      Money expectedEndingBalance = new Money(502.07);
+      Money expAmount = new Money(506.26);
+      Money expPrincipalPaid = new Money(497.93);
+      Money expInterestPaid = new Money(8.33);
+      Money expEndingBalance = new Money(502.07);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-02
@@ -44,16 +53,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 2;
 
-      Money expectedAmount = new Money(506.26);
-      Money expectedPrincipalPaid = new Money(502.07);
-      Money expectedInterestPaid = new Money(4.18);
-      Money expectedEndingBalance = new Money(0);
+      Money expAmount = new Money(506.26);
+      Money expPrincipalPaid = new Money(502.07);
+      Money expInterestPaid = new Money(4.18);
+      Money expEndingBalance = new Money(0);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-03
@@ -63,16 +69,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 1;
 
-      Money expectedAmount = new Money(0.06);
-      Money expectedPrincipalPaid = new Money(0.05);
-      Money expectedInterestPaid = new Money(0.01);
-      Money expectedEndingBalance = new Money(0.05);
+      Money expAmount = new Money(0.06);
+      Money expPrincipalPaid = new Money(0.05);
+      Money expInterestPaid = new Money(0.01);
+      Money expEndingBalance = new Money(0.05);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-04
@@ -82,16 +85,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 2;
 
-      Money expectedAmount = new Money(0.06);
-      Money expectedPrincipalPaid = new Money(0.05);
-      Money expectedInterestPaid = new Money(0);
-      Money expectedEndingBalance = new Money(0);
+      Money expAmount = new Money(0.06);
+      Money expPrincipalPaid = new Money(0.05);
+      Money expInterestPaid = new Money(0);
+      Money expEndingBalance = new Money(0);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-05
@@ -101,16 +101,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 1;
 
-      Money expectedAmount = new Money(500);
-      Money expectedPrincipalPaid = new Money(500);
-      Money expectedInterestPaid = new Money(0);
-      Money expectedEndingBalance = new Money(500);
+      Money expAmount = new Money(500);
+      Money expPrincipalPaid = new Money(500);
+      Money expInterestPaid = new Money(0);
+      Money expEndingBalance = new Money(500);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-06
@@ -120,16 +117,13 @@ public class AnnuityCalculatorTest {
       int term = 2;
       int period = 2;
 
-      Money expectedAmount = new Money(500);
-      Money expectedPrincipalPaid = new Money(500);
-      Money expectedInterestPaid = new Money(0);
-      Money expectedEndingBalance = new Money(0);
+      Money expAmount = new Money(500);
+      Money expPrincipalPaid = new Money(500);
+      Money expInterestPaid = new Money(0);
+      Money expEndingBalance = new Money(0);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-07
@@ -139,16 +133,13 @@ public class AnnuityCalculatorTest {
       int term = 1;
       int period = 1;
 
-      Money expectedAmount = new Money(1008.33);
-      Money expectedPrincipalPaid = new Money(1000);
-      Money expectedInterestPaid = new Money(8.33);
-      Money expectedEndingBalance = new Money(0);
+      Money expAmount = new Money(1008.33);
+      Money expPrincipalPaid = new Money(1000);
+      Money expInterestPaid = new Money(8.33);
+      Money expEndingBalance = new Money(0);
 
       Payment p = calc.computePayment(principal, interest, term, period);
-      assertEquals("Amount", expectedAmount, p.getAmount());
-      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
-      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-08
