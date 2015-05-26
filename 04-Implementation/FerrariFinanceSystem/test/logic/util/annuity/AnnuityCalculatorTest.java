@@ -132,6 +132,25 @@ public class AnnuityCalculatorTest {
       assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
    }
 
+   @Test // TC-07
+   public void testMinimumTerm() {
+      Money principal = new Money(1000);
+      double interest = 0.10;
+      int term = 1;
+      int period = 1;
+
+      Money expectedAmount = new Money(1008.33);
+      Money expectedPrincipalPaid = new Money(1000);
+      Money expectedInterestPaid = new Money(8.33);
+      Money expectedEndingBalance = new Money(0);
+
+      Payment p = calc.computePayment(principal, interest, term, period);
+      assertEquals("Amount", expectedAmount, p.getAmount());
+      assertEquals("Principal paid", expectedPrincipalPaid, p.getPrincipalPaid());
+      assertEquals("Interest paid", expectedInterestPaid, p.getInterestPaid());
+      assertEquals("Ending balance", expectedEndingBalance, p.getEndingBalance());
+   }
+
    @Test // TC-08
    public void testPoint0949PrincipalThrowsIllegalArgumentException() {
       Money principal = new Money(0.0949);
