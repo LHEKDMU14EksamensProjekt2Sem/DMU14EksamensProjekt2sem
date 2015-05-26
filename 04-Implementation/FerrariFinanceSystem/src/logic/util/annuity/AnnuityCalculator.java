@@ -2,10 +2,19 @@ package logic.util.annuity;
 
 import util.finance.Money;
 
-import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnnuityCalculator {
    public Payment computePayment(Money principal, double interest, int term, int period) {
+      return computePayments(principal, interest, term, period).get(period - 1);
+   }
+
+   public List<Payment> computePayments(Money principal, double interest, int term) {
+      return computePayments(principal, interest, term, term);
+   }
+
+   private List<Payment> computePayments(Money principal, double interest, int term, int period) {
       if (principal.doubleValue() < 0.10)
          throw new IllegalArgumentException("principal must be >= 0.10");
 
@@ -36,18 +45,20 @@ public class AnnuityCalculator {
       double demoninator = (1 - partial);
       double c = (r * principal.doubleValue() / demoninator);
 
-      Money balance = null;
-      Money endingBalance = principal;
+      Money balance = principal;
       Money amount = new Money(c);
-      Money principalPaid = null;
-      Money interestPaid = null;
+      List<Payment> payments = new ArrayList<>();
+
       for (int i = 0; i < period; i++) {
-         balance = endingBalance;
-         interestPaid = new Money(endingBalance.doubleValue() * r, RoundingMode.HALF_UP);
-         principalPaid = new Money(c - endingBalance.doubleValue() * r, RoundingMode.HALF_UP);
-         endingBalance = endingBalance.subtract(principalPaid);
+         Money principalPaid = new Money(c - balance.doubleValue() * r);
+         Money interestPaid = new Money(balance.doubleValue() * r);
+
+         payments.add(
+                 new Payment(balance, amount, principalPaid, interestPaid));
+
+         balance = balance.subtract(principalPaid);
       }
 
-      return new Payment(balance, amount, principalPaid, interestPaid);
+      return payments;
    }
 }
