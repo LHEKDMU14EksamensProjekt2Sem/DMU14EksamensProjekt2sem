@@ -86,4 +86,18 @@ public class InterestRateCalculatorTest {
       double interestRate = calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
+
+   @Test // TC-22
+   public void testNegInftyOvernightRateThrowsIllegalArgumentException() {
+      thrown.expect(IllegalArgumentException.class);
+      thrown.expectMessage("Overnight rate cannot be Double.NEGATIVE_INFINITY");
+
+      double overnightRate = Double.NEGATIVE_INFINITY;
+      Rating creditRating = Rating.A;
+      double downPaymentPct = 0.50;
+      int term = 37;
+
+      double interestRate = calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+   }
 }
