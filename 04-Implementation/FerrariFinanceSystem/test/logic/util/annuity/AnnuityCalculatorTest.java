@@ -31,7 +31,7 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-01
-   public void testDefaultPaymentPeriod1() {
+   public void test2TermPeriod1() {
       Money principal = new Money(1000);
       double interest = 0.10;
       int term = 2;
@@ -47,7 +47,7 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-02
-   public void testDefaultPaymentPeriod2() {
+   public void test2TermPeriod2() {
       Money principal = new Money(1000);
       double interest = 0.10;
       int term = 2;
