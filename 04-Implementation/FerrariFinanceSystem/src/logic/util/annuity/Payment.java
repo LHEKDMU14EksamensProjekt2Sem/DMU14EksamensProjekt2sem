@@ -5,11 +5,13 @@ import util.finance.Money;
 public class Payment {
    private final Money balance;
    private final Money amount;
+   private final Money principalPaid;
    private final Money interestPaid;
 
-   public Payment(Money balance, Money amount, Money interestPaid) {
+   public Payment(Money balance, Money amount, Money principalPaid, Money interestPaid) {
       this.balance = balance;
       this.amount = amount;
+      this.principalPaid = principalPaid;
       this.interestPaid = interestPaid;
    }
 
@@ -21,12 +23,12 @@ public class Payment {
       return amount;
    }
 
-   public Money getInterestPaid() {
-      return interestPaid;
+   public Money getPrincipalPaid() {
+      return principalPaid;
    }
 
-   public Money getPrincipalPaid() {
-      return amount.subtract(interestPaid);
+   public Money getInterestPaid() {
+      return interestPaid;
    }
 
    public Money getEndingBalance() {

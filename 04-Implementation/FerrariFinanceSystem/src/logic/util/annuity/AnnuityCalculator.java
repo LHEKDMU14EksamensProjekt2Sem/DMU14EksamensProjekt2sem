@@ -2,6 +2,8 @@ package logic.util.annuity;
 
 import util.finance.Money;
 
+import java.math.RoundingMode;
+
 public class AnnuityCalculator {
    public Payment computePayment(Money principal, double interest, int term, int period) {
       if (principal.doubleValue() < 0.01)
@@ -25,20 +27,6 @@ public class AnnuityCalculator {
       if (period > term)
          throw new IllegalArgumentException("period must be <= term");
 
-//   double I, partial1, denominator, answer;
-//
-//   numPeriods *= 12;        //get number of months
-//   if (rate > 0.01) {
-//      I = rate / 100.0 / 12.0;         //get monthly rate from annual
-//      partial1 = Math.pow((1 + I), (0.0 - numPeriods));
-//      denominator = (1 - partial1) / I;
-//   } else { //rate ~= 0
-//      denominator = numPeriods;
-//   }
-//
-//   answer = (-1 * loanAmt) / denominator;
-
-
       /**
        * c = (r * P0) / (1 - (1 + r)^(-N))
        * https://en.wikipedia.org/wiki/Fixed-rate_mortgage
@@ -48,9 +36,18 @@ public class AnnuityCalculator {
       double demoninator = (1 - partial);
       double c = (r * principal.doubleValue() / demoninator);
 
+      Money balance = null;
+      Money endingBalance = principal;
       Money amount = new Money(c);
-      Money interestPaid = new Money(principal.doubleValue() * r);
+      Money principalPaid = null;
+      Money interestPaid = null;
+      for (int i = 0; i < period; i++) {
+         balance = endingBalance;
+         interestPaid = new Money(endingBalance.doubleValue() * r, RoundingMode.HALF_UP);
+         principalPaid = new Money(c - endingBalance.doubleValue() * r, RoundingMode.HALF_UP);
+         endingBalance = endingBalance.subtract(principalPaid);
+      }
 
-      return new Payment(principal, amount, interestPaid);
+      return new Payment(balance, amount, principalPaid, interestPaid);
    }
 }

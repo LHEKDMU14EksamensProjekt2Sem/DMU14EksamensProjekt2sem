@@ -1,6 +1,7 @@
 package util.finance;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static java.math.RoundingMode.*;
 
@@ -14,15 +15,27 @@ public final class Money {
    }
 
    public Money(double amount) {
-      this(new BigDecimal(amount));
+      this(amount, HALF_UP);
+   }
+
+   public Money(double amount, RoundingMode roundingMode) {
+      this(new BigDecimal(amount), roundingMode);
    }
 
    public Money(BigDecimal amount) {
-      this.amount = scale(amount);
+      this(amount, HALF_UP);
+   }
+
+   public Money(BigDecimal amount, RoundingMode roundingMode) {
+      this.amount = scale(amount, roundingMode);
    }
 
    private static BigDecimal scale(BigDecimal amount) {
       return amount.setScale(2, HALF_UP);
+   }
+
+   private static BigDecimal scale(BigDecimal amount, RoundingMode roundingMode) {
+      return amount.setScale(2, roundingMode);
    }
 
    public Money add(Money augend) {
