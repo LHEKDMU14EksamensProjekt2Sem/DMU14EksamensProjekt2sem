@@ -64,15 +64,15 @@ public class AnnuityCalculatorTest {
 
    @Test // TC-03
    public void testMinimumAmountPeriod1() {
-      Money principal = new Money(0.10);
+      Money principal = new Money(0.01);
       double interest = 1;
       int term = 2;
       int period = 1;
 
-      Money expAmount = new Money(0.06);
-      Money expPrincipalPaid = new Money(0.05);
-      Money expInterestPaid = new Money(0.01);
-      Money expEndingBalance = new Money(0.05);
+      Money expAmount = new Money(0.01);
+      Money expPrincipalPaid = new Money(0.00);
+      Money expInterestPaid = new Money(0.00);
+      Money expEndingBalance = new Money(0.01);
 
       Payment p = calc.computePayment(principal, interest, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
@@ -80,13 +80,13 @@ public class AnnuityCalculatorTest {
 
    @Test // TC-04
    public void testMinimumAmountPeriod2() {
-      Money principal = new Money(0.10);
+      Money principal = new Money(0.01);
       double interest = 1;
       int term = 2;
       int period = 2;
 
-      Money expAmount = new Money(0.06);
-      Money expPrincipalPaid = new Money(0.05);
+      Money expAmount = new Money(0.01);
+      Money expPrincipalPaid = new Money(0.01);
       Money expInterestPaid = new Money(0);
       Money expEndingBalance = new Money(0);
 
@@ -143,14 +143,14 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-08
-   public void testPoint0949PrincipalThrowsIllegalArgumentException() {
-      Money principal = new Money(0.0949);
+   public void testPoint004PrincipalThrowsIllegalArgumentException() {
+      Money principal = new Money(0.004);
       double interest = 0.10;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("principal must be >= 0.10");
+      thrown.expectMessage("principal must be >= 0.01");
       calc.computePayment(principal, interest, term, period);
    }
 
