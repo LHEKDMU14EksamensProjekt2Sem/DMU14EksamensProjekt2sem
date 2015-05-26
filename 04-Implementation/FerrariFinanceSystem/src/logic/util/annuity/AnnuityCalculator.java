@@ -6,8 +6,8 @@ import java.math.RoundingMode;
 
 public class AnnuityCalculator {
    public Payment computePayment(Money principal, double interest, int term, int period) {
-      if (principal.doubleValue() < 0.01)
-         throw new IllegalArgumentException("principal must be >= 0.01");
+      if (principal.doubleValue() < 0.10)
+         throw new IllegalArgumentException("principal must be >= 0.10");
 
       if (interest <= 0)
          throw new IllegalArgumentException("interest must be > 0");

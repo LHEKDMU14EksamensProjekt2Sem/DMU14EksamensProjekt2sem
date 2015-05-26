@@ -58,15 +58,15 @@ public class AnnuityCalculatorTest {
 
    @Test // TC-03
    public void testMinimumAmountPeriod1() {
-      Money principal = new Money(0.005);
-      double interest = 100;
+      Money principal = new Money(0.10);
+      double interest = 1;
       int term = 2;
       int period = 1;
 
-      Money expectedAmount = new Money(0.08);
-      Money expectedPrincipalPaid = new Money(0);
-      Money expectedInterestPaid = new Money(0.08);
-      Money expectedEndingBalance = new Money(0.01);
+      Money expectedAmount = new Money(0.06);
+      Money expectedPrincipalPaid = new Money(0.05);
+      Money expectedInterestPaid = new Money(0.01);
+      Money expectedEndingBalance = new Money(0.05);
 
       Payment p = calc.computePayment(principal, interest, term, period);
       assertEquals("Amount", expectedAmount, p.getAmount());
@@ -77,14 +77,14 @@ public class AnnuityCalculatorTest {
 
    @Test // TC-04
    public void testMinimumAmountPeriod2() {
-      Money principal = new Money(0.005);
-      double interest = 100;
+      Money principal = new Money(0.10);
+      double interest = 1;
       int term = 2;
       int period = 2;
 
-      Money expectedAmount = new Money(0.08);
-      Money expectedPrincipalPaid = new Money(0.01);
-      Money expectedInterestPaid = new Money(0.08);
+      Money expectedAmount = new Money(0.06);
+      Money expectedPrincipalPaid = new Money(0.05);
+      Money expectedInterestPaid = new Money(0);
       Money expectedEndingBalance = new Money(0);
 
       Payment p = calc.computePayment(principal, interest, term, period);
@@ -95,14 +95,14 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-08
-   public void testPoint0049PrincipalThrowsIllegalArgumentException() {
-      Money principal = new Money(0.0049);
+   public void testPoint01PrincipalThrowsIllegalArgumentException() {
+      Money principal = new Money(0.01);
       double interest = 0.10;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("principal must be >= 0.01");
+      thrown.expectMessage("principal must be >= 0.10");
       calc.computePayment(principal, interest, term, period);
    }
 
