@@ -247,7 +247,7 @@ public class AnnuityCalculatorTest {
       Money principal = new Money(1000);
       double interest = 0.10;
       int term = 10;
-      int period = 1;
+      int period = 10;
 
       Money expAmount = new Money(104.64);
       Money expPrincipalPaid = new Money(103.78);
