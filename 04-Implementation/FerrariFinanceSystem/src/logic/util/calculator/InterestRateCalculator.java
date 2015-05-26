@@ -3,6 +3,8 @@ package logic.util.calculator;
 import com.ferrari.finances.dk.rki.Rating;
 
 public class InterestRateCalculator {
+   private static final double ONE_PCT = 0.01;
+
    double computeInterestRate(double overnightRate, Rating creditRating,
                               double downPaymentPct, int term) {
       if (term <= 0)
@@ -13,9 +15,6 @@ public class InterestRateCalculator {
 
       if (downPaymentPct >= 1.00)
          throw new IllegalArgumentException("Down payment pct. must be < 100%");
-
-      if (creditRating == Rating.D)
-         throw new IllegalArgumentException("Credit rating must be A, B, or C");
 
       if (Double.isNaN(overnightRate))
          throw new IllegalArgumentException("Overnight rate cannot be Double.NaN");
@@ -30,12 +29,14 @@ public class InterestRateCalculator {
 
       switch (creditRating) {
          case A:
-            r += 0.01;
+            r += ONE_PCT;
             break;
+         default:
+            throw new IllegalArgumentException("Credit rating must be A, B, or C");
       }
 
       if (term > 36)
-         r += 0.01;
+         r += ONE_PCT;
 
       return r;
    }
