@@ -1,4 +1,4 @@
-package logic.util.annuity;
+package logic.util.calculator;
 
 import org.junit.Before;
 import org.junit.Rule;
