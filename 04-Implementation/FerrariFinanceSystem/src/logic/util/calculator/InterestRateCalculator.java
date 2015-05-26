@@ -8,6 +8,9 @@ public class InterestRateCalculator {
       if (term <= 0)
          throw new IllegalArgumentException("Term must be > 0");
 
+      if (downPaymentPct >= 1.00)
+         throw new IllegalArgumentException("Down payment pct. must be < 100%");
+
       return 0;
    }
 }
