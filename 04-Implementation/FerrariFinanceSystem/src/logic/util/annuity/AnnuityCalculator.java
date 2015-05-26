@@ -42,21 +42,24 @@ public class AnnuityCalculator {
        */
       double r = (interest / 12);
       double partial = Math.pow(1 + r, -term);
-      double demoninator = (1 - partial);
-      double c = (r * principal.doubleValue() / demoninator);
+      double denominator = (1 - partial);
+      double c = (r * principal.doubleValue() / denominator);
 
-      Money balance = principal;
-      Money amount = new Money(c);
+      double balance = principal.doubleValue();
       List<Payment> payments = new ArrayList<>();
 
       for (int i = 0; i < period; i++) {
-         Money principalPaid = new Money(c - balance.doubleValue() * r);
-         Money interestPaid = new Money(balance.doubleValue() * r);
+         double principalPaid = (c - balance * r);
+         double interestPaid = (balance * r);
 
          payments.add(
-                 new Payment(balance, amount, principalPaid, interestPaid));
+                 new Payment(
+                         new Money(balance),
+                         new Money(c),
+                         new Money(principalPaid),
+                         new Money(interestPaid)));
 
-         balance = balance.subtract(principalPaid);
+         balance -= principalPaid;
       }
 
       return payments;
