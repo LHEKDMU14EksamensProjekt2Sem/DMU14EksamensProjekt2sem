@@ -225,4 +225,20 @@ public class AnnuityCalculatorTest {
       thrown.expectMessage("period must be <= term");
       calc.computePayment(principal, interest, term, period);
    }
+
+   @Test // TC-15
+   public void test10TermPeriod1() {
+      Money principal = new Money(1000);
+      double interest = 0.10;
+      int term = 10;
+      int period = 1;
+
+      Money expAmount = new Money(104.64);
+      Money expPrincipalPaid = new Money(96.31);
+      Money expInterestPaid = new Money(8.33);
+      Money expEndingBalance = new Money(903.69);
+
+      Payment p = calc.computePayment(principal, interest, term, period);
+      doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
+   }
 }
