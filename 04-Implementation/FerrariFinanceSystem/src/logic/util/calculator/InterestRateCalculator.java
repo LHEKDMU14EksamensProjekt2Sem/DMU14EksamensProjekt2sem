@@ -35,6 +35,9 @@ public class InterestRateCalculator {
             throw new IllegalArgumentException("Credit rating must be A, B, or C");
       }
 
+      if (downPaymentPct < 0.50)
+         r += ONE_PCT;
+
       if (term > 36)
          r += ONE_PCT;
 
