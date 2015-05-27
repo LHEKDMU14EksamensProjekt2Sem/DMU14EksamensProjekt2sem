@@ -331,7 +331,7 @@ public class InterestRateCalculatorTest {
    @Test // TC-24
    public void testNullRatingThrowsNullPointerException() {
       thrown.expect(NullPointerException.class);
-      thrown.expectMessage("Rating cannot be null");
+      thrown.expectMessage("Credit rating cannot be null");
 
       double overnightRate = 0.01;
       Rating creditRating = null;
