@@ -242,7 +242,7 @@ public class AnnuityCalculatorTest {
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
-   @Test // 16
+   @Test // TC-16
    public void test10TermPeriod10() {
       Money principal = new Money(1000);
       double interest = 0.10;
@@ -256,5 +256,17 @@ public class AnnuityCalculatorTest {
 
       Payment p = calc.computePayment(principal, interest, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
+   }
+
+   @Test // TC-17
+   public void testPrincipalNullThrowsIllegalArgumentException() {
+      Money principal = null;
+      double interest = 0.10;
+      int term = 2;
+      int period = 1;
+
+      thrown.expect(IllegalArgumentException.class);
+      thrown.expectMessage("principal cannot be null");
+      calc.computePayment(principal, interest, term, period);
    }
 }
