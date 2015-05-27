@@ -327,4 +327,18 @@ public class InterestRateCalculatorTest {
       calc.computeInterestRate(
               overnightRate, creditRating, downPaymentPct, term);
    }
+
+   @Test // TC-24
+   public void testNullRatingThrowsNullPointerException() {
+      thrown.expect(NullPointerException.class);
+      thrown.expectMessage("Rating cannot be null");
+
+      double overnightRate = 0.01;
+      Rating creditRating = null;
+      double downPaymentPct = 0.50;
+      int term = 37;
+
+      calc.computeInterestRate(
+              overnightRate, creditRating, downPaymentPct, term);
+   }
 }
