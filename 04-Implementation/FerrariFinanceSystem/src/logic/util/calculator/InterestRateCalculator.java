@@ -16,6 +16,9 @@ public class InterestRateCalculator {
       if (downPaymentPct >= 1.00)
          throw new IllegalArgumentException("Down payment pct. must be < 100%");
 
+      if (Double.isNaN(downPaymentPct))
+         throw new IllegalArgumentException("Down payment pct. cannot be Double.NaN");
+
       if (Double.isNaN(overnightRate))
          throw new IllegalArgumentException("Overnight rate cannot be Double.NaN");
 
