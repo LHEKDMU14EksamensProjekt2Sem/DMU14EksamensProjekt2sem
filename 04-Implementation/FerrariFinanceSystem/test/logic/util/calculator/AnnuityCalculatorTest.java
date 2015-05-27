@@ -259,13 +259,13 @@ public class AnnuityCalculatorTest {
    }
 
    @Test // TC-17
-   public void testPrincipalNullThrowsIllegalArgumentException() {
+   public void testPrincipalNullThrowsNullPointerException() {
       Money principal = null;
       double interest = 0.10;
       int term = 2;
       int period = 1;
 
-      thrown.expect(IllegalArgumentException.class);
+      thrown.expect(NullPointerException.class);
       thrown.expectMessage("principal cannot be null");
       calc.computePayment(principal, interest, term, period);
    }
