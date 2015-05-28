@@ -16,7 +16,7 @@ public class AnnuityCalculator {
 
    private List<Payment> computePayments(Money principal, double interest, int term, int period) {
       if (principal == null)
-         throw new IllegalArgumentException("principal cannot be null");
+         throw new NullPointerException("principal cannot be null");
 
       if (principal.doubleValue() < 0.01)
          throw new IllegalArgumentException("principal must be >= 0.01");

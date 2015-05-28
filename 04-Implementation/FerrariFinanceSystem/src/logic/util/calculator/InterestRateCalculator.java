@@ -7,6 +7,9 @@ public class InterestRateCalculator {
 
    double computeInterestRate(double overnightRate, Rating creditRating,
                               double downPaymentPct, int term) {
+      if (creditRating == null)
+         throw new NullPointerException("Credit rating cannot be null");
+
       if (term <= 0)
          throw new IllegalArgumentException("Term must be > 0");
 
