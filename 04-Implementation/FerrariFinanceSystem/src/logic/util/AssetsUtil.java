@@ -38,7 +38,7 @@ public class AssetsUtil {
               "loan_request_status",
               "loan_request",
               "loan_offer",
-              "loan_offer_repayment",
+              "loan_offer_payment",
               "car_model",
               "car_config",
               "car",

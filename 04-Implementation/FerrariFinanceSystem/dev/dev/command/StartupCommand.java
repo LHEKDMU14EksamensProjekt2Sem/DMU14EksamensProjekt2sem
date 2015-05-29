@@ -25,7 +25,7 @@ public class StartupCommand implements Command<Void> {
    @Override
    public Void execute() throws IOException, SQLException {
 //      if (Option.DESTROY.get())
-         DataUtil.destroyDatabase();
+//         DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionService.connect()) {

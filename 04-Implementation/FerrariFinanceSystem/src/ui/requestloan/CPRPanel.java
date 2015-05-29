@@ -57,7 +57,7 @@ public class CPRPanel extends JPanel {
       });
 
       // TODO REMOVE
-      tfCPR.setText("1504619887");
+//      tfCPR.setText("1504619887");
 
       btnSearch = UIFactory.createButton("Søg");
       btnSearch.addActionListener(e -> fetchCreditRating());

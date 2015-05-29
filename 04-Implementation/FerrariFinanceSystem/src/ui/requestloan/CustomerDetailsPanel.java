@@ -195,12 +195,12 @@ public class CustomerDetailsPanel extends JPanel {
       lblEmailError = createErrorLabel();
 
       // TODO REMOVE
-      tfFirstName.setText("John");
-      tfLastName.setText("Doe");
-      tfStreet.setText("Vejlealle 34");
-      tfPostalCode.setText("9000");
-      tfPhone.setText("12345678");
-      tfEmail.setText("e@mail.com");
+//      tfFirstName.setText("John");
+//      tfLastName.setText("Doe");
+//      tfStreet.setText("Vejlealle 34");
+//      tfPostalCode.setText("9000");
+//      tfPhone.setText("12345678");
+//      tfEmail.setText("e@mail.com");
    }
 
    private void layoutComponents() {

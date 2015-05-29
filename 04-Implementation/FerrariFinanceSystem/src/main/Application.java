@@ -23,6 +23,7 @@ public class Application {
          invokeMainFrame();
       } catch (Exception e) {
          System.out.println("Fatal error: Database setup failed: " + e);
+         e.printStackTrace();
          System.exit(2);
       }
    }
