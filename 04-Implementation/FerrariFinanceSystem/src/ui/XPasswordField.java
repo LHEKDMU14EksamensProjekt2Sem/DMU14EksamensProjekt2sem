@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 public class XPasswordField extends JPasswordField {
    private static final Color
            GRAY = new Color(160, 160, 160),
-           GREEN = new Color(60, 180, 30),
            RED = new Color(220, 60, 30);
 
    private boolean valid;
@@ -21,7 +20,6 @@ public class XPasswordField extends JPasswordField {
    public XPasswordField(int columns) {
       super(columns);
       resetBorderColor();
-
       addFocusListener(new FocusAdapter() {
          @Override
          public void focusGained(FocusEvent e) {
@@ -66,7 +64,7 @@ public class XPasswordField extends JPasswordField {
    }
 
    private void updateBorderColor() {
-      setBorderColor(valid ? GREEN : RED);
+      setBorderColor(valid ? GRAY : RED);
    }
 
    private void resetBorderColor() {

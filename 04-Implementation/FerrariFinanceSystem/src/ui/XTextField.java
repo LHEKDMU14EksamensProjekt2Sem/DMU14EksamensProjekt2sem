@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 public class XTextField extends JTextField {
    private static final Color
            GRAY = new Color(160, 160, 160),
-           GREEN = new Color(60, 180, 30),
            RED = new Color(220, 60, 30);
 
    private boolean delayedValidation;
@@ -22,9 +21,6 @@ public class XTextField extends JTextField {
    public XTextField(int columns) {
       super(columns);
       resetBorderColor();
-
-      addActionListener(e -> transferFocus());
-
       addFocusListener(new FocusAdapter() {
          @Override
          public void focusGained(FocusEvent e) {
@@ -80,7 +76,7 @@ public class XTextField extends JTextField {
    }
 
    private void updateBorderColor() {
-      setBorderColor(valid ? GREEN : RED);
+      setBorderColor(valid ? GRAY : RED);
    }
 
    private void resetBorderColor() {
