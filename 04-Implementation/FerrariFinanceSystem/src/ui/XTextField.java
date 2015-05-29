@@ -17,6 +17,7 @@ public class XTextField extends JTextField {
 
    private boolean delayedValidation;
    private boolean valid;
+   private String lastSetText;
 
    public XTextField(int columns) {
       super(columns);
@@ -38,6 +39,11 @@ public class XTextField extends JTextField {
 
          @Override
          public boolean shouldYieldFocus(JComponent input) {
+            // Return true if input has not changed
+            // since last set text
+            if (!hasChanged())
+               return true;
+
             // Invalid until verified
             valid = false;
             verifier.accept((XTextField) input);
@@ -66,6 +72,16 @@ public class XTextField extends JTextField {
       valid = flag;
       delayedValidation = false;
       updateBorderColor();
+   }
+
+   @Override
+   public void setText(String text) {
+      super.setText(text);
+      lastSetText = text;
+   }
+
+   private boolean hasChanged() {
+      return !getText().equals(lastSetText);
    }
 
    private void setBorderColor(Color color) {
