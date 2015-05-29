@@ -1,4 +1,4 @@
-package logic.util.calculator;
+package logic.calculator;
 
 import util.finance.Money;
 

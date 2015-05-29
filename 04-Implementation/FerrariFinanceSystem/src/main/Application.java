@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 public class Application {
    private static final String
            NAME = "Ferrari Finance System",
-           VERSION = "0.2";
+           VERSION = "0.3";
 
    private MainFacade facade;
 
