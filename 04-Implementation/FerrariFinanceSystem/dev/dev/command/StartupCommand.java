@@ -32,8 +32,11 @@ public class StartupCommand implements Command<Void> {
             try {
                new CreateDatabaseCommand(con).execute();
 
-               if (Option.SAMPLE.get())
-                  new CreateSampleCommand(con).execute();
+               if (Option.SAMPLE.get()) {
+                  new CreateEmployeeSampleCommand(con).execute();
+                  new CreateCustomerSampleCommand(con).execute();
+                  new CreateCarSampleCommand(con).execute();
+               }
 
                con.commit();
             } catch (SQLException e) {
