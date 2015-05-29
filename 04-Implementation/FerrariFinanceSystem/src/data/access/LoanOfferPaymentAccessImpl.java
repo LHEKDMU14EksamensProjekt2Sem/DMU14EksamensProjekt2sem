@@ -2,10 +2,13 @@ package data.access;
 
 import domain.LoanOffer;
 import domain.LoanOfferPayment;
+import util.finance.Money;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoanOfferPaymentAccessImpl implements LoanOfferPaymentAccess {
@@ -33,6 +36,23 @@ public class LoanOfferPaymentAccessImpl implements LoanOfferPaymentAccess {
    public List<LoanOfferPayment> listPayments(LoanOffer offer) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_MANY)) {
          st.setInt(1, offer.getId());
+
+         try (ResultSet rs = st.executeQuery()) {
+            List<LoanOfferPayment> res = new ArrayList<>();
+            while (rs.next()) {
+               LoanOfferPayment p = new LoanOfferPayment();
+               Money m = new Money(rs.getBigDecimal("balance"));
+               p.setBalance(m);
+               m = new Money(rs.getBigDecimal("amount"));
+               p.setAmount(m);
+               m = new Money(rs.getBigDecimal("repayment"));
+               p.setRepayment(m);
+               m = new Money(rs.getBigDecimal("interest"));
+               p.setInterest(m);
+               res.add(p);
+            }
+            return res;
+         }
       }
    }
 
