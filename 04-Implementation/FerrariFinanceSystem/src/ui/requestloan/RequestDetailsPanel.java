@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -83,9 +84,7 @@ public class RequestDetailsPanel extends JPanel {
          facade.fetchCars(
                  model,
                  this::updateCars,
-                 x -> {
-                    System.out.println(x);
-                 });
+                 Throwable::printStackTrace);
       });
 
       lblCar = createLabel(LABEL_CAR);
@@ -114,6 +113,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblDiscountError.setVisible(err);
       });
+      tfDiscount.addActionListener(e -> tfSellingPrice.requestFocus());
 
       lblDiscountPct = createLabel(LABEL_DISCOUNT_PCT);
       tfDiscountPct = createTextField(4);
@@ -128,6 +128,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblDiscountPctError.setVisible(err);
       });
+      addDefaultActionListener(tfDiscountPct);
 
       lblSellingPrice = createLabel(LABEL_SELLING_PRICE);
       tfSellingPrice = createTextField(12);
@@ -142,6 +143,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblSellingPriceError.setVisible(err);
       });
+      addDefaultActionListener(tfSellingPrice);
 
       lblDownPayment = createLabel(LABEL_DOWN_PAYMENT);
       tfDownPayment = createTextField(12);
@@ -156,6 +158,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblDownPaymentError.setVisible(err);
       });
+      tfDownPayment.addActionListener(e -> tfLoanAmount.requestFocus());
 
       lblDownPaymentPct = createLabel(LABEL_DOWN_PAYMENT_PCT);
       tfDownPaymentPct = createTextField(4);
@@ -170,6 +173,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblDownPaymentPctError.setVisible(err);
       });
+      addDefaultActionListener(tfDownPaymentPct);
 
       lblLoanAmount = createLabel(LABEL_LOAN_AMOUNT);
       tfLoanAmount = createTextField(12);
@@ -184,6 +188,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblLoanAmountError.setVisible(err);
       });
+      addDefaultActionListener(tfLoanAmount);
 
       lblPrefRepayment = createLabel(LABEL_PREF_REPAYMENT);
       tfPrefRepayment = createTextField(12);
@@ -198,6 +203,7 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblPrefRepaymentError.setVisible(err);
       });
+      addDefaultActionListener(tfPrefRepayment);
 
       lblPrefTerm = createLabel(LABEL_PREF_TERM);
       tfPrefTerm = createTextField(4);
@@ -212,18 +218,14 @@ public class RequestDetailsPanel extends JPanel {
          }
          lblPrefTermError.setVisible(err);
       });
+      // TODO Add action listener
 
       btnSubmit = createButton(BUTTON_SUBMIT);
-      btnSubmit.addActionListener(e -> {
-         facade.submitLoanRequest(
-                 r -> {
-                    presenter.dispose();
-                 },
-                 x -> {
-                    x.printStackTrace();
-                 }
-         );
-      });
+      btnSubmit.addActionListener(e ->
+              facade.submitLoanRequest(
+                      r -> presenter.dispose(),
+                      Throwable::printStackTrace
+              ));
 
       lblDiscountError = createErrorLabel(ERR_INVALID_AMOUNT);
       lblDiscountPctError = createErrorLabel(ERR_INVALID_PERCENT);
@@ -233,6 +235,10 @@ public class RequestDetailsPanel extends JPanel {
       lblLoanAmountError = createErrorLabel(ERR_INVALID_AMOUNT);
       lblPrefRepaymentError = createErrorLabel(ERR_INVALID_AMOUNT);
       lblPrefTermError = createErrorLabel(ERR_INVALID_AMOUNT);
+   }
+
+   private void addDefaultActionListener(JTextField tf) {
+      tf.addActionListener(e -> tf.transferFocus());
    }
 
    private void layoutComponents() {
