@@ -3,11 +3,11 @@ package logic.command;
 import domain.Car;
 import domain.CarModel;
 import logic.service.CarServiceImpl;
-import util.command.Command;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class FetchCarsCommand implements Command<List<Car>> {
+public class FetchCarsCommand implements Callable<List<Car>> {
    private final CarModel model;
 
    public FetchCarsCommand(CarModel model) {
@@ -15,7 +15,7 @@ public class FetchCarsCommand implements Command<List<Car>> {
    }
 
    @Override
-   public List<Car> execute() throws Exception {
+   public List<Car> call() throws Exception {
       return new CarServiceImpl().listCars(model);
    }
 }

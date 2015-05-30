@@ -5,15 +5,15 @@ import domain.CarComponent;
 import domain.CarConfig;
 import domain.CarModel;
 import logic.service.*;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static dev.sample.CarSample.*;
 
-public class CreateCarSampleCommand implements Command<Void> {
+public class CreateCarSampleCommand implements Callable<Void> {
    private final ConnectionHandler con;
 
    public CreateCarSampleCommand(ConnectionHandler con) {
@@ -21,7 +21,7 @@ public class CreateCarSampleCommand implements Command<Void> {
    }
 
    @Override
-   public Void execute() throws SQLException {
+   public Void call() throws SQLException {
       createCarComponentTypes();
       List<CarComponent> components = createCarComponents();
       List<CarModel> models = createCarModels();

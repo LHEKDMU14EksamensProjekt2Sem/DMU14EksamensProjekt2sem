@@ -4,11 +4,11 @@ import domain.Identity;
 import domain.LoanOffer;
 import domain.LoanRequest;
 import logic.service.LoanRequestServiceImpl;
-import util.command.Command;
 
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
-public class SubmitLoanRequestCommand implements Command<Optional<LoanOffer>> {
+public class SubmitLoanRequestCommand implements Callable<Optional<LoanOffer>> {
    private final LoanRequest loanRequest;
    private final Identity identity;
 
@@ -18,7 +18,7 @@ public class SubmitLoanRequestCommand implements Command<Optional<LoanOffer>> {
    }
 
    @Override
-   public Optional<LoanOffer> execute() throws Exception {
+   public Optional<LoanOffer> call() throws Exception {
       return new LoanRequestServiceImpl()
               .submitLoanRequest(loanRequest, Optional.ofNullable(identity));
    }

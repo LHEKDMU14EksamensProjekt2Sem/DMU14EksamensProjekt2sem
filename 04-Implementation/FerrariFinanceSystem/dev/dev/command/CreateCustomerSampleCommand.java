@@ -4,15 +4,15 @@ import domain.Customer;
 import domain.Identity;
 import logic.service.CustomerService;
 import logic.service.CustomerServiceImpl;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static dev.sample.CustomerSample.*;
 
-public class CreateCustomerSampleCommand implements Command<Void> {
+public class CreateCustomerSampleCommand implements Callable<Void> {
    private final ConnectionHandler con;
 
    public CreateCustomerSampleCommand(ConnectionHandler con) {
@@ -20,7 +20,7 @@ public class CreateCustomerSampleCommand implements Command<Void> {
    }
 
    @Override
-   public Void execute() throws SQLException {
+   public Void call() throws SQLException {
       createCustomers();
       return null;
    }

@@ -1,13 +1,13 @@
 package logic.command;
 
 import logic.util.DataUtil;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.Callable;
 
-public class CreateDatabaseCommand implements Command<Void> {
+public class CreateDatabaseCommand implements Callable<Void> {
    private final ConnectionHandler con;
 
    public CreateDatabaseCommand(ConnectionHandler con) {
@@ -15,7 +15,7 @@ public class CreateDatabaseCommand implements Command<Void> {
    }
 
    @Override
-   public Void execute() throws IOException, SQLException {
+   public Void call() throws IOException, SQLException {
       DataUtil data = new DataUtil(con);
       data.createDatabase();
       data.importPostalCodes();

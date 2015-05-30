@@ -2,11 +2,11 @@ package logic.command;
 
 import domain.PostalCode;
 import logic.service.PostalCodeServiceImpl;
-import util.command.Command;
 
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
-public class FetchPostalCodeCommand implements Command<Optional<PostalCode>> {
+public class FetchPostalCodeCommand implements Callable<Optional<PostalCode>> {
    private final int postalCode;
 
    public FetchPostalCodeCommand(int postalCode) {
@@ -14,7 +14,7 @@ public class FetchPostalCodeCommand implements Command<Optional<PostalCode>> {
    }
 
    @Override
-   public Optional<PostalCode> execute() throws Exception {
+   public Optional<PostalCode> call() throws Exception {
       return new PostalCodeServiceImpl().readPostalCode(postalCode);
    }
 }

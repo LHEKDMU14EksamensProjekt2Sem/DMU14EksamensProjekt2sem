@@ -3,10 +3,10 @@ package main;
 import logic.session.main.MainFacade;
 import logic.session.main.MainFacadeImpl;
 import ui.main.MainFrame;
-import util.command.Command;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import java.util.concurrent.Callable;
 
 public class Application {
    private static final String
@@ -15,15 +15,15 @@ public class Application {
 
    private MainFacade facade;
 
-   public Application(Command startup) {
+   public Application(Callable<Void> startup) {
       try {
          facade = new MainFacadeImpl();
-         startup.execute();
+         startup.call();
          setSystemLookAndFeel();
          invokeMainFrame();
       } catch (Exception e) {
          System.out.println("Fatal error: Database setup failed: " + e);
-         e.printStackTrace();
+//         e.printStackTrace();
          System.exit(2);
       }
    }

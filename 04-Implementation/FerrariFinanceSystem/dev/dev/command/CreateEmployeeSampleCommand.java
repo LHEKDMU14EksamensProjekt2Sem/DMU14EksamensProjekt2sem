@@ -4,15 +4,15 @@ import domain.Employee;
 import domain.Identity;
 import logic.service.EmployeeService;
 import logic.service.EmployeeServiceImpl;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static dev.sample.EmployeeSample.*;
 
-public class CreateEmployeeSampleCommand implements Command<Void> {
+public class CreateEmployeeSampleCommand implements Callable<Void> {
    private final ConnectionHandler con;
 
    public CreateEmployeeSampleCommand(ConnectionHandler con) {
@@ -20,7 +20,7 @@ public class CreateEmployeeSampleCommand implements Command<Void> {
    }
 
    @Override
-   public Void execute() throws SQLException {
+   public Void call() throws SQLException {
       createEmployees();
       return null;
    }

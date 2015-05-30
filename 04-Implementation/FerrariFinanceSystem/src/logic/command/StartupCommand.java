@@ -2,19 +2,19 @@ package logic.command;
 
 import data.ConnectionService;
 import logic.util.DataUtil;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.Callable;
 
-public class StartupCommand implements Command<Void> {
+public class StartupCommand implements Callable<Void> {
    @Override
-   public Void execute() throws IOException, SQLException {
+   public Void call() throws IOException, SQLException {
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionService.connect()) {
             try {
-               new CreateDatabaseCommand(con).execute();
+               new CreateDatabaseCommand(con).call();
                con.commit();
             } catch (SQLException e) {
                con.rollback();

@@ -4,13 +4,13 @@ import data.ConnectionService;
 import dev.option.Option;
 import logic.command.CreateDatabaseCommand;
 import logic.util.DataUtil;
-import util.command.Command;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.Callable;
 
-public class StartupCommand implements Command<Void> {
+public class StartupCommand implements Callable<Void> {
    /**
     * Sets up the database and stores initial data. If a database file
     * already exists, and <code>Option.DESTROY</code> is set to <code>false</code>,
@@ -23,19 +23,19 @@ public class StartupCommand implements Command<Void> {
     * @throws SQLException
     */
    @Override
-   public Void execute() throws IOException, SQLException {
+   public Void call() throws IOException, SQLException {
       if (Option.DESTROY.get())
          DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionService.connect()) {
             try {
-               new CreateDatabaseCommand(con).execute();
+               new CreateDatabaseCommand(con).call();
 
                if (Option.SAMPLE.get()) {
-                  new CreateEmployeeSampleCommand(con).execute();
-                  new CreateCustomerSampleCommand(con).execute();
-                  new CreateCarSampleCommand(con).execute();
+                  new CreateEmployeeSampleCommand(con).call();
+                  new CreateCustomerSampleCommand(con).call();
+                  new CreateCarSampleCommand(con).call();
                }
 
                con.commit();

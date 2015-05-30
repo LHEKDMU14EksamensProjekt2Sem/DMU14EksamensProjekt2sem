@@ -1,15 +1,16 @@
 package util.command;
 
 import javax.swing.SwingWorker;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 public class SwingCommand<R> extends SwingWorker<R, Void> {
-   private final Command<R> command;
+   private final Callable<R> command;
    private final Consumer<R> resultConsumer;
    private final Consumer<Throwable> exceptionConsumer;
 
-   public SwingCommand(Command<R> command,
+   public SwingCommand(Callable<R> command,
                        Consumer<R> resultConsumer,
                        Consumer<Throwable> exceptionConsumer) {
       this.command = command;
@@ -19,7 +20,7 @@ public class SwingCommand<R> extends SwingWorker<R, Void> {
 
    @Override
    protected R doInBackground() throws Exception {
-      return command.execute();
+      return command.call();
    }
 
    @Override
