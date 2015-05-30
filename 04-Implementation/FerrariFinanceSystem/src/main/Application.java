@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 public class Application {
    private static final String
            NAME = "Ferrari Finance System",
-           VERSION = "0.3";
+           VERSION = "0.4";
 
    private MainFacade facade;
 
