@@ -15,7 +15,7 @@ import logic.command.FetchCarsCommand;
 import logic.command.SubmitLoanRequestCommand;
 import logic.session.requestloan.validation.RequestDetailsValidator;
 import logic.session.requestloan.validation.RequestDetailsValidatorImpl;
-import util.command.SwingCommand;
+import util.swing.SwingCommand;
 import util.finance.Money;
 
 import java.sql.Date;

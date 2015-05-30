@@ -3,7 +3,7 @@ package logic.session.main;
 import domain.Employee;
 import logic.command.LoginCommand;
 import domain.User;
-import util.command.SwingCommand;
+import util.swing.SwingCommand;
 
 import java.util.Optional;
 import java.util.function.Consumer;

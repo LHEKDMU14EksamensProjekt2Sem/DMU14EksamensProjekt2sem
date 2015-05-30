@@ -13,7 +13,7 @@ import exceptions.ValueRequiredException;
 import logic.command.FetchPostalCodeCommand;
 import logic.session.requestloan.validation.CustomerDetailsValidator;
 import logic.session.requestloan.validation.CustomerDetailsValidatorImpl;
-import util.command.SwingCommand;
+import util.swing.SwingCommand;
 
 import java.util.Optional;
 import java.util.function.Consumer;

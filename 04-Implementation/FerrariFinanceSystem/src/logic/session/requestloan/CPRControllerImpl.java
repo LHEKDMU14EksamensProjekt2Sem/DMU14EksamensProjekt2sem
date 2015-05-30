@@ -6,7 +6,7 @@ import domain.Person;
 import logic.command.FetchCreditRatingCommand;
 import logic.session.requestloan.validation.CPRValidator;
 import logic.session.requestloan.validation.CPRValidatorImpl;
-import util.command.SwingCommand;
+import util.swing.SwingCommand;
 
 import java.util.function.Consumer;
 

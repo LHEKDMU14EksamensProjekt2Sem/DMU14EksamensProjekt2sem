@@ -1,4 +1,4 @@
-package util.command;
+package util.swing;
 
 import javax.swing.SwingWorker;
 import java.util.concurrent.Callable;
