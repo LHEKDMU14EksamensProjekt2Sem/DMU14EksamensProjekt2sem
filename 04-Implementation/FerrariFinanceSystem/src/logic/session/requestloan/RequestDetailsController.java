@@ -1,10 +1,13 @@
 package logic.session.requestloan;
 
-import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 import domain.Car;
 import domain.CarModel;
 import domain.LoanOffer;
 import domain.LoanRequest;
+import exceptions.DiscountPctTooHighException;
+import exceptions.DownPaymentPctTooLowException;
+import exceptions.TermTooLongException;
+import util.finance.Money;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -102,13 +105,13 @@ public interface RequestDetailsController {
    void specifyLoanAmount(String loanAmount) throws ParseException;
 
    /**
-    * Specifies a preferred monthly repayment in DKK. Must be specified unless
+    * Specifies a preferred monthly payment in DKK. Must be specified unless
     * a preferred term is specified instead.
     *
-    * @param prefRepayment a preferred monthly repayment in DKK
+    * @param prefPayment a preferred monthly repayment in DKK
     * @throws ParseException
     */
-   void specifyPreferredRepayment(String prefRepayment) throws ParseException;
+   void specifyPreferredPayment(String prefPayment) throws ParseException;
 
    /**
     * Specifies a preferred term given in number of months. Must be specified
@@ -127,4 +130,30 @@ public interface RequestDetailsController {
     */
    void submitLoanRequest(Consumer<Optional<LoanOffer>> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);
+
+   // Validation
+   ///////////////
+
+   Money validateDiscount(String discount) throws
+           ParseException, DiscountPctTooHighException;
+
+   double validateDiscountPct(String discountPct) throws
+           ParseException, DiscountPctTooHighException;
+
+   Money validateSellingPrice(String sellingPrice) throws
+           ParseException, DiscountPctTooHighException;
+
+   Money validateDownPayment(String downPayment) throws
+           ParseException, DownPaymentPctTooLowException;
+
+   double validateDownPaymentPct(String downPaymentPct) throws
+           ParseException, DownPaymentPctTooLowException;
+
+   Money validateLoanAmount(String loanAmount) throws
+           ParseException, DownPaymentPctTooLowException;
+
+   Money validatePreferredPayment(String prefPayment) throws ParseException;
+
+   int validatePreferredTerm(String prefTerm) throws
+           ParseException, TermTooLongException;
 }

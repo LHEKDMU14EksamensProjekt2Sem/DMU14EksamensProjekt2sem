@@ -4,6 +4,9 @@ import domain.Car;
 import domain.CarModel;
 import domain.LoanRequest;
 import domain.Sale;
+import exceptions.DiscountPctTooHighException;
+import exceptions.DownPaymentPctTooLowException;
+import exceptions.TermTooLongException;
 import logic.session.requestloan.RequestLoanFacade;
 import ui.UIFactory;
 import ui.XTextField;
@@ -29,18 +32,21 @@ public class RequestDetailsPanel extends JPanel {
    private static final String
            LABEL_MODEL = "Model:",
            LABEL_CAR = "Bil:",
-           LABEL_BASE_PRICE = "Pris:",
+           LABEL_BASE_PRICE = "Basispris:",
            LABEL_DISCOUNT = "Rabat:",
            LABEL_DISCOUNT_PCT = "Rabatprocent:",
            LABEL_SELLING_PRICE = "Salgspris:",
            LABEL_DOWN_PAYMENT = "Udbetaling:",
            LABEL_DOWN_PAYMENT_PCT = "Udbetalingspct.:",
-           LABEL_LOAN_AMOUNT = "Lån:",
-           LABEL_PREF_REPAYMENT = "Ønsket afdrag:",
+           LABEL_LOAN_AMOUNT = "Lånebeløb:",
+           LABEL_PREF_PAYMENT = "Ønsket afdrag:",
            LABEL_PREF_TERM = "Ønsket løbetid:",
            LABEL_TERM_UNIT = "mdr.",
            ERR_INVALID_AMOUNT = "Ugyldigt beløb",
            ERR_INVALID_PERCENT = "Ugyldig procent",
+           ERR_DISCOUNT_PCT_TOO_HIGH = "Rabat må udgøre maks. 10 % af prisen",
+           ERR_DOWN_PAYMENT_PCT_TOO_LOW = "Udbetaling skal være min. 20 % af salgsprisen",
+           ERR_TERM_TOO_LONG = "Løbetid må være maks. 240 mdr.",
            BUTTON_SUBMIT = "Send";
 
    private RequestLoanDialog presenter;
@@ -51,15 +57,10 @@ public class RequestDetailsPanel extends JPanel {
            lblDownPayment, lblDownPaymentPct, lblLoanAmount,
            lblPrefRepayment, lblPrefTerm;
 
-   private JLabel
-           lblDiscountError, lblDiscountPctError, lblSellingPriceError,
-           lblDownPaymentError, lblDownPaymentPctError, lblLoanAmountError,
-           lblPrefRepaymentError, lblPrefTermError;
-
    private XTextField
            tfBasePrice, tfDiscount, tfDiscountPct, tfSellingPrice,
            tfDownPayment, tfDownPaymentPct, tfLoanAmount,
-           tfPrefRepayment, tfPrefTerm;
+           tfPrefPayment, tfPrefTerm;
 
    private JComboBox<CarModel> cbCarModel;
    private JComboBox<Car> cbCar;
@@ -102,121 +103,177 @@ public class RequestDetailsPanel extends JPanel {
 
       lblDiscount = createLabel(LABEL_DISCOUNT);
       tfDiscount = createTextField(12);
-      tfDiscount.setInputVerifier(tf -> {
-         boolean err = false;
+      tfDiscount.setErrorLabel(createErrorLabel());
+      tfDiscount.setVerifier(tf -> {
+         try {
+            facade.validateDiscount(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         } catch (DiscountPctTooHighException e) {
+            tf.setError(ERR_DISCOUNT_PCT_TOO_HIGH);
+         }
+      });
+      tfDiscount.setCommitter(tf -> {
          try {
             facade.specifyDiscount(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblDiscountError.setVisible(err);
       });
+      // Skip discount pct on [Enter]
       tfDiscount.addActionListener(e -> tfSellingPrice.requestFocus());
 
       lblDiscountPct = createLabel(LABEL_DISCOUNT_PCT);
       tfDiscountPct = createTextField(4);
-      tfDiscountPct.setInputVerifier(tf -> {
-         boolean err = false;
+      tfDiscountPct.setErrorLabel(createErrorLabel());
+      tfDiscountPct.setVerifier(tf -> {
+         try {
+            facade.validateDiscountPct(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_PERCENT);
+         } catch (DiscountPctTooHighException e) {
+            tf.setError(ERR_DISCOUNT_PCT_TOO_HIGH);
+         }
+      });
+      tfDiscountPct.setCommitter(tf -> {
          try {
             facade.specifyDiscountPct(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_PERCENT);
          }
-         lblDiscountPctError.setVisible(err);
       });
       addDefaultActionListener(tfDiscountPct);
 
       lblSellingPrice = createLabel(LABEL_SELLING_PRICE);
       tfSellingPrice = createTextField(12);
-      tfSellingPrice.setInputVerifier(tf -> {
-         boolean err = false;
+      tfSellingPrice.setErrorLabel(createErrorLabel());
+      tfSellingPrice.setVerifier(tf -> {
+         try {
+            facade.validateSellingPrice(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         } catch (DiscountPctTooHighException e) {
+            tf.setError(ERR_DISCOUNT_PCT_TOO_HIGH);
+         }
+      });
+      tfSellingPrice.setCommitter(tf -> {
          try {
             facade.specifySellingPrice(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblSellingPriceError.setVisible(err);
       });
       addDefaultActionListener(tfSellingPrice);
 
       lblDownPayment = createLabel(LABEL_DOWN_PAYMENT);
       tfDownPayment = createTextField(12);
-      tfDownPayment.setInputVerifier(tf -> {
-         boolean err = false;
+      tfDownPayment.setErrorLabel(createErrorLabel());
+      tfDownPayment.setVerifier(tf -> {
+         try {
+            facade.validateDownPayment(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         } catch (DownPaymentPctTooLowException e) {
+            tf.setError(ERR_DOWN_PAYMENT_PCT_TOO_LOW);
+         }
+      });
+      tfDownPayment.setCommitter(tf -> {
          try {
             facade.specifyDownPayment(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblDownPaymentError.setVisible(err);
       });
+      // Skip down payment pct on [Enter]
       tfDownPayment.addActionListener(e -> tfLoanAmount.requestFocus());
 
       lblDownPaymentPct = createLabel(LABEL_DOWN_PAYMENT_PCT);
       tfDownPaymentPct = createTextField(4);
-      tfDownPaymentPct.setInputVerifier(tf -> {
-         boolean err = false;
+      tfDownPaymentPct.setErrorLabel(createErrorLabel());
+      tfDownPaymentPct.setVerifier(tf -> {
+         try {
+            facade.validateDownPaymentPct(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_PERCENT);
+         } catch (DownPaymentPctTooLowException e) {
+            tf.setError(ERR_DOWN_PAYMENT_PCT_TOO_LOW);
+         }
+      });
+      tfDownPaymentPct.setCommitter(tf -> {
          try {
             facade.specifyDownPaymentPct(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_PERCENT);
          }
-         lblDownPaymentPctError.setVisible(err);
       });
       addDefaultActionListener(tfDownPaymentPct);
 
       lblLoanAmount = createLabel(LABEL_LOAN_AMOUNT);
       tfLoanAmount = createTextField(12);
-      tfLoanAmount.setInputVerifier(tf -> {
-         boolean err = false;
+      tfLoanAmount.setErrorLabel(createErrorLabel());
+      tfLoanAmount.setVerifier(tf -> {
+         try {
+            facade.validateLoanAmount(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         } catch (DownPaymentPctTooLowException e) {
+            tf.setError(ERR_DOWN_PAYMENT_PCT_TOO_LOW);
+         }
+      });
+      tfLoanAmount.setCommitter(tf -> {
          try {
             facade.specifyLoanAmount(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblLoanAmountError.setVisible(err);
       });
       addDefaultActionListener(tfLoanAmount);
 
-      lblPrefRepayment = createLabel(LABEL_PREF_REPAYMENT);
-      tfPrefRepayment = createTextField(12);
-      tfPrefRepayment.setInputVerifier(tf -> {
-         boolean err = false;
+      lblPrefRepayment = createLabel(LABEL_PREF_PAYMENT);
+      tfPrefPayment = createTextField(12);
+      tfPrefPayment.setErrorLabel(createErrorLabel());
+      tfPrefPayment.setVerifier(tf -> {
          try {
-            facade.specifyPreferredRepayment(tf.getText());
-            tf.setValid(true);
+            facade.validatePreferredPayment(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         }
+      });
+      tfPrefPayment.setCommitter(tf -> {
+         try {
+            facade.specifyPreferredPayment(tf.getText());
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblPrefRepaymentError.setVisible(err);
       });
-      addDefaultActionListener(tfPrefRepayment);
+      addDefaultActionListener(tfPrefPayment);
 
       lblPrefTerm = createLabel(LABEL_PREF_TERM);
       tfPrefTerm = createTextField(4);
-      tfPrefTerm.setInputVerifier(tf -> {
-         boolean err = false;
+      tfPrefTerm.setErrorLabel(createErrorLabel());
+      tfPrefTerm.setVerifier(tf -> {
+         try {
+            facade.validatePreferredTerm(tf.getText());
+         } catch (ParseException e) {
+            tf.setError(ERR_INVALID_AMOUNT);
+         } catch (TermTooLongException e) {
+            tf.setError(ERR_TERM_TOO_LONG);
+         }
+      });
+      tfPrefTerm.setCommitter(tf -> {
          try {
             facade.specifyPreferredTerm(tf.getText());
-            tf.setValid(true);
             updateFields();
          } catch (ParseException e) {
-            err = true;
+            tf.setError(ERR_INVALID_AMOUNT);
          }
-         lblPrefTermError.setVisible(err);
       });
       // TODO Add action listener
 
@@ -226,15 +283,6 @@ public class RequestDetailsPanel extends JPanel {
                       r -> presenter.dispose(),
                       Throwable::printStackTrace
               ));
-
-      lblDiscountError = createErrorLabel(ERR_INVALID_AMOUNT);
-      lblDiscountPctError = createErrorLabel(ERR_INVALID_PERCENT);
-      lblSellingPriceError = createErrorLabel(ERR_INVALID_AMOUNT);
-      lblDownPaymentError = createErrorLabel(ERR_INVALID_AMOUNT);
-      lblDownPaymentPctError = createErrorLabel(ERR_INVALID_PERCENT);
-      lblLoanAmountError = createErrorLabel(ERR_INVALID_AMOUNT);
-      lblPrefRepaymentError = createErrorLabel(ERR_INVALID_AMOUNT);
-      lblPrefTermError = createErrorLabel(ERR_INVALID_AMOUNT);
    }
 
    private void addDefaultActionListener(JTextField tf) {
@@ -281,19 +329,19 @@ public class RequestDetailsPanel extends JPanel {
       gbc.fill = NONE;
       addNext(tfBasePrice, gbc);
       addNext(tfDiscount, gbc);
-      addNext(lblDiscountError, gbc);
+      addNext(tfDiscount.getErrorLabel(), gbc);
       addNext(tfDiscountPct, gbc);
-      addNext(lblDiscountPctError, gbc);
+      addNext(tfDiscountPct.getErrorLabel(), gbc);
       addNext(tfSellingPrice, gbc);
-      addNext(lblSellingPriceError, gbc);
+      addNext(tfSellingPrice.getErrorLabel(), gbc);
       addNext(tfDownPayment, gbc);
-      addNext(lblDownPaymentError, gbc);
+      addNext(tfDownPayment.getErrorLabel(), gbc);
       addNext(tfDownPaymentPct, gbc);
-      addNext(lblDownPaymentPctError, gbc);
+      addNext(tfDownPaymentPct.getErrorLabel(), gbc);
       addNext(tfLoanAmount, gbc);
-      addNext(lblLoanAmountError, gbc);
-      addNext(tfPrefRepayment, gbc);
-      addNext(lblPrefRepaymentError, gbc);
+      addNext(tfLoanAmount.getErrorLabel(), gbc);
+      addNext(tfPrefPayment, gbc);
+      addNext(tfPrefPayment.getErrorLabel(), gbc);
 
       gbc.gridwidth = 1;
       addNext(tfPrefTerm, gbc);
@@ -303,7 +351,7 @@ public class RequestDetailsPanel extends JPanel {
 
       gbc.gridx--;
       gbc.gridwidth = 2;
-      addNext(lblPrefTermError, gbc);
+      addNext(tfPrefTerm.getErrorLabel(), gbc);
 
       gbc.gridx = 0;
       gbc.gridy++;

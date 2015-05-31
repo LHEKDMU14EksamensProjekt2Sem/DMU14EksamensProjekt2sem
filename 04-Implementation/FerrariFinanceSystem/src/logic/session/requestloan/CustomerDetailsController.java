@@ -38,4 +38,25 @@ public interface CustomerDetailsController {
 
    void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
                       Consumer<Throwable> exceptionConsumer);
+
+   // Validation
+   ///////////////
+
+   String validateFirstName(String name) throws
+           InvalidNameException, ValueRequiredException;
+
+   String validateLastName(String name) throws
+           InvalidNameException, ValueRequiredException;
+
+   String validateStreet(String street) throws
+           InvalidStreetException, StreetMissingHouseNumberException, ValueRequiredException;
+
+   int validatePostalCode(String postalCode) throws
+           InvalidPostalCodeException, ValueRequiredException;
+
+   int validatePhone(String phone) throws
+           InvalidPhoneException, ValueRequiredException;
+
+   String validateEmail(String email) throws
+           InvalidEmailException, ValueRequiredException;
 }

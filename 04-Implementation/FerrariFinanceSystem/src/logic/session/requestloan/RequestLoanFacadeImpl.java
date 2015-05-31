@@ -10,14 +10,9 @@ import domain.LoanOffer;
 import domain.LoanRequest;
 import domain.PostalCode;
 import domain.User;
-import exceptions.InvalidEmailException;
-import exceptions.InvalidNameException;
-import exceptions.InvalidPhoneException;
-import exceptions.InvalidPostalCodeException;
-import exceptions.InvalidStreetException;
-import exceptions.StreetMissingHouseNumberException;
-import exceptions.ValueRequiredException;
+import exceptions.*;
 import logic.session.main.MainFacade;
+import util.finance.Money;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -135,6 +130,45 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
       customerDetailsCtrl.fetchCustomer(resultConsumer, exceptionConsumer);
    }
 
+   // Customer details validation
+   ////////////////////////////////
+
+   @Override
+   public String validateFirstName(String name) throws
+           InvalidNameException, ValueRequiredException {
+      return customerDetailsCtrl.validateFirstName(name);
+   }
+
+   @Override
+   public String validateLastName(String name) throws
+           InvalidNameException, ValueRequiredException {
+      return customerDetailsCtrl.validateLastName(name);
+   }
+
+   @Override
+   public String validateStreet(String street) throws
+           InvalidStreetException, StreetMissingHouseNumberException, ValueRequiredException {
+      return customerDetailsCtrl.validateStreet(street);
+   }
+
+   @Override
+   public int validatePostalCode(String postalCode) throws
+           InvalidPostalCodeException, ValueRequiredException {
+      return customerDetailsCtrl.validatePostalCode(postalCode);
+   }
+
+   @Override
+   public int validatePhone(String phone) throws
+           InvalidPhoneException, ValueRequiredException {
+      return customerDetailsCtrl.validatePhone(phone);
+   }
+
+   @Override
+   public String validateEmail(String email) throws
+           InvalidEmailException, ValueRequiredException {
+      return customerDetailsCtrl.validateEmail(email);
+   }
+
    // RequestDetailsController
    /////////////////////////////
 
@@ -202,8 +236,8 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public void specifyPreferredRepayment(String prefRepayment) throws ParseException {
-      requestDetailsCtrl.specifyPreferredRepayment(prefRepayment);
+   public void specifyPreferredPayment(String prefPayment) throws ParseException {
+      requestDetailsCtrl.specifyPreferredPayment(prefPayment);
    }
 
    @Override
@@ -215,5 +249,55 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    public void submitLoanRequest(Consumer<Optional<LoanOffer>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       requestDetailsCtrl.submitLoanRequest(resultConsumer, exceptionConsumer);
+   }
+
+   // Request details validation
+   ///////////////////////////////
+
+   @Override
+   public Money validateDiscount(String discount) throws
+           ParseException, DiscountPctTooHighException {
+      return requestDetailsCtrl.validateDiscount(discount);
+   }
+
+   @Override
+   public double validateDiscountPct(String discountPct) throws
+           ParseException, DiscountPctTooHighException {
+      return requestDetailsCtrl.validateDiscountPct(discountPct);
+   }
+
+   @Override
+   public Money validateSellingPrice(String sellingPrice) throws
+           ParseException, DiscountPctTooHighException {
+      return requestDetailsCtrl.validateSellingPrice(sellingPrice);
+   }
+
+   @Override
+   public Money validateDownPayment(String downPayment) throws
+           ParseException, DownPaymentPctTooLowException {
+      return requestDetailsCtrl.validateDownPayment(downPayment);
+   }
+
+   @Override
+   public double validateDownPaymentPct(String downPaymentPct) throws
+           ParseException, DownPaymentPctTooLowException {
+      return requestDetailsCtrl.validateDownPaymentPct(downPaymentPct);
+   }
+
+   @Override
+   public Money validateLoanAmount(String loanAmount) throws
+           ParseException, DownPaymentPctTooLowException {
+      return requestDetailsCtrl.validateLoanAmount(loanAmount);
+   }
+
+   @Override
+   public Money validatePreferredPayment(String prefPayment) throws ParseException {
+      return requestDetailsCtrl.validatePreferredPayment(prefPayment);
+   }
+
+   @Override
+   public int validatePreferredTerm(String prefTerm) throws
+           ParseException, TermTooLongException {
+      return requestDetailsCtrl.validatePreferredTerm(prefTerm);
    }
 }

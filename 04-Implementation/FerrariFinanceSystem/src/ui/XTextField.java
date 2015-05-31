@@ -3,11 +3,15 @@ package ui;
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
 public class XTextField extends JTextField {
@@ -15,9 +19,9 @@ public class XTextField extends JTextField {
            GRAY = new Color(160, 160, 160),
            RED = new Color(220, 60, 30);
 
-   private boolean delayedValidation;
-   private boolean valid;
-   private String lastSetText;
+   private boolean verified;
+   private String lastCommitted;
+   private JLabel errorLabel;
 
    public XTextField(int columns) {
       super(columns);
@@ -30,11 +34,27 @@ public class XTextField extends JTextField {
       });
    }
 
-   public void setInputVerifier(Consumer<XTextField> verifier) {
-      super.setInputVerifier(new InputVerifier() {
+   public void setVerifier(Consumer<XTextField> verifier) {
+      addKeyListener(new KeyAdapter() {
+         @Override
+         public void keyTyped(KeyEvent e) {
+            SwingUtilities.invokeLater(() -> {
+               verified = true;
+               verifier.accept((XTextField) e.getSource());
+
+               // Clear any errors if verified
+               if (verified)
+                  setVerified(true);
+            });
+         }
+      });
+   }
+
+   public void setCommitter(Consumer<XTextField> committer) {
+      setInputVerifier(new InputVerifier() {
          @Override
          public boolean verify(JComponent input) {
-            return valid;
+            return verified;
          }
 
          @Override
@@ -44,44 +64,56 @@ public class XTextField extends JTextField {
             if (!hasChanged())
                return true;
 
-            // Invalid until verified
-            valid = false;
-            verifier.accept((XTextField) input);
+            verified = true;
+            committer.accept((XTextField) input);
+            setVerified(verified);
 
-            if (!valid)
+            if (!verified)
                selectAll();
 
-            if (delayedValidation)
-               resetBorderColor();
-            else
-               updateBorderColor();
+            lastCommitted = getText();
 
-            return getText().isEmpty() || valid;
+            return (lastCommitted.isEmpty() || verified);
          }
       });
-   }
-
-   public void setDelayedValidation(boolean flag) {
-      delayedValidation = flag;
-      if (flag)
-         valid = true;
-      resetBorderColor();
-   }
-
-   public void setValid(boolean flag) {
-      valid = flag;
-      delayedValidation = false;
-      updateBorderColor();
    }
 
    @Override
    public void setText(String text) {
       super.setText(text);
-      lastSetText = text;
+      lastCommitted = text;
+   }
+
+   public JLabel getErrorLabel() {
+      return errorLabel;
+   }
+
+   public void setErrorLabel(JLabel errorLabel) {
+      this.errorLabel = errorLabel;
+   }
+
+   public void setError(String errorMessage) {
+      errorLabel.setText(errorMessage);
+      verified = false;
+   }
+
+   public boolean isVerified() {
+      return verified;
+   }
+
+   public void setVerified(boolean flag) {
+      verified = flag;
+      updateBorderColor();
+
+      if (errorLabel != null) {
+         if (flag)
+            errorLabel.setText("");
+         errorLabel.setVisible(!flag);
+      }
    }
 
    private boolean hasChanged() {
-      return !getText().equals(lastSetText);
+      return !getText().equals(lastCommitted);
    }
 
    private void setBorderColor(Color color) {
@@ -92,7 +124,7 @@ public class XTextField extends JTextField {
    }
 
    private void updateBorderColor() {
-      setBorderColor(valid ? GRAY : RED);
+      setBorderColor(verified ? GRAY : RED);
    }
 
    private void resetBorderColor() {

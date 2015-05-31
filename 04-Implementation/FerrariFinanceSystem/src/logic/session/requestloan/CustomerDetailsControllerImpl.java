@@ -41,34 +41,19 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
    @Override
    public void specifyFirstName(String firstName) throws
            InvalidNameException, ValueRequiredException {
-      String s = firstName.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("First name");
-
-      validator.validateName(s);
-      person.setFirstName(s);
+      person.setFirstName(validateFirstName(firstName));
    }
 
    @Override
    public void specifyLastName(String lastName) throws
            InvalidNameException, ValueRequiredException {
-      String s = lastName.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("Last name");
-
-      validator.validateName(s);
-      person.setLastName(s);
+      person.setLastName(validateLastName(lastName));
    }
 
    @Override
    public void specifyStreet(String street) throws
            InvalidStreetException, StreetMissingHouseNumberException, ValueRequiredException {
-      String s = street.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("Street");
-
-      validator.validateStreet(s);
-      person.setStreet(s);
+      person.setStreet(validateStreet(street));
    }
 
    @Override
@@ -76,16 +61,14 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
                                  Consumer<Optional<PostalCode>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) throws
            InvalidPostalCodeException, ValueRequiredException {
-      String s = postalCode.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("Postal code");
+      int value = validatePostalCode(postalCode);
 
-      validator.validatePostalCode(s);
       new SwingCommand<>(
-              new FetchPostalCodeCommand(Integer.parseInt(s)),
+              new FetchPostalCodeCommand(value),
               r -> {
                  if (r.isPresent())
                     person.setPostalCode(r.get());
+
                  resultConsumer.accept(r);
               },
               exceptionConsumer::accept
@@ -95,27 +78,81 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
    @Override
    public void specifyPhone(String phone) throws
            InvalidPhoneException, ValueRequiredException {
-      String s = phone.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("Phone");
-
-      person.setPhone(validator.validatePhone(s));
+      person.setPhone(validatePhone(phone));
    }
 
    @Override
    public void specifyEmail(String email) throws
            InvalidEmailException, ValueRequiredException {
-      String s = email.trim();
-      if (s.isEmpty())
-         throw new ValueRequiredException("Email");
-
-      validator.validateEmail(s);
-      person.setEmail(s);
+      person.setEmail(validateEmail(email));
    }
 
    @Override
    public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
                              Consumer<Throwable> exceptionConsumer) {
       // TODO
+   }
+
+   // Validation
+   ///////////////
+
+   @Override
+   public String validateFirstName(String firstName) throws
+           InvalidNameException, ValueRequiredException {
+      firstName = firstName.trim();
+      if (firstName.isEmpty())
+         throw new ValueRequiredException("First name");
+
+      return validator.validateName(firstName);
+   }
+
+   @Override
+   public String validateLastName(String lastName) throws
+           InvalidNameException, ValueRequiredException {
+      lastName = lastName.trim();
+      if (lastName.isEmpty())
+         throw new ValueRequiredException("Last name");
+
+      return validator.validateName(lastName);
+   }
+
+   @Override
+   public String validateStreet(String street) throws
+           InvalidStreetException, StreetMissingHouseNumberException, ValueRequiredException {
+      street = street.trim();
+      if (street.isEmpty())
+         throw new ValueRequiredException("Street");
+
+      return validator.validateStreet(street);
+   }
+
+   @Override
+   public int validatePostalCode(String postalCode) throws
+           InvalidPostalCodeException, ValueRequiredException {
+      postalCode = postalCode.trim();
+      if (postalCode.isEmpty())
+         throw new ValueRequiredException("Postal code");
+
+      return validator.validatePostalCode(postalCode);
+   }
+
+   @Override
+   public int validatePhone(String phone) throws
+           InvalidPhoneException, ValueRequiredException {
+      phone = phone.trim();
+      if (phone.isEmpty())
+         throw new ValueRequiredException("Phone");
+
+      return validator.validatePhone(phone);
+   }
+
+   @Override
+   public String validateEmail(String email) throws
+           InvalidEmailException, ValueRequiredException {
+      email = email.trim();
+      if (email.isEmpty())
+         throw new ValueRequiredException("Email");
+
+      return validator.validateEmail(email);
    }
 }

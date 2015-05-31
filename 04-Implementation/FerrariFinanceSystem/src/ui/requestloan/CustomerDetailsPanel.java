@@ -13,6 +13,7 @@ import ui.XTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -39,6 +40,7 @@ public class CustomerDetailsPanel extends JPanel {
            ERR_STREET_MISSING_HOUSE_NUMBER = "Adresse mangler husnummer",
            ERR_POSTAL_CODE_REQUIRED = "Postnummer skal udfyldes",
            ERR_POSTAL_CODE_INVALID = "Postnummer er ugyldigt",
+           ERR_POSTAL_CODE_NOT_FOUND = "Postnummer findes ikke",
            ERR_PHONE_REQUIRED = "Telefon skal udfyldes",
            ERR_PHONE_INVALID = "Telefon er ugyldig",
            ERR_EMAIL_REQUIRED = "Email skal udfyldes",
@@ -51,11 +53,6 @@ public class CustomerDetailsPanel extends JPanel {
            lblFirstName, lblLastName,
            lblStreet, lblPostalCode, lblCity,
            lblPhone, lblEmail;
-
-   private JLabel
-           lblFirstNameError, lblLastNameError,
-           lblStreetError, lblPostalCodeError,
-           lblPhoneError, lblEmailError;
 
    private XTextField
            tfFirstName, tfLastName,
@@ -77,122 +74,167 @@ public class CustomerDetailsPanel extends JPanel {
 
       lblFirstName = createLabel(LABEL_FIRST_NAME);
       tfFirstName = createTextField(18);
-      tfFirstName.setInputVerifier(tf -> {
-         String err = "";
+      tfFirstName.setErrorLabel(createErrorLabel());
+      tfFirstName.setVerifier(tf -> {
+         try {
+            facade.validateFirstName(tf.getText());
+         } catch (InvalidNameException e) {
+            tf.setError(ERR_FIRST_NAME_INVALID);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_FIRST_NAME_REQUIRED);
+         }
+      });
+      tfFirstName.setCommitter(tf -> {
          try {
             facade.specifyFirstName(tf.getText());
-            tf.setValid(true);
          } catch (InvalidNameException e) {
-            err = ERR_FIRST_NAME_INVALID;
+            tf.setError(ERR_FIRST_NAME_INVALID);
          } catch (ValueRequiredException e) {
-            err = ERR_FIRST_NAME_REQUIRED;
+            tf.setError(ERR_FIRST_NAME_REQUIRED);
          }
-         lblFirstNameError.setText(err);
-         lblFirstNameError.setVisible(!err.isEmpty());
       });
+      addDefaultActionListener(tfFirstName);
 
       lblLastName = createLabel(LABEL_LAST_NAME);
       tfLastName = createTextField(18);
-      tfLastName.setInputVerifier(tf -> {
-         String err = "";
+      tfLastName.setErrorLabel(createErrorLabel());
+      tfLastName.setVerifier(tf -> {
+         try {
+            facade.validateLastName(tf.getText());
+         } catch (InvalidNameException e) {
+            tf.setError(ERR_LAST_NAME_INVALID);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_LAST_NAME_REQUIRED);
+         }
+      });
+      tfLastName.setCommitter(tf -> {
          try {
             facade.specifyLastName(tf.getText());
-            tf.setValid(true);
          } catch (InvalidNameException e) {
-            err = ERR_LAST_NAME_INVALID;
+            tf.setError(ERR_LAST_NAME_INVALID);
          } catch (ValueRequiredException e) {
-            err = ERR_LAST_NAME_REQUIRED;
+            tf.setError(ERR_LAST_NAME_REQUIRED);
          }
-         lblLastNameError.setText(err);
-         lblLastNameError.setVisible(!err.isEmpty());
       });
+      addDefaultActionListener(tfLastName);
 
       lblStreet = createLabel(LABEL_STREET);
       tfStreet = createTextField(18);
-      tfStreet.setInputVerifier(tf -> {
-         String err = "";
+      tfStreet.setErrorLabel(createErrorLabel());
+      tfStreet.setVerifier(tf -> {
+         try {
+            facade.validateStreet(tf.getText());
+         } catch (InvalidStreetException e) {
+            tf.setError(ERR_STREET_INVALID);
+         } catch (StreetMissingHouseNumberException e) {
+            tf.setError(ERR_STREET_MISSING_HOUSE_NUMBER);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_STREET_REQUIRED);
+         }
+      });
+      tfStreet.setCommitter(tf -> {
          try {
             facade.specifyStreet(tf.getText());
-            tf.setValid(true);
          } catch (InvalidStreetException e) {
-            err = ERR_STREET_INVALID;
+            tf.setError(ERR_STREET_INVALID);
          } catch (StreetMissingHouseNumberException e) {
-            err = ERR_STREET_MISSING_HOUSE_NUMBER;
+            tf.setError(ERR_STREET_MISSING_HOUSE_NUMBER);
          } catch (ValueRequiredException e) {
-            err = ERR_STREET_REQUIRED;
+            tf.setError(ERR_STREET_REQUIRED);
          }
-         lblStreetError.setText(err);
-         lblStreetError.setVisible(!err.isEmpty());
       });
+      addDefaultActionListener(tfStreet);
 
       lblPostalCode = createLabel(LABEL_POSTAL_CODE);
       tfPostalCode = createTextField(4);
-      tfPostalCode.setInputVerifier(tf -> {
-         String err = "";
+      tfPostalCode.setErrorLabel(createErrorLabel());
+      tfPostalCode.setVerifier(tf -> {
+         try {
+            facade.validatePostalCode(tf.getText());
+         } catch (InvalidPostalCodeException e) {
+            tf.setError(ERR_POSTAL_CODE_INVALID);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_POSTAL_CODE_REQUIRED);
+         }
+      });
+      tfPostalCode.setCommitter(tf -> {
+         lblCity.setText("");
          try {
             facade.specifyPostalCode(
                     tf.getText(),
                     r -> {
-                       tf.setValid(r.isPresent());
-                       lblCity.setText(r.isPresent() ? r.get().getCity() : "");
+                       if (r.isPresent()) {
+                          lblCity.setText(r.get().getCity());
+                          tf.setVerified(true);
+                       } else {
+                          lblCity.setText("");
+                          tf.setError(ERR_POSTAL_CODE_NOT_FOUND);
+                          tf.setVerified(false);
+                       }
                     },
                     x -> {
                        lblCity.setText("");
-                       lblPostalCodeError.setText("Fejl: Kunne ikke validere postnummer");
+                       tf.setError("Fejl: Kunne ikke validere postnummer");
                     });
-            tf.setDelayedValidation(true);
          } catch (InvalidPostalCodeException e) {
-            err = ERR_POSTAL_CODE_INVALID;
+            tf.setError(ERR_POSTAL_CODE_INVALID);
          } catch (ValueRequiredException e) {
-            err = ERR_POSTAL_CODE_REQUIRED;
+            tf.setError(ERR_POSTAL_CODE_REQUIRED);
          }
-         lblPostalCodeError.setText(err);
-         lblPostalCodeError.setVisible(!err.isEmpty());
       });
+      addDefaultActionListener(tfPostalCode);
 
       lblCity = createLabel("");
 
       lblPhone = createLabel(LABEL_PHONE);
       tfPhone = createTextField(9);
-      tfPhone.setInputVerifier(tf -> {
-         String err = "";
+      tfPhone.setErrorLabel(createErrorLabel());
+      tfPhone.setVerifier(tf -> {
+         try {
+            facade.validatePhone(tf.getText());
+         } catch (InvalidPhoneException e) {
+            tf.setError(ERR_PHONE_INVALID);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_PHONE_REQUIRED);
+         }
+      });
+      tfPhone.setCommitter(tf -> {
          try {
             facade.specifyPhone(tf.getText());
-            tf.setValid(true);
          } catch (InvalidPhoneException e) {
-            err = ERR_PHONE_INVALID;
+            tf.setError(ERR_PHONE_INVALID);
          } catch (ValueRequiredException e) {
-            err = ERR_PHONE_REQUIRED;
+            tf.setError(ERR_PHONE_REQUIRED);
          }
-         lblPhoneError.setText(err);
-         lblPhoneError.setVisible(!err.isEmpty());
       });
+      addDefaultActionListener(tfPhone);
 
       lblEmail = createLabel(LABEL_EMAIL);
       tfEmail = createTextField(18);
-      tfEmail.setInputVerifier(tf -> {
-         String err = "";
+      tfEmail.setErrorLabel(createErrorLabel());
+      tfEmail.setVerifier(tf -> {
+         try {
+            facade.validateEmail(tf.getText());
+         } catch (InvalidEmailException e) {
+            tf.setError(ERR_EMAIL_INVALID);
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_EMAIL_REQUIRED);
+         }
+      });
+      tfEmail.setCommitter(tf -> {
          try {
             facade.specifyEmail(tf.getText());
-            tf.setValid(true);
          } catch (InvalidEmailException e) {
-            err = ERR_EMAIL_INVALID;
+            tf.setError(ERR_EMAIL_INVALID);
          } catch (ValueRequiredException e) {
-            err = ERR_EMAIL_REQUIRED;
+            tf.setError(ERR_EMAIL_REQUIRED);
          }
-         lblEmailError.setText(err);
-         lblEmailError.setVisible(!err.isEmpty());
       });
+      // TODO: Should be same as btnNext click
+      addDefaultActionListener(tfEmail);
 
       btnNext = createButton(BUTTON_NEXT);
       btnNext.addActionListener(e -> presenter.go(REQUEST_DETAILS));
-
-      lblFirstNameError = createErrorLabel();
-      lblLastNameError = createErrorLabel();
-      lblStreetError = createErrorLabel();
-      lblPostalCodeError = createErrorLabel();
-      lblPhoneError = createErrorLabel();
-      lblEmailError = createErrorLabel();
 
       // TODO REMOVE
 //      tfFirstName.setText("John");
@@ -201,6 +243,10 @@ public class CustomerDetailsPanel extends JPanel {
 //      tfPostalCode.setText("9000");
 //      tfPhone.setText("12345678");
 //      tfEmail.setText("e@mail.com");
+   }
+
+   private void addDefaultActionListener(JTextField tf) {
+      tf.addActionListener(e -> tf.transferFocus());
    }
 
    private void layoutComponents() {
@@ -230,11 +276,11 @@ public class CustomerDetailsPanel extends JPanel {
       gbc.gridwidth = 2;
       gbc.anchor = WEST;
       addNext(tfFirstName, gbc);
-      addNext(lblFirstNameError, gbc);
+      addNext(tfFirstName.getErrorLabel(), gbc);
       addNext(tfLastName, gbc);
-      addNext(lblLastNameError, gbc);
+      addNext(tfLastName.getErrorLabel(), gbc);
       addNext(tfStreet, gbc);
-      addNext(lblStreetError, gbc);
+      addNext(tfStreet.getErrorLabel(), gbc);
 
       gbc.gridwidth = 1;
       addNext(tfPostalCode, gbc);
@@ -243,11 +289,11 @@ public class CustomerDetailsPanel extends JPanel {
 
       gbc.gridx--;
       gbc.gridwidth = 2;
-      addNext(lblPostalCodeError, gbc);
+      addNext(tfPostalCode.getErrorLabel(), gbc);
       addNext(tfPhone, gbc);
-      addNext(lblPhoneError, gbc);
+      addNext(tfPhone.getErrorLabel(), gbc);
       addNext(tfEmail, gbc);
-      addNext(lblEmailError, gbc);
+      addNext(tfEmail.getErrorLabel(), gbc);
 
       gbc.gridx = 0;
       gbc.gridy++;
