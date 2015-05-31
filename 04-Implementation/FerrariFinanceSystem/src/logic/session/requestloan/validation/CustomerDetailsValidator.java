@@ -16,7 +16,7 @@ public interface CustomerDetailsValidator {
     * @param name a first or last name
     * @throws InvalidNameException
     */
-   void validateName(String name) throws InvalidNameException;
+   String validateName(String name) throws InvalidNameException;
 
    /**
     * Validates a Danish street. Must include a house number.
@@ -25,7 +25,7 @@ public interface CustomerDetailsValidator {
     * @throws InvalidStreetException
     * @throws StreetMissingHouseNumberException
     */
-   void validateStreet(String street) throws
+   String validateStreet(String street) throws
            InvalidStreetException, StreetMissingHouseNumberException;
 
    /**
@@ -35,7 +35,7 @@ public interface CustomerDetailsValidator {
     * @param postalCode a Danish postal code
     * @throws InvalidPostalCodeException
     */
-   void validatePostalCode(String postalCode) throws InvalidPostalCodeException;
+   int validatePostalCode(String postalCode) throws InvalidPostalCodeException;
 
    /**
     * Validates a Danish phone number. Must be 8 digits exactly. Including
@@ -53,5 +53,5 @@ public interface CustomerDetailsValidator {
     * @param email an email address
     * @throws InvalidEmailException
     */
-   void validateEmail(String email) throws InvalidEmailException;
+   String validateEmail(String email) throws InvalidEmailException;
 }

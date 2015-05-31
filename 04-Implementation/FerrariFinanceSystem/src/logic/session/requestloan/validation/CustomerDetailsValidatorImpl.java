@@ -15,44 +15,54 @@ public class CustomerDetailsValidatorImpl implements CustomerDetailsValidator {
            NAME = "([a-zæøåA-ZÆØÅ-]\\.?\\s*)+",
            STREET = "([a-zæøåA-ZÆØÅ-]\\.?\\s*\\d*(\\.|,)?\\s*)+",
            STREET_HOUSE_NUMBER = ".*\\d+.*",
-           POSTAL_CODE = "\\d{4}",
+           POSTAL_CODE = "[1-9]\\d{3}",
            PHONE = "(?:\\+45\\s*)?(\\d{8})",
            EMAIL = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})";
 
    @Override
-   public void validateName(String name) throws InvalidNameException {
+   public String validateName(String name) throws InvalidNameException {
       if (!name.matches(NAME))
          throw new InvalidNameException(name);
+
+      return name;
    }
 
    @Override
-   public void validateStreet(String street) throws
+   public String validateStreet(String street) throws
            InvalidStreetException, StreetMissingHouseNumberException {
       if (!street.matches(STREET))
          throw new InvalidStreetException(street);
 
       if (!street.matches(STREET_HOUSE_NUMBER))
          throw new StreetMissingHouseNumberException(street);
+
+      return street;
    }
 
    @Override
-   public void validatePostalCode(String postalCode) throws InvalidPostalCodeException {
-      if (!postalCode.matches(POSTAL_CODE) || Integer.parseInt(postalCode) < 1000)
+   public int validatePostalCode(String postalCode) throws InvalidPostalCodeException {
+      if (!postalCode.matches(POSTAL_CODE))
          throw new InvalidPostalCodeException(postalCode);
+
+      return Integer.parseInt(postalCode);
    }
 
    @Override
    public int validatePhone(String phone) throws InvalidPhoneException {
       Pattern p = Pattern.compile(PHONE);
       Matcher m = p.matcher(phone);
+
       if (!m.matches())
          throw new InvalidPhoneException(phone);
+
       return Integer.parseInt(m.group(1));
    }
 
    @Override
-   public void validateEmail(String email) throws InvalidEmailException {
+   public String validateEmail(String email) throws InvalidEmailException {
       if (!email.matches(EMAIL))
          throw new InvalidEmailException(email);
+
+      return email;
    }
 }
