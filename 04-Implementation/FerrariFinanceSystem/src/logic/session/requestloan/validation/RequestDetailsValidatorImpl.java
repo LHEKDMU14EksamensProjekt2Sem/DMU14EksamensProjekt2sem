@@ -15,7 +15,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
            MIN_DOWN_PAYMENT_PCT = 0.2;
 
    private final static int
-           MAX_TERM_LENGTH = 240;
+           MAX_TERM_LENGTH = 240; // 20 years
 
    private NumberFormat moneyFormat, percentFormat;
 
@@ -40,10 +40,10 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    }
 
    @Override
-   public Money validateDiscount(String discount, Money sellingPrice) throws
+   public Money validateDiscount(String discount, Money basePrice) throws
            ParseException, DiscountPctTooHighException {
       Money amount = new Money((BigDecimal) moneyFormat.parse(discount));
-      double pct = (amount.doubleValue() / sellingPrice.doubleValue());
+      double pct = (amount.doubleValue() / basePrice.doubleValue());
       if (pct > MAX_DISCOUNT_PCT)
          throw new DiscountPctTooHighException(pct);
       return amount;
@@ -98,9 +98,8 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    }
 
    @Override
-   public Money validatePreferredRepayment(String prefRepayment) throws
-           ParseException {
-      return new Money((BigDecimal) moneyFormat.parse(prefRepayment));
+   public Money validatePreferredPayment(String prefPayment) throws ParseException {
+      return new Money((BigDecimal) moneyFormat.parse(prefPayment));
    }
 
    @Override

@@ -14,7 +14,7 @@ public interface RequestDetailsValidator {
 
    int getMaxTermLength();
 
-   Money validateDiscount(String discount, Money sellingPrice) throws
+   Money validateDiscount(String discount, Money basePrice) throws
            ParseException, DiscountPctTooHighException;
 
    double validateDiscountPct(String discountPct) throws
@@ -32,8 +32,7 @@ public interface RequestDetailsValidator {
    Money validateLoanAmount(String loanAmount, Money sellingPrice) throws
            ParseException, DownPaymentPctTooLowException;
 
-   Money validatePreferredRepayment(String prefRepayment) throws
-           ParseException;
+   Money validatePreferredPayment(String prefPayment) throws ParseException;
 
    int validatePreferredTerm(String prefTerm) throws
            ParseException, TermTooLongException;
