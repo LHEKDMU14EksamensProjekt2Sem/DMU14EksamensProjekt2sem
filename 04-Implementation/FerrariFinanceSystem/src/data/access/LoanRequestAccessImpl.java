@@ -32,8 +32,8 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
             st.setDate(4, loanRequest.getDate());
             st.setBigDecimal(5, loanRequest.getLoanAmount().asBigDecimal());
 
-            if (loanRequest.hasPreferredRepayment())
-               st.setBigDecimal(6, loanRequest.getPreferredRepayment().asBigDecimal());
+            if (loanRequest.hasPreferredPayment())
+               st.setBigDecimal(6, loanRequest.getPreferredPayment().asBigDecimal());
             else
                st.setNull(6, Types.NUMERIC);
 
@@ -68,7 +68,7 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO loan_request"
-              + "(id, status_id, status_by_employee_id, date, loan_amount, pref_repayment, pref_term)"
+              + "(id, status_id, status_by_employee_id, date, loan_amount, pref_payment, pref_term)"
               + "VALUES (?, (SELECT id FROM loan_request_status WHERE status = ?), ?, ?, ?, ?, ?)";
 
       // TODO

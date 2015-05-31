@@ -4,6 +4,6 @@ CREATE TABLE loan_request (
   status_by_employee_id INTEGER NOT NULL REFERENCES employee(id),
   date DATE NOT NULL,
   loan_amount NUMERIC NOT NULL,
-  pref_repayment NUMERIC,
+  pref_payment NUMERIC,
   pref_term INTEGER
 );

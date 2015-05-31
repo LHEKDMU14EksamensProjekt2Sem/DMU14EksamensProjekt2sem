@@ -11,11 +11,11 @@ public class LoanRequest {
    private Employee statusByEmployee;
    private Date date;
    private Money loanAmount;
-   private Optional<Money> prefRepayment;
+   private Optional<Money> prefPayment;
    private Optional<Integer> prefTerm;
 
    public LoanRequest() {
-      prefRepayment = Optional.empty();
+      prefPayment = Optional.empty();
       prefTerm = Optional.empty();
    }
 
@@ -68,23 +68,26 @@ public class LoanRequest {
    }
 
    public double getDownPaymentPct() {
-      return (getDownPayment().doubleValue() / sale.getSellingPrice().doubleValue());
+      if (sale.getSellingPrice() == Money.ZERO)
+         return 0;
+      else
+         return (getDownPayment().doubleValue() / sale.getSellingPrice().doubleValue());
    }
 
    public void setDownPaymentPct(double pct) {
       loanAmount = new Money(sale.getSellingPrice().doubleValue() * (1 - pct));
    }
 
-   public boolean hasPreferredRepayment() {
-      return prefRepayment.isPresent();
+   public boolean hasPreferredPayment() {
+      return prefPayment.isPresent();
    }
 
-   public Money getPreferredRepayment() {
-      return prefRepayment.get();
+   public Money getPreferredPayment() {
+      return prefPayment.get();
    }
 
-   public void setPreferredRepayment(Money prefRepayment) {
-      this.prefRepayment = Optional.ofNullable(prefRepayment);
+   public void setPreferredPayment(Money prefPayment) {
+      this.prefPayment = Optional.ofNullable(prefPayment);
    }
 
    public boolean hasPreferredTerm() {
