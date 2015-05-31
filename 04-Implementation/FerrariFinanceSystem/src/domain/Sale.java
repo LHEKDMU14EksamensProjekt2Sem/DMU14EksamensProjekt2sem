@@ -77,7 +77,10 @@ public class Sale {
    }
 
    public double getDiscountPct() {
-      return (1 - sellingPrice.doubleValue() / basePrice.doubleValue());
+      if (basePrice == Money.ZERO)
+         return 0;
+      else
+         return (1 - sellingPrice.doubleValue() / basePrice.doubleValue());
    }
 
    public void setDiscountPct(double pct) {
