@@ -4,16 +4,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import static org.junit.Assert.*;
 
 public class XTextFieldTest {
-   final String
+   final static int MAX_LENGTH = 2;
+
+   final static char A = 'A', B = 'B';
+
+   final static String
+           NO_MESSAGE = null,
            VERIFICATION_ERROR = "Only AB allowed",
-           COMMIT_ERROR = "Only AB allowed FFS";
+           COMMIT_ERROR = "Only AB allowed FFS",
+           MAX_LENGTH_INFO = "Max length is " + MAX_LENGTH;
 
    JLabel errorLabel;
    XTextField tf;
@@ -24,79 +30,176 @@ public class XTextFieldTest {
       errorLabel = new JLabel();
 
       tf = new XTextField(10);
-      tf.setErrorLabel(errorLabel);
+      tf.setMessageLabel(errorLabel);
+
       tf.setVerifier(tf -> {
-         if (!tf.getText().equals("AB"))
+         if (!tf.getText().startsWith("AB")) {
             tf.setError(VERIFICATION_ERROR);
+         } else if (tf.getText().length() > 2) {
+            tf.setInfo(MAX_LENGTH_INFO);
+         }
       });
+
       tf.setCommitter(tf -> {
-         if (!tf.getText().equals("AB"))
+         if (!tf.getText().equals("AB")) {
             tf.setError(COMMIT_ERROR);
-         else
+         } else
             text = tf.getText();
       });
    }
 
-   public void simulateKeyTyped(char ch) {
-      tf.setText(tf.getText() + ch);
-      KeyEvent event = new KeyEvent(tf, KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0,
-              KeyEvent.VK_UNDEFINED, ch);
+   void simulateKeyTyped(char ch) {
+      try {
+         int offset = tf.getDocument().getEndPosition().getOffset() - 1;
+         tf.getDocument().insertString(offset, String.valueOf(ch), null);
 
-      for (KeyListener l : tf.getKeyListeners())
-         l.keyTyped(event);
+         KeyEvent event = new KeyEvent(tf, KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0,
+                 KeyEvent.VK_UNDEFINED, ch);
+
+         for (KeyListener l : tf.getKeyListeners()) {
+            l.keyTyped(event);
+         }
+      } catch (BadLocationException e) {
+         e.printStackTrace();
+      }
    }
 
-   @Test
-   public void testTypingAGivesInvisibleVerificationError() {
-      simulateKeyTyped('A');
+   void simulateBackspace() {
+      try {
+         int offset = tf.getDocument().getEndPosition().getOffset() - 2;
+         tf.getDocument().remove(offset, 1);
 
-      SwingUtilities.invokeLater(() ->
-              assertEquals(VERIFICATION_ERROR, errorLabel.getText()));
+         KeyEvent event = new KeyEvent(tf, KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0,
+                 KeyEvent.VK_UNDEFINED, '\b');
+
+         for (KeyListener l : tf.getKeyListeners()) {
+            l.keyTyped(event);
+         }
+      } catch (BadLocationException e) {
+         e.printStackTrace();
+      }
    }
 
-   @Test
-   public void testCommittingAGivesVisibleCommitError() {
-      tf.setText("A");
+   void simulateCommit() {
       tf.getInputVerifier().shouldYieldFocus(tf);
-      assertEquals(COMMIT_ERROR, errorLabel.getText());
    }
 
-   @Test
-   public void testCommittingAThenTypingBClearsError() {
-      tf.setText("A");
-      tf.getInputVerifier().shouldYieldFocus(tf);
-      simulateKeyTyped('B');
-
-      SwingUtilities.invokeLater(() ->
-              assertEquals("", errorLabel.getText()));
+   String getMessage() {
+      return errorLabel.getText();
    }
 
+   /**
+    * [ A ]
+    * No error
+    */
    @Test
-   public void testCommittingAThenTypingBAGivesInvisibleVerificationError() {
-      tf.setText("A");
-      tf.getInputVerifier().shouldYieldFocus(tf);
-      simulateKeyTyped('B');
-      simulateKeyTyped('A');
+   public void testTypingAGivesNoError() {
+      simulateKeyTyped(A);
 
-      SwingUtilities.invokeLater(() ->
-              assertEquals(VERIFICATION_ERROR, errorLabel.getText()));
+      assertEquals(NO_MESSAGE, getMessage());
    }
 
+   /**
+    * [ A ] commit
+    * Commit error
+    */
    @Test
-   public void testCommittingEmptyStringThenTypingAGivesVisibleVerificationError() {
-      tf.setText("");
-      tf.getInputVerifier().shouldYieldFocus(tf);
-      simulateKeyTyped('A');
+   public void testCommittingAGivesCommitError() {
+      simulateKeyTyped(A);
+      simulateCommit();
 
-      SwingUtilities.invokeLater(() ->
-              assertEquals(VERIFICATION_ERROR, errorLabel.getText()));
+      assertEquals(COMMIT_ERROR, getMessage());
    }
 
+   /**
+    * [ A ] commit
+    * [ AB ]
+    * No error
+    */
    @Test
-   public void testCommittingABSetsText() {
-      tf.setText("AB");
-      tf.getInputVerifier().shouldYieldFocus(tf);
+   public void testCommittingAThenTypingBGivesNoError() {
+      simulateKeyTyped(A);
+      simulateCommit();
+      simulateKeyTyped(B);
 
-      assertEquals("AB", text);
+      assertEquals(NO_MESSAGE, getMessage());
+   }
+
+   /**
+    * [ A ] commit
+    * [ AB ]
+    * [ A ]
+    * Verification error
+    */
+   @Test
+   public void testCommittingAThenTypingBThenBackspaceGivesVerificationError() {
+      simulateKeyTyped(A);
+      simulateCommit();
+      simulateKeyTyped(B);
+      simulateBackspace();
+
+      assertEquals(VERIFICATION_ERROR, getMessage());
+   }
+
+   /**
+    * [ A ] commit
+    * [ ABA ]
+    * Max length info
+    */
+   @Test
+   public void testCommittingAThenTypingBAGivesMaxLengthInfo() {
+      simulateKeyTyped(A);
+      simulateCommit();
+      simulateKeyTyped(B);
+      simulateKeyTyped(A);
+
+      assertEquals(MAX_LENGTH_INFO, getMessage());
+   }
+
+   /**
+    * [ A ] commit
+    * [ ABA ]
+    * [ A ]
+    * Verification error
+    */
+   @Test
+   public void testCommittingAThenTypingBAThenBackspaceTwiceGivesVerificationError() {
+      simulateKeyTyped(A);
+      simulateCommit();
+      simulateKeyTyped(B);
+      simulateKeyTyped(A);
+      simulateBackspace();
+      simulateBackspace();
+
+      assertEquals(VERIFICATION_ERROR, getMessage());
+   }
+
+   /**
+    * [ ABA ]
+    * Max length info
+    */
+   @Test
+   public void testTypingABAGivesMaxLengthInfo() {
+      simulateKeyTyped(A);
+      simulateKeyTyped(B);
+      simulateKeyTyped(A);
+
+      assertEquals(MAX_LENGTH_INFO, getMessage());
+   }
+
+   /**
+    * [ ABA ]
+    * [ A ]
+    * No error
+    */
+   @Test
+   public void testTypingABAThenBackspaceTwiceGivesNoError() {
+      simulateKeyTyped(A);
+      simulateKeyTyped(B);
+      simulateKeyTyped(A);
+      simulateBackspace();
+      simulateBackspace();
+
+      assertEquals(NO_MESSAGE, getMessage());
    }
 }

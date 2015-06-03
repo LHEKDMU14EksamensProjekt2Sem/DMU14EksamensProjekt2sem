@@ -1,13 +1,15 @@
 package ui;
 
+import logic.util.AssetsUtil;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import java.awt.Color;
 import java.awt.Font;
+import java.io.IOException;
 
 import static ui.UIConstants.*;
 
@@ -15,6 +17,12 @@ public class UIFactory {
    public static XTextField createTextField(int columns) {
       XTextField tf = new XTextField(columns);
       configTextField(tf);
+      try {
+         tf.setInfoIcon(AssetsUtil.loadInfoIcon());
+         tf.setErrorIcon(AssetsUtil.loadErrorIcon());
+      } catch (IOException ignore) {
+         // No-op
+      }
       return tf;
    }
 
@@ -30,35 +38,23 @@ public class UIFactory {
       return btn;
    }
 
+   public static JLabel createLabel() {
+      return createLabel(null);
+   }
+
    public static JLabel createLabel(String text) {
       return createLabel(text, PLAIN_FONT);
    }
 
    public static JLabel createLabel(String text, Font font) {
       JLabel lbl = new JLabel(text);
+      lbl.setVerticalTextPosition(JLabel.TOP);
       lbl.setFont(font);
       return lbl;
    }
 
-   public static JLabel createLabel(Color color) {
-      JLabel lbl = createLabel("");
-      lbl.setForeground(color);
-      return lbl;
-   }
-
-   public static JLabel createErrorLabel(String msg) {
-      JLabel lbl = createLabel(ERROR_COLOR);
-      lbl.setText(msg);
-      lbl.setVisible(false);
-      return lbl;
-   }
-
-   public static JLabel createErrorLabel() {
-      return createErrorLabel("");
-   }
-
    public static <E> JComboBox<E> createComboBox() {
-      JComboBox<E> cb = new JComboBox<E>();
+      JComboBox<E> cb = new JComboBox<>();
       cb.setFont(PLAIN_FONT);
       return cb;
    }

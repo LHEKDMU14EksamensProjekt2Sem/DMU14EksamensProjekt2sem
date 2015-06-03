@@ -11,5 +11,4 @@ public class UIConstants {
 
    public static final Insets BUTTON_MARGIN = new Insets(5, 12, 5, 12);
    public static final Insets DEFAULT_GBC_INSETS = new Insets(4, 4, 4, 4);
-   public static final Color ERROR_COLOR = new Color(220, 60, 30);
 }
