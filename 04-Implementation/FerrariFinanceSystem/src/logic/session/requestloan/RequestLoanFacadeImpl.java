@@ -263,13 +263,13 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
 
    @Override
    public Money validateSellingPrice(String sellingPrice) throws
-           ParseException, DiscountPctTooHighException {
+           ParseException, DiscountPctTooHighException, ValueRequiredException {
       return requestDetailsCtrl.validateSellingPrice(sellingPrice);
    }
 
    @Override
    public Money validateDownPayment(String downPayment) throws
-           ParseException, DownPaymentPctTooLowException {
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException {
       return requestDetailsCtrl.validateDownPayment(downPayment);
    }
 
@@ -281,7 +281,7 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
 
    @Override
    public Money validateLoanAmount(String loanAmount) throws
-           ParseException, DownPaymentPctTooLowException {
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException {
       return requestDetailsCtrl.validateLoanAmount(loanAmount);
    }
 

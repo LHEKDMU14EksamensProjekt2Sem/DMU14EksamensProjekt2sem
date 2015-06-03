@@ -7,6 +7,7 @@ import domain.LoanRequest;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
+import exceptions.ValueRequiredException;
 import util.finance.Money;
 
 import java.text.NumberFormat;
@@ -137,16 +138,16 @@ public interface RequestDetailsController {
            ParseException, DiscountPctTooHighException;
 
    Money validateSellingPrice(String sellingPrice) throws
-           ParseException, DiscountPctTooHighException;
+           ParseException, DiscountPctTooHighException, ValueRequiredException;
 
    Money validateDownPayment(String downPayment) throws
-           ParseException, DownPaymentPctTooLowException;
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException;
 
    double validateDownPaymentPct(String downPaymentPct) throws
            ParseException, DownPaymentPctTooLowException;
 
    Money validateLoanAmount(String loanAmount) throws
-           ParseException, DownPaymentPctTooLowException;
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException;
 
    Money validatePreferredPayment(String prefPayment) throws ParseException;
 

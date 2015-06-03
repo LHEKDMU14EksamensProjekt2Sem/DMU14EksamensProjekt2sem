@@ -10,6 +10,7 @@ import domain.Sale;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
+import exceptions.ValueRequiredException;
 import logic.command.FetchCarModelsCommand;
 import logic.command.FetchCarsCommand;
 import logic.command.SubmitLoanRequestCommand;
@@ -149,6 +150,8 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
             sale.setSellingPrice(value);
          } catch (DiscountPctTooHighException e) {
             sale.setDiscountPct(validator.getMaxDiscountPct());
+         } catch (ValueRequiredException ignore) {
+            // Should never happen
          }
       }
 
@@ -164,6 +167,8 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
             loanRequest.setDownPayment(value);
          } catch (DownPaymentPctTooLowException e) {
             loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
+         } catch (ValueRequiredException ignore) {
+            // Should never happen
          }
       }
    }
@@ -188,6 +193,8 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
             loanRequest.setLoanAmount(value);
          } catch (DownPaymentPctTooLowException e) {
             loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
+         } catch (ValueRequiredException ignore) {
+            // Should never happen
          }
       }
    }
@@ -243,16 +250,24 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
    @Override
    public Money validateSellingPrice(String sellingPrice) throws
-           ParseException, DiscountPctTooHighException {
+           ParseException, DiscountPctTooHighException, ValueRequiredException {
+      sellingPrice = sellingPrice.trim();
+      if (sellingPrice.isEmpty())
+         throw new ValueRequiredException("Selling price");
+
       return validator.validateSellingPrice(
-              sellingPrice.trim(), loanRequest.getSale().getBasePrice());
+              sellingPrice, loanRequest.getSale().getBasePrice());
    }
 
    @Override
    public Money validateDownPayment(String downPayment) throws
-           ParseException, DownPaymentPctTooLowException {
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException {
+      downPayment = downPayment.trim();
+      if (downPayment.isEmpty())
+         throw new ValueRequiredException("Down payment");
+
       return validator.validateDownPayment(
-              downPayment.trim(), loanRequest.getSale().getSellingPrice());
+              downPayment, loanRequest.getSale().getSellingPrice());
    }
 
    @Override
@@ -264,9 +279,13 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
    @Override
    public Money validateLoanAmount(String loanAmount) throws
-           ParseException, DownPaymentPctTooLowException {
+           ParseException, DownPaymentPctTooLowException, ValueRequiredException {
+      loanAmount = loanAmount.trim();
+      if (loanAmount.isEmpty())
+         throw new ValueRequiredException("Loan amount");
+
       return validator.validateLoanAmount(
-              loanAmount.trim(), loanRequest.getSale().getSellingPrice());
+              loanAmount, loanRequest.getSale().getSellingPrice());
    }
 
    @Override

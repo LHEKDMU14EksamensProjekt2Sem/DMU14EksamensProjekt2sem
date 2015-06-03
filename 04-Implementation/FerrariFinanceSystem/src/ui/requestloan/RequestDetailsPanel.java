@@ -7,6 +7,7 @@ import domain.Sale;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
+import exceptions.ValueRequiredException;
 import logic.format.GeneralNumberFormat;
 import logic.session.requestloan.RequestLoanFacade;
 import ui.UIFactory;
@@ -47,6 +48,9 @@ public class RequestDetailsPanel extends JPanel {
            INF_DISCOUNT_PCT_TOO_HIGH = "<html>Rabat må udgøre maks.<br>10 % af basisprisen",
            INF_DOWN_PAYMENT_PCT_TOO_LOW = "<html>Udbetaling skal være min.<br>20 % af salgsprisen",
            INF_TERM_TOO_LONG = "<html>Løbetid må være maks.<br>240 mdr.",
+           INF_SELLING_PRICE_REQUIRED = "Salgspris skal angives",
+           INF_DOWN_PAYMENT_REQUIRED = "Udbetaling skal angives",
+           INF_LOAN_AMOUNT_REQUIRED = "Lånebeløb skal angives",
            BUTTON_SUBMIT = "Send";
 
    private RequestLoanDialog presenter;
@@ -156,6 +160,8 @@ public class RequestDetailsPanel extends JPanel {
             tf.setError(ERR_INVALID_AMOUNT);
          } catch (DiscountPctTooHighException e) {
             tf.setInfo(INF_DISCOUNT_PCT_TOO_HIGH);
+         } catch (ValueRequiredException e) {
+            tf.setInfo(INF_SELLING_PRICE_REQUIRED);
          }
       });
       tfSellingPrice.setCommitter(tf -> {
@@ -178,6 +184,8 @@ public class RequestDetailsPanel extends JPanel {
             tf.setError(ERR_INVALID_AMOUNT);
          } catch (DownPaymentPctTooLowException e) {
             tf.setInfo(INF_DOWN_PAYMENT_PCT_TOO_LOW);
+         } catch (ValueRequiredException e) {
+            tf.setInfo(INF_DOWN_PAYMENT_REQUIRED);
          }
       });
       tfDownPayment.setCommitter(tf -> {
@@ -223,6 +231,8 @@ public class RequestDetailsPanel extends JPanel {
             tf.setError(ERR_INVALID_AMOUNT);
          } catch (DownPaymentPctTooLowException e) {
             tf.setInfo(INF_DOWN_PAYMENT_PCT_TOO_LOW);
+         } catch (ValueRequiredException e) {
+            tf.setInfo(INF_LOAN_AMOUNT_REQUIRED);
          }
       });
       tfLoanAmount.setCommitter(tf -> {
