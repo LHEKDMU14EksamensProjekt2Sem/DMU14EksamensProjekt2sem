@@ -2,73 +2,65 @@ package logic.format;
 
 import util.finance.Money;
 
-import javax.swing.text.NumberFormatter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 
 public class GeneralNumberFormatImpl implements GeneralNumberFormat {
-   private final NumberFormatter moneyFormat, percentFormat, integerFormat;
+   private NumberFormat moneyFormat, percentFormat, integerFormat;
 
    public GeneralNumberFormatImpl() {
-      DecimalFormat df;
+      initMoneyFormat();
+      initPercentFormat();
+      initIntegerFormat();
+   }
 
-      df = new DecimalFormat();
-      df.setParseBigDecimal(true);
-      df.setMinimumFractionDigits(2);
-      df.setMaximumFractionDigits(2);
-      moneyFormat = new NumberFormatter(df);
-      moneyFormat.setValueClass(BigDecimal.class);
+   private void initMoneyFormat() {
+      moneyFormat = NumberFormat.getInstance();
+      moneyFormat.setMinimumFractionDigits(2);
+      moneyFormat.setMaximumFractionDigits(2);
+      if (moneyFormat instanceof DecimalFormat)
+         ((DecimalFormat) moneyFormat).setParseBigDecimal(true);
+   }
 
-      df = new DecimalFormat();
-      df.setMinimumFractionDigits(3);
-      df.setMaximumFractionDigits(3);
-      percentFormat = new NumberFormatter(df);
-      percentFormat.setValueClass(Double.class);
+   private void initPercentFormat() {
+      percentFormat = NumberFormat.getInstance();
+      percentFormat.setMinimumFractionDigits(3);
+      percentFormat.setMaximumFractionDigits(3);
+   }
 
-      df = new DecimalFormat();
-      df.setParseIntegerOnly(true);
-      integerFormat = new NumberFormatter(df);
-      integerFormat.setValueClass(Integer.class);
+   private void initIntegerFormat() {
+      integerFormat = NumberFormat.getIntegerInstance();
    }
 
    @Override
    public Money parseAmount(String amount) throws ParseException {
-      return new Money((BigDecimal) moneyFormat.stringToValue(amount));
+      return new Money((BigDecimal) moneyFormat.parse(amount));
    }
 
    @Override
    public double parsePercent(String percent) throws ParseException {
-      return ((double) percentFormat.stringToValue(percent) / 100);
+      return (percentFormat.parse(percent).doubleValue() / 100);
    }
 
    @Override
    public int parseInteger(String integer) throws ParseException {
-      return (int) integerFormat.stringToValue(integer);
+      return integerFormat.parse(integer).intValue();
    }
 
    @Override
    public String formatAmount(Money amount) {
-      return valueToString(amount.asBigDecimal(), moneyFormat);
+      return moneyFormat.format(amount.asBigDecimal());
    }
 
    @Override
    public String formatPercent(double percent) {
-      return valueToString(percent * 100, percentFormat);
+      return percentFormat.format(percent * 100);
    }
 
    @Override
    public String formatInteger(int integer) {
-      return valueToString(integer, integerFormat);
-   }
-
-   private String valueToString(Object value, NumberFormatter format) {
-      try {
-         return format.valueToString(value);
-      } catch (ParseException e) {
-         // Should never happen
-         e.printStackTrace();
-         return null;
-      }
+      return integerFormat.format(integer);
    }
 }
