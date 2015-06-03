@@ -2,6 +2,7 @@ package logic.session.requestloan;
 
 import domain.Employee;
 import domain.User;
+import logic.format.GeneralNumberFormat;
 import util.session.SessionFacade;
 
 public interface RequestLoanFacade extends
@@ -9,5 +10,7 @@ public interface RequestLoanFacade extends
         CPRController,
         CustomerDetailsController,
         RequestDetailsController {
+   GeneralNumberFormat getGeneralNumberFormat();
+
    User<Employee> getUser();
 }

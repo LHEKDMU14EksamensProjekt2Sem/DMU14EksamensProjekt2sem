@@ -16,10 +16,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public interface RequestDetailsController {
-   NumberFormat getMoneyFormat();
-
-   NumberFormat getPercentFormat();
-
    /**
     * Returns the current loan request
     *

@@ -11,10 +11,10 @@ import domain.LoanRequest;
 import domain.PostalCode;
 import domain.User;
 import exceptions.*;
+import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
 import util.finance.Money;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +42,11 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    @Override
    public void setView(RequestLoanView view) {
       this.view = view;
+   }
+
+   @Override
+   public GeneralNumberFormat getGeneralNumberFormat() {
+      return owner.getGeneralNumberFormat();
    }
 
    @Override
@@ -171,16 +176,6 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
 
    // RequestDetailsController
    /////////////////////////////
-
-   @Override
-   public NumberFormat getMoneyFormat() {
-      return requestDetailsCtrl.getMoneyFormat();
-   }
-
-   @Override
-   public NumberFormat getPercentFormat() {
-      return requestDetailsCtrl.getPercentFormat();
-   }
 
    @Override
    public LoanRequest getLoanRequest() {

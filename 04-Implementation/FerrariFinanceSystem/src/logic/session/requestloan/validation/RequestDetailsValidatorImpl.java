@@ -3,10 +3,9 @@ package logic.session.requestloan.validation;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
+import logic.format.GeneralNumberFormat;
 import util.finance.Money;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
@@ -17,11 +16,10 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    private final static int
            MAX_TERM_LENGTH = 240; // 20 years
 
-   private NumberFormat moneyFormat, percentFormat;
+   private GeneralNumberFormat format;
 
-   public RequestDetailsValidatorImpl(NumberFormat moneyFormat, NumberFormat percentFormat) {
-      this.moneyFormat = moneyFormat;
-      this.percentFormat = percentFormat;
+   public RequestDetailsValidatorImpl(GeneralNumberFormat format) {
+      this.format = format;
    }
 
    @Override
@@ -42,7 +40,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public Money validateDiscount(String discount, Money basePrice) throws
            ParseException, DiscountPctTooHighException {
-      Money amount = new Money((BigDecimal) moneyFormat.parse(discount));
+      Money amount = format.parseAmount(discount);
       double pct = (amount.doubleValue() / basePrice.doubleValue());
       if (pct > MAX_DISCOUNT_PCT)
          throw new DiscountPctTooHighException(pct);
@@ -52,7 +50,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public double validateDiscountPct(String discountPct) throws
            ParseException, DiscountPctTooHighException {
-      double pct = percentFormat.parse(discountPct).doubleValue() / 100;
+      double pct = format.parsePercent(discountPct);
       if (pct > MAX_DISCOUNT_PCT)
          throw new DiscountPctTooHighException(pct);
       return pct;
@@ -61,7 +59,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public Money validateSellingPrice(String sellingPrice, Money basePrice) throws
            ParseException, DiscountPctTooHighException {
-      Money amount = new Money((BigDecimal) moneyFormat.parse(sellingPrice));
+      Money amount = format.parseAmount(sellingPrice);
       double pct = (amount.doubleValue() / basePrice.doubleValue());
       if (pct < 1 - MAX_DISCOUNT_PCT)
          throw new DiscountPctTooHighException(pct);
@@ -71,7 +69,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public Money validateDownPayment(String downPayment, Money sellingPrice) throws
            ParseException, DownPaymentPctTooLowException {
-      Money amount = new Money((BigDecimal) moneyFormat.parse(downPayment));
+      Money amount = format.parseAmount(downPayment);
       double pct = (amount.doubleValue() / sellingPrice.doubleValue());
       if (pct < MIN_DOWN_PAYMENT_PCT)
          throw new DownPaymentPctTooLowException(pct);
@@ -81,7 +79,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public double validateDownPaymentPct(String downPaymentPct, Money sellingPrice) throws
            ParseException, DownPaymentPctTooLowException {
-      double pct = percentFormat.parse(downPaymentPct).doubleValue() / 100;
+      double pct = format.parsePercent(downPaymentPct);
       if (pct < MIN_DOWN_PAYMENT_PCT)
          throw new DownPaymentPctTooLowException(pct);
       return pct;
@@ -90,7 +88,7 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
    @Override
    public Money validateLoanAmount(String loanAmount, Money sellingPrice) throws
            ParseException, DownPaymentPctTooLowException {
-      Money amount = new Money((BigDecimal) moneyFormat.parse(loanAmount));
+      Money amount = format.parseAmount(loanAmount);
       double pct = (amount.doubleValue() / sellingPrice.doubleValue());
       if (pct > 1 - MIN_DOWN_PAYMENT_PCT)
          throw new DownPaymentPctTooLowException(pct);
@@ -99,13 +97,13 @@ public class RequestDetailsValidatorImpl implements RequestDetailsValidator {
 
    @Override
    public Money validatePreferredPayment(String prefPayment) throws ParseException {
-      return new Money((BigDecimal) moneyFormat.parse(prefPayment));
+      return format.parseAmount(prefPayment);
    }
 
    @Override
    public int validatePreferredTerm(String prefTerm) throws
            ParseException, TermTooLongException {
-      int term = Integer.parseInt(prefTerm);
+      int term = format.parseInteger(prefTerm);
       if (term > MAX_TERM_LENGTH)
          throw new TermTooLongException(term);
       return term;

@@ -1,18 +1,21 @@
 package logic.session.main;
 
 import domain.Employee;
+import domain.User;
+import logic.format.GeneralNumberFormat;
 import logic.session.requestloan.RequestLoanFacade;
 import logic.session.requestloan.RequestLoanFacadeImpl;
-import domain.User;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MainFacadeImpl implements MainFacade {
+   private final MainController mainController;
    private final LoginController loginController;
    private MainView view;
 
    public MainFacadeImpl() {
+      mainController = new MainControllerImpl(this);
       loginController = new LoginControllerImpl(this);
    }
 
@@ -29,6 +32,14 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public void setView(MainView view) {
       this.view = view;
+   }
+
+   // MainController
+   ///////////////////
+
+   @Override
+   public GeneralNumberFormat getGeneralNumberFormat() {
+      return mainController.getGeneralNumberFormat();
    }
 
    // LoginController

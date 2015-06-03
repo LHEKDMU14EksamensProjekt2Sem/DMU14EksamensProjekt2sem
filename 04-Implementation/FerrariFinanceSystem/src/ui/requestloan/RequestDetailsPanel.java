@@ -7,6 +7,7 @@ import domain.Sale;
 import exceptions.DiscountPctTooHighException;
 import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
+import logic.format.GeneralNumberFormat;
 import logic.session.requestloan.RequestLoanFacade;
 import ui.UIFactory;
 import ui.XTextField;
@@ -20,7 +21,6 @@ import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
@@ -366,8 +366,7 @@ public class RequestDetailsPanel extends JPanel {
       LoanRequest lr = facade.getLoanRequest();
       Sale sale = lr.getSale();
 
-      NumberFormat moneyFormat = facade.getMoneyFormat();
-      NumberFormat percentFormat = facade.getPercentFormat();
+      GeneralNumberFormat f = facade.getGeneralNumberFormat();
 
       String
               basePrice = "",
@@ -380,20 +379,20 @@ public class RequestDetailsPanel extends JPanel {
               prefTerm = "";
 
       if (sale.hasCar()) {
-         basePrice = moneyFormat.format(sale.getBasePrice().doubleValue());
+         basePrice = f.formatAmount(sale.getBasePrice());
 
          if (!sale.getDiscount().equals(Money.ZERO)) {
-            discount = moneyFormat.format(sale.getDiscount().doubleValue());
-            discountPct = percentFormat.format(sale.getDiscountPct() * 100);
+            discount = f.formatAmount(sale.getDiscount());
+            discountPct = f.formatPercent(sale.getDiscountPct());
          }
 
-         sellingPrice = moneyFormat.format(sale.getSellingPrice().doubleValue());
-         downPayment = moneyFormat.format(lr.getDownPayment().doubleValue());
-         downPaymentPct = percentFormat.format(lr.getDownPaymentPct() * 100);
-         loanAmount = moneyFormat.format(lr.getLoanAmount().doubleValue());
+         sellingPrice = f.formatAmount(sale.getSellingPrice());
+         downPayment = f.formatAmount(lr.getDownPayment());
+         downPaymentPct = f.formatPercent(lr.getDownPaymentPct());
+         loanAmount = f.formatAmount(lr.getLoanAmount());
 
          if (lr.hasPreferredTerm())
-            prefTerm = String.valueOf(lr.getPreferredTerm());
+            prefTerm = f.formatInteger(lr.getPreferredTerm());
       }
 
       tfBasePrice.setText(basePrice);

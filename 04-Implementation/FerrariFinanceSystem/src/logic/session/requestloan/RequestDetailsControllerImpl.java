@@ -19,8 +19,6 @@ import util.finance.Money;
 import util.swing.SwingCommand;
 
 import java.sql.Date;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -32,25 +30,10 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    private final LoanRequest loanRequest;
    private final Sale sale;
 
-   private NumberFormat moneyFormat, percentFormat;
-
    public RequestDetailsControllerImpl(RequestLoanFacade facade) {
       this.facade = facade;
 
-      moneyFormat = NumberFormat.getNumberInstance();
-      moneyFormat.setMinimumFractionDigits(2);
-      moneyFormat.setMaximumFractionDigits(2);
-      if (moneyFormat instanceof DecimalFormat) {
-         DecimalFormat df = ((DecimalFormat) moneyFormat);
-         df.setParseBigDecimal(true);
-         df.setDecimalSeparatorAlwaysShown(true);
-      }
-
-      percentFormat = NumberFormat.getNumberInstance();
-      percentFormat.setMinimumFractionDigits(2);
-      percentFormat.setMaximumFractionDigits(2);
-
-      validator = new RequestDetailsValidatorImpl(moneyFormat, percentFormat);
+      validator = new RequestDetailsValidatorImpl(facade.getGeneralNumberFormat());
 
       Employee employee = facade.getUser().getEntity();
 
@@ -59,22 +42,13 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       sale.setCustomer(facade.getCustomer());
       sale.setBasePrice(Money.ZERO);
       sale.setSellingPrice(Money.ZERO);
+
       loanRequest = new LoanRequest();
       loanRequest.setSale(sale);
       loanRequest.setStatus(LoanRequestStatus.PENDING);
       loanRequest.setStatusByEmployee(employee);
       loanRequest.setDate(new Date(System.currentTimeMillis()));
       loanRequest.setLoanAmount(Money.ZERO);
-   }
-
-   @Override
-   public NumberFormat getMoneyFormat() {
-      return moneyFormat;
-   }
-
-   @Override
-   public NumberFormat getPercentFormat() {
-      return percentFormat;
    }
 
    @Override
