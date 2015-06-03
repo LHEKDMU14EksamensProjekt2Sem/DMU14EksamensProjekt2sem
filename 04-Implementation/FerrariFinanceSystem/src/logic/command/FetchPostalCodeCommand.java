@@ -15,6 +15,8 @@ public class FetchPostalCodeCommand implements Callable<Optional<PostalCode>> {
 
    @Override
    public Optional<PostalCode> call() throws Exception {
+      // Fake a remote call delay
+      Thread.sleep(500);
       return new PostalCodeServiceImpl().readPostalCode(postalCode);
    }
 }
