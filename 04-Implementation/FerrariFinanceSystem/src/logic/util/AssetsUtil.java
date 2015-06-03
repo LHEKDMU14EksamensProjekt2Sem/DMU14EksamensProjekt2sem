@@ -5,15 +5,23 @@ import util.io.FileIO;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.awt.RenderingHints.*;
+import static java.awt.Transparency.*;
+
 public class AssetsUtil {
    private static Image bgImage;
+
+   private static ImageIcon loaderIcon, infoIcon, errorIcon;
 
    private static URL getURL(String path) {
       return ClassLoader.getSystemResource(path);
@@ -76,7 +84,28 @@ public class AssetsUtil {
    }
 
    public static ImageIcon loadLoaderIcon() throws IOException {
-      return new ImageIcon(getURL("assets/images/loader.gif"));
+      if (loaderIcon == null)
+         loaderIcon = new ImageIcon(getURL("assets/images/loader.gif"));
+
+      return loaderIcon;
+   }
+
+   public static ImageIcon loadInfoIcon() throws IOException {
+      if (infoIcon == null) {
+         infoIcon = new ImageIcon(getURL("assets/images/info-icon.png"));
+         infoIcon = translateIcon(infoIcon, 1);
+      }
+
+      return infoIcon;
+   }
+
+   public static ImageIcon loadErrorIcon() throws IOException {
+      if (errorIcon == null) {
+         errorIcon = new ImageIcon(getURL("assets/images/error-icon.png"));
+         errorIcon = translateIcon(errorIcon, 1);
+      }
+
+      return errorIcon;
    }
 
    public static Image loadBackgroundImage() throws IOException {
@@ -84,5 +113,16 @@ public class AssetsUtil {
          bgImage = ImageIO.read(getStream("assets/images/bg3.png"));
 
       return bgImage;
+   }
+
+   private static ImageIcon translateIcon(ImageIcon icon, int topMargin) {
+      BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight() + topMargin, TRANSLUCENT);
+      Graphics2D g2 = bi.createGraphics();
+      // Prefer quality
+      RenderingHints hints = new RenderingHints(KEY_RENDERING, VALUE_RENDER_QUALITY);
+      g2.addRenderingHints(hints);
+      g2.drawImage(icon.getImage(), 0, topMargin, icon.getIconWidth(), icon.getIconHeight(), null);
+      g2.dispose();
+      return new ImageIcon(bi);
    }
 }
