@@ -64,7 +64,7 @@ public class RequestLoanDialog extends JDialog implements
       contentPanel = new JPanel(layout);
       contentPanel.setOpaque(false);
       contentPanel.setBorder(UIFactory.createContentBorder());
-      messageLabel = UIFactory.createLabel("");
+      messageLabel = UIFactory.createLabel();
 
       cprPanel = new CPRPanel(this);
       customerDetailsPanel = new CustomerDetailsPanel(this);
@@ -132,6 +132,7 @@ public class RequestLoanDialog extends JDialog implements
    }
 
    public void clearMessage() {
+      // Maintain label height using a single space
       messageLabel.setText(" ");
       messageLabel.setIcon(null);
    }
