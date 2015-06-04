@@ -6,9 +6,8 @@ import util.jdbc.ConnectionHandler;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
-
-import static java.sql.Statement.*;
 
 public class CarConfigAccessImpl implements CarConfigAccess {
    private ConnectionHandler con;
@@ -20,7 +19,7 @@ public class CarConfigAccessImpl implements CarConfigAccess {
    @Override
    public void createCarConfigs(List<CarConfig> configs) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(
-              SQL.INSERT_ONE, RETURN_GENERATED_KEYS)) {
+              SQL.INSERT_ONE, Statement.RETURN_GENERATED_KEYS)) {
          for (CarConfig config : configs) {
             st.setInt(1, config.getModel().getId());
             st.setString(2, config.getName());
