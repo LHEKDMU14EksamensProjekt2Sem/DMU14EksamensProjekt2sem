@@ -1,10 +1,7 @@
 package exceptions;
 
-public class InvalidNameException extends Exception{
-
-	private static final long serialVersionUID = 1L;
-
-	public InvalidNameException(String name) {
-		super("Invalid name: " + name);
-	}
+public class InvalidNameException extends ValidationException {
+   public InvalidNameException(String name) {
+      super("Invalid name: " + name);
+   }
 }
