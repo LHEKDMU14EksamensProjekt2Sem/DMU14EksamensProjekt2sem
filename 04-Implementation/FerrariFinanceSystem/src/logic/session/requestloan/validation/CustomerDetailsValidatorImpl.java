@@ -17,6 +17,7 @@ public class CustomerDetailsValidatorImpl implements CustomerDetailsValidator {
            STREET_HOUSE_NUMBER = ".*\\d+.*",
            POSTAL_CODE = "[1-9]\\d{3}",
            PHONE = "(?:\\+45\\s*)?(\\d{8})",
+           PHONE_PARTIAL = "\\d{0,8}|\\+((?<=\\+)4)?((?<=\\+4)5)?((?<=\\+45)\\s?\\d{0,8})?",
            EMAIL = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})";
 
    @Override
@@ -64,5 +65,10 @@ public class CustomerDetailsValidatorImpl implements CustomerDetailsValidator {
          throw new InvalidEmailException(email);
 
       return email;
+   }
+
+   @Override
+   public String getPartialPhonePattern() {
+      return PHONE_PARTIAL;
    }
 }

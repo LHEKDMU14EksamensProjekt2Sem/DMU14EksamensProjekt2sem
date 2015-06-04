@@ -155,4 +155,9 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
 
       return validator.validateEmail(email);
    }
+
+   @Override
+   public String getPartialPhonePattern() {
+      return validator.getPartialPhonePattern();
+   }
 }

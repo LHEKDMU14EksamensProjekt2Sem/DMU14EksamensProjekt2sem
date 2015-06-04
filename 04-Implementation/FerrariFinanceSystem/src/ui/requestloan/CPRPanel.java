@@ -3,6 +3,7 @@ package ui.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
+import logic.session.requestloan.RequestLoanFacade;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
 import ui.XTextField;
@@ -27,7 +28,6 @@ public class CPRPanel extends JPanel implements SessionView {
    private static final String
            LABEL_CPR = "CPR:",
            BUTTON_SEARCH = "Søg kunde",
-           PATTERN_CPR = "\\d{0,10}|\\d{0,6}-\\d{0,4}",
            ERR_CPR_REQUIRED = "CPR skal angives",
            ERR_CPR_INVALID = "CPR er ugyldigt";
 
@@ -46,13 +46,15 @@ public class CPRPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
+      RequestLoanFacade facade = presenter.getFacade();
+
       lblCPR = createLabel(LABEL_CPR);
       tfCPR = createTextField(12);
       tfCPR.setMessageLabel(createLabel());
-      tfCPR.restrictInput(PATTERN_CPR);
+      tfCPR.restrictInput(facade.getPartialCPRPattern());
       tfCPR.setVerifier(tf -> {
          try {
-            presenter.getFacade().validateCPR(tf.getText());
+            facade.validateCPR(tf.getText());
          } catch (ValueRequiredException e) {
             tf.setError(ERR_CPR_REQUIRED);
          } catch (InvalidCPRException e) {
@@ -62,7 +64,7 @@ public class CPRPanel extends JPanel implements SessionView {
       });
       tfCPR.setCommitter(tf -> {
          try {
-            presenter.getFacade().specifyCPR(tf.getText());
+            facade.specifyCPR(tf.getText());
          } catch (ValueRequiredException e) {
             tf.setError(ERR_CPR_REQUIRED);
          } catch (InvalidCPRException e) {

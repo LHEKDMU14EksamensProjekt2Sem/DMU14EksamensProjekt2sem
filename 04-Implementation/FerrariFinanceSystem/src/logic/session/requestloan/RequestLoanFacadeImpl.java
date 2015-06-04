@@ -68,9 +68,9 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public String validateCPR(String cpr) throws
-           InvalidCPRException, ValueRequiredException {
-      return cprCtrl.validateCPR(cpr);
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      cprCtrl.fetchCreditRating(resultConsumer, exceptionConsumer);
    }
 
    @Override
@@ -79,10 +79,18 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
       cprCtrl.specifyCPR(cpr);
    }
 
+   // CPR validation
+   ///////////////////
+
    @Override
-   public void fetchCreditRating(Consumer<Rating> resultConsumer,
-                                 Consumer<Throwable> exceptionConsumer) {
-      cprCtrl.fetchCreditRating(resultConsumer, exceptionConsumer);
+   public String validateCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      return cprCtrl.validateCPR(cpr);
+   }
+
+   @Override
+   public String getPartialCPRPattern() {
+      return cprCtrl.getPartialCPRPattern();
    }
 
    // CustomerDetailsController
@@ -174,6 +182,11 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    public String validateEmail(String email) throws
            InvalidEmailException, ValueRequiredException {
       return customerDetailsCtrl.validateEmail(email);
+   }
+
+   @Override
+   public String getPartialPhonePattern() {
+      return customerDetailsCtrl.getPartialPhonePattern();
    }
 
    // RequestDetailsController

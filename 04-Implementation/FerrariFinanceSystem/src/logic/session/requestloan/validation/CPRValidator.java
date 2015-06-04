@@ -9,4 +9,6 @@ public interface CPRValidator {
     * @param cpr a CPR number
     */
    String validateCPR(String cpr) throws InvalidCPRException;
+
+   String getPartialCPRPattern();
 }

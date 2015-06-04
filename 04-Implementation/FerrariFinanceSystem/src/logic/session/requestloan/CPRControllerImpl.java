@@ -36,22 +36,6 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public String validateCPR(String cpr) throws
-           InvalidCPRException, ValueRequiredException {
-      cpr = cpr.trim();
-      if (cpr.isEmpty())
-         throw new ValueRequiredException("CPR");
-
-      return validator.validateCPR(cpr);
-   }
-
-   @Override
-   public void specifyCPR(String cpr) throws
-           InvalidCPRException, ValueRequiredException {
-      identity.setCPR(validator.validateCPR(cpr));
-   }
-
-   @Override
    public void fetchCreditRating(Consumer<Rating> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       new SwingCommand<>(
@@ -62,5 +46,29 @@ public class CPRControllerImpl implements CPRController {
               },
               exceptionConsumer::accept
       ).execute();
+   }
+
+   @Override
+   public void specifyCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      identity.setCPR(validator.validateCPR(cpr));
+   }
+
+   // Validation
+   ///////////////
+
+   @Override
+   public String validateCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      cpr = cpr.trim();
+      if (cpr.isEmpty())
+         throw new ValueRequiredException("CPR");
+
+      return validator.validateCPR(cpr);
+   }
+
+   @Override
+   public String getPartialCPRPattern() {
+      return validator.getPartialCPRPattern();
    }
 }

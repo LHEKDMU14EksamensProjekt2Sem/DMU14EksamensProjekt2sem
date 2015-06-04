@@ -59,4 +59,6 @@ public interface CustomerDetailsController {
 
    String validateEmail(String email) throws
            InvalidEmailException, ValueRequiredException;
+
+   String getPartialPhonePattern();
 }

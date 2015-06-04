@@ -7,8 +7,6 @@ import exceptions.InvalidPostalCodeException;
 import exceptions.InvalidStreetException;
 import exceptions.StreetMissingHouseNumberException;
 
-import java.util.regex.Matcher;
-
 public interface CustomerDetailsValidator {
    /**
     * Validates any first or last name.
@@ -54,4 +52,6 @@ public interface CustomerDetailsValidator {
     * @throws InvalidEmailException
     */
    String validateEmail(String email) throws InvalidEmailException;
+
+   String getPartialPhonePattern();
 }
