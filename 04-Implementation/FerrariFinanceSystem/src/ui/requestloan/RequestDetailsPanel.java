@@ -15,12 +15,17 @@ import ui.XTextField;
 import util.finance.Money;
 import util.session.SessionView;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.text.ParseException;
@@ -47,7 +52,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            ERR_INVALID_AMOUNT = "Ugyldigt beløb",
            ERR_INVALID_PERCENT = "Ugyldig procent",
            INF_DISCOUNT_PCT_TOO_HIGH = "<html>Rabat må udgøre maks.<br>10 % af basisprisen",
-           INF_DOWN_PAYMENT_PCT_TOO_LOW = "<html>Udbetaling skal være min.<br>20 % af salgsprisen",
+           INF_DOWN_PAYMENT_PCT_TOO_LOW = "<html>Udbetaling skal svare til<br>min. 20 % af salgsprisen",
            INF_TERM_TOO_LONG = "<html>Løbetid må være maks.<br>240 mdr.",
            INF_SELLING_PRICE_REQUIRED = "Salgspris skal angives",
            INF_DOWN_PAYMENT_REQUIRED = "Udbetaling skal angives",
@@ -71,6 +76,8 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
    private JComboBox<Car> cbCar;
 
    private JButton btnSubmit;
+
+   private JPanel carDescriptionWrapperPanel, carDescriptionPanel;
 
    public RequestDetailsPanel(RequestLoanDialog presenter) {
       this.presenter = presenter;
@@ -98,16 +105,16 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       cbCar.addActionListener(e -> {
          Car car = (Car) cbCar.getSelectedItem();
          facade.specifyCar(car);
-         updateFields();
+         updateView();
       });
 
       lblBasePrice = createLabel(LABEL_BASE_PRICE);
-      tfBasePrice = createTextField(12);
+      tfBasePrice = createTextField(14);
       tfBasePrice.setEditable(false);
       tfBasePrice.setFocusable(false);
 
       lblDiscount = createLabel(LABEL_DISCOUNT);
-      tfDiscount = createTextField(12);
+      tfDiscount = createTextField(14);
       tfDiscount.setMessageLabel(createLabel());
       tfDiscount.setVerifier(tf -> {
          try {
@@ -135,7 +142,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       });
 
       lblDiscountPct = createLabel(LABEL_DISCOUNT_PCT);
-      tfDiscountPct = createTextField(4);
+      tfDiscountPct = createTextField(5);
       tfDiscountPct.setMessageLabel(createLabel());
       tfDiscountPct.setVerifier(tf -> {
          try {
@@ -157,7 +164,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addDefaultActionListener(tfDiscountPct);
 
       lblSellingPrice = createLabel(LABEL_SELLING_PRICE);
-      tfSellingPrice = createTextField(12);
+      tfSellingPrice = createTextField(14);
       tfSellingPrice.setMessageLabel(createLabel());
       tfSellingPrice.setVerifier(tf -> {
          try {
@@ -181,7 +188,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addDefaultActionListener(tfSellingPrice);
 
       lblDownPayment = createLabel(LABEL_DOWN_PAYMENT);
-      tfDownPayment = createTextField(12);
+      tfDownPayment = createTextField(14);
       tfDownPayment.setMessageLabel(createLabel());
       tfDownPayment.setVerifier(tf -> {
          try {
@@ -211,7 +218,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       });
 
       lblDownPaymentPct = createLabel(LABEL_DOWN_PAYMENT_PCT);
-      tfDownPaymentPct = createTextField(4);
+      tfDownPaymentPct = createTextField(5);
       tfDownPaymentPct.setMessageLabel(createLabel());
       tfDownPaymentPct.setVerifier(tf -> {
          try {
@@ -233,7 +240,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addDefaultActionListener(tfDownPaymentPct);
 
       lblLoanAmount = createLabel(LABEL_LOAN_AMOUNT);
-      tfLoanAmount = createTextField(12);
+      tfLoanAmount = createTextField(14);
       tfLoanAmount.setMessageLabel(createLabel());
       tfLoanAmount.setVerifier(tf -> {
          try {
@@ -257,7 +264,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addDefaultActionListener(tfLoanAmount);
 
       lblPrefRepayment = createLabel(LABEL_PREF_PAYMENT);
-      tfPrefPayment = createTextField(12);
+      tfPrefPayment = createTextField(14);
       tfPrefPayment.setMessageLabel(createLabel());
       tfPrefPayment.setVerifier(tf -> {
          try {
@@ -277,7 +284,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addDefaultActionListener(tfPrefPayment);
 
       lblPrefTerm = createLabel(LABEL_PREF_TERM);
-      tfPrefTerm = createTextField(4);
+      tfPrefTerm = createTextField(5);
       tfPrefTerm.setMessageLabel(createLabel());
       tfPrefTerm.setVerifier(tf -> {
          try {
@@ -300,6 +307,16 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
 
       btnSubmit = createButton(BUTTON_SUBMIT);
       btnSubmit.addActionListener(e -> submit());
+
+      JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+      p.setBackground(new Color(0, 0, 0, 20));
+      p.setVisible(false);
+      carDescriptionWrapperPanel = p;
+
+      p = new JPanel();
+      p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+      p.setOpaque(false);
+      carDescriptionPanel = p;
    }
 
    private void addDefaultActionListener(JTextField tf) {
@@ -343,7 +360,13 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       addNext(cbCarModel, gbc);
       addNext(cbCar, gbc);
 
+      gbc.gridx += 2;
+      gbc.gridwidth = 1;
       gbc.fill = NONE;
+      add(createLabel("»"), gbc);
+
+      gbc.gridx -= 2;
+      gbc.gridwidth = 2;
       addNext(tfBasePrice, gbc);
       addNext(tfDiscount, gbc);
       addNext(tfDiscount.getMessageLabel(), gbc);
@@ -370,16 +393,37 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       gbc.gridwidth = 2;
       addNext(tfPrefTerm.getMessageLabel(), gbc);
 
-      gbc.gridx = 0;
+      gbc.gridx = 4;
       gbc.gridy++;
-      gbc.gridwidth = 3;
-      gbc.anchor = EAST;
       add(btnSubmit, gbc);
+
+      gbc.gridy = 0;
+      gbc.anchor = NORTHWEST;
+      gbc.gridheight = 19;
+      add(carDescriptionWrapperPanel, gbc);
+
+      carDescriptionWrapperPanel.add(carDescriptionPanel);
    }
 
    private void addNext(Component comp, GridBagConstraints gbc) {
       gbc.gridy++;
       add(comp, gbc);
+   }
+
+   private void updateCarModels(List<CarModel> models) {
+      cbCarModel.removeAllItems();
+      models.forEach(cbCarModel::addItem);
+   }
+
+   private void updateCars(List<Car> cars) {
+      cbCar.removeAllItems();
+      cars.forEach(cbCar::addItem);
+   }
+
+   private void updateView() {
+      updateFields();
+      updateCarDescription();
+      presenter.pack();
    }
 
    public void updateFields() {
@@ -431,14 +475,21 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       tfPrefTerm.setText(prefTerm);
    }
 
-   private void updateCarModels(List<CarModel> models) {
-      cbCarModel.removeAllItems();
-      models.forEach(cbCarModel::addItem);
-   }
+   private void updateCarDescription() {
+      carDescriptionWrapperPanel.setVisible(true);
+      carDescriptionPanel.removeAll();
 
-   private void updateCars(List<Car> cars) {
-      cbCar.removeAllItems();
-      cars.forEach(cbCar::addItem);
+      carDescriptionPanel.add(createBoldLabel("Bil:"));
+      carDescriptionPanel.add(createBoldLabel("Beskrivelse:"));
+
+      JTextArea ta = createTextArea();
+      ta.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida nec odio vel fermentum. Quisque commodo fringilla erat quis facilisis.");
+      ta.setMaximumSize(new Dimension(200, Short.MAX_VALUE));
+      carDescriptionPanel.add(ta);
+
+      JLabel dummy = new JLabel();
+      dummy.setPreferredSize(new Dimension(200, 0));
+      carDescriptionPanel.add(dummy);
    }
 
    private void submit() {
