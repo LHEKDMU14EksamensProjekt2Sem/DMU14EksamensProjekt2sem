@@ -1,7 +1,7 @@
 package util.session;
 
-public interface SessionFacade<V> {
-   V getView();
+public interface SessionFacade<T> {
+   T getViewToken();
 
-   void setView(V view);
+   void setViewToken(T token);
 }

@@ -1,5 +1,5 @@
 package logic.session.main;
 
-public enum MainView {
+public enum MainViewToken {
    LOGIN, MAIN_MENU
 }

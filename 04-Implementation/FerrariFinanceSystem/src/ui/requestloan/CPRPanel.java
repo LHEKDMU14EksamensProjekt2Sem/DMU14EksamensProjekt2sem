@@ -18,7 +18,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanView.*;
+import static logic.session.requestloan.RequestLoanViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
@@ -82,10 +82,6 @@ public class CPRPanel extends JPanel {
       add(btnSearch, gbc);
    }
 
-   public void enter() {
-      // No-op
-   }
-
    private void updateSearchButton() {
       btnSearch.setEnabled(validateCPR());
    }
@@ -125,5 +121,9 @@ public class CPRPanel extends JPanel {
       } catch (IOException ex) {
          // No-op
       }
+   }
+
+   public void enter() {
+      // No-op
    }
 }

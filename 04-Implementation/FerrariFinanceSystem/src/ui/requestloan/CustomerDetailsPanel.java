@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanView.*;
+import static logic.session.requestloan.RequestLoanViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 

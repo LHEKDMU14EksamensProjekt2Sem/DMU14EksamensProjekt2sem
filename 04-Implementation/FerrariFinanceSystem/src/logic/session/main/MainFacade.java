@@ -4,7 +4,7 @@ import logic.session.requestloan.RequestLoanFacade;
 import util.session.SessionFacade;
 
 public interface MainFacade extends
-        SessionFacade<MainView>,
+        SessionFacade<MainViewToken>,
         MainController,
         LoginController {
    RequestLoanFacade newRequestLoanFacade();

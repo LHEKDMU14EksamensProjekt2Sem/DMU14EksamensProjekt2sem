@@ -1,7 +1,7 @@
 package ui.main;
 
 import logic.session.main.MainFacade;
-import logic.session.main.MainView;
+import logic.session.main.MainViewToken;
 import logic.util.AssetsUtil;
 import util.session.SessionPresenter;
 import util.session.UnsupportedViewException;
@@ -14,10 +14,10 @@ import javax.swing.WindowConstants;
 import java.awt.CardLayout;
 import java.io.IOException;
 
-import static logic.session.main.MainView.*;
+import static logic.session.main.MainViewToken.*;
 
 public class MainFrame extends JFrame implements
-        SessionPresenter<MainView, MainFacade> {
+        SessionPresenter<MainFacade, MainViewToken> {
 
    private MainFacade facade;
 
@@ -63,11 +63,14 @@ public class MainFrame extends JFrame implements
 
       add(mainMenuPanel);
       layout.addLayoutComponent(mainMenuPanel, MAIN_MENU.toString());
+   @Override
+   public MainFacade getFacade() {
+      return facade;
    }
 
    @Override
-   public void go(MainView view) {
-      switch (view) {
+   public void go(MainViewToken token) {
+      switch (token) {
          case LOGIN:
             loginPanel.enter();
             break;
@@ -75,15 +78,10 @@ public class MainFrame extends JFrame implements
             mainMenuPanel.enter();
             break;
          default:
-            throw new UnsupportedViewException(view);
+            throw new UnsupportedViewException(token);
       }
 
-      facade.setView(view);
-      layout.show(getContentPane(), view.toString());
-   }
-
-   @Override
-   public MainFacade getFacade() {
-      return facade;
+      facade.setViewToken(token);
+      layout.show(getContentPane(), token.toString());
    }
 }

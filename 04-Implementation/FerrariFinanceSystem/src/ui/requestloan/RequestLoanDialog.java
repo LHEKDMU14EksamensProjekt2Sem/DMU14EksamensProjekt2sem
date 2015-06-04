@@ -1,7 +1,7 @@
 package ui.requestloan;
 
 import logic.session.requestloan.RequestLoanFacade;
-import logic.session.requestloan.RequestLoanView;
+import logic.session.requestloan.RequestLoanViewToken;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
 import util.session.SessionPresenter;
@@ -20,10 +20,10 @@ import java.awt.Window;
 import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanView.*;
+import static logic.session.requestloan.RequestLoanViewToken.*;
 
 public class RequestLoanDialog extends JDialog implements
-        SessionPresenter<RequestLoanView, RequestLoanFacade> {
+        SessionPresenter<RequestLoanFacade, RequestLoanViewToken> {
 
    private RequestLoanFacade facade;
    private JPanel contentPanel;
@@ -91,11 +91,14 @@ public class RequestLoanDialog extends JDialog implements
 
       contentPanel.add(requestDetailsPanel);
       layout.addLayoutComponent(requestDetailsPanel, REQUEST_DETAILS.toString());
+   @Override
+   public RequestLoanFacade getFacade() {
+      return facade;
    }
 
    @Override
-   public void go(RequestLoanView view) {
-      switch (view) {
+   public void go(RequestLoanViewToken token) {
+      switch (token) {
          case CPR:
             cprPanel.enter();
             break;
@@ -106,16 +109,11 @@ public class RequestLoanDialog extends JDialog implements
             requestDetailsPanel.enter();
             break;
          default:
-            throw new UnsupportedViewException(view);
+            throw new UnsupportedViewException(token);
       }
 
-      facade.setView(view);
-      layout.show(contentPanel, view.toString());
-   }
-
-   @Override
-   public RequestLoanFacade getFacade() {
-      return facade;
+      facade.setViewToken(token);
+      layout.show(contentPanel, token.toString());
    }
 
    public void setMessage(String message) {

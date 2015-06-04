@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public class MainFacadeImpl implements MainFacade {
    private final MainController mainController;
    private final LoginController loginController;
-   private MainView view;
+   private MainViewToken view;
 
    public MainFacadeImpl() {
       mainController = new MainControllerImpl(this);
@@ -25,12 +25,12 @@ public class MainFacadeImpl implements MainFacade {
    }
 
    @Override
-   public MainView getView() {
+   public MainViewToken getViewToken() {
       return view;
    }
 
    @Override
-   public void setView(MainView view) {
+   public void setViewToken(MainViewToken view) {
       this.view = view;
    }
 

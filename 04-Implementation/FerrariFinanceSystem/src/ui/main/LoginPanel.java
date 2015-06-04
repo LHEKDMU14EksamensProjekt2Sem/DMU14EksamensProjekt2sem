@@ -12,7 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.main.MainView.*;
+import static logic.session.main.MainViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
@@ -81,10 +81,6 @@ public class LoginPanel extends JPanel {
       add(comp, gbc);
    }
 
-   public void enter() {
-      // No-op
-   }
-
    private void login() {
       presenter.getFacade().login(tfUsername.getText(), pfPassword.getPassword(),
               r -> {
@@ -95,5 +91,9 @@ public class LoginPanel extends JPanel {
               },
               x -> lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.")
       );
+   }
+
+   public void enter() {
+      // No-op
    }
 }

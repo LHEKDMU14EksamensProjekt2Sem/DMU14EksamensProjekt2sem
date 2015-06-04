@@ -6,7 +6,7 @@ import logic.format.GeneralNumberFormat;
 import util.session.SessionFacade;
 
 public interface RequestLoanFacade extends
-        SessionFacade<RequestLoanView>,
+        SessionFacade<RequestLoanViewToken>,
         CPRController,
         CustomerDetailsController,
         RequestDetailsController {

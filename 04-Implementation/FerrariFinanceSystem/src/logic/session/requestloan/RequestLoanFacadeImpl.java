@@ -25,7 +25,7 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    private final CPRController cprCtrl;
    private final CustomerDetailsController customerDetailsCtrl;
    private final RequestDetailsController requestDetailsCtrl;
-   private RequestLoanView view;
+   private RequestLoanViewToken view;
 
    public RequestLoanFacadeImpl(MainFacade owner) {
       this.owner = owner;
@@ -35,12 +35,12 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public RequestLoanView getView() {
+   public RequestLoanViewToken getViewToken() {
       return view;
    }
 
    @Override
-   public void setView(RequestLoanView view) {
+   public void setViewToken(RequestLoanViewToken view) {
       this.view = view;
    }
 
