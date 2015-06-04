@@ -2,12 +2,14 @@ package dev.command;
 
 import domain.Car;
 import domain.CarComponent;
+import domain.CarComponentType;
 import domain.CarConfig;
 import domain.CarModel;
 import logic.service.*;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -59,7 +61,7 @@ public class CreateCarSampleCommand implements Callable<Void> {
    }
 
    private void createCarComponentTypes() throws SQLException {
-      List<String> types = newCarComponentTypes();
+      List<CarComponentType> types = Arrays.asList(CarComponentType.values());
       CarComponentTypeService service = new CarComponentTypeServiceImpl();
       service.createCarComponentTypes(types, con);
    }

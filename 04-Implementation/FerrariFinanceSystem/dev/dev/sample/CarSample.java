@@ -2,6 +2,7 @@ package dev.sample;
 
 import domain.Car;
 import domain.CarComponent;
+import domain.CarComponentType;
 import domain.CarConfig;
 import domain.CarModel;
 import util.finance.Money;
@@ -94,40 +95,25 @@ public class CarSample {
 
    public static List<CarComponent> newCarComponents() {
       return Arrays.asList(
-              newCarComponent(ComponentType.PAINT, "Pale yellow", "Lorem ipsum", "12000"),
-              newCarComponent(ComponentType.RADIO, "FM radio", "Lorem ipsum", "8000"),
-              newCarComponent(ComponentType.ENGINE, "V8 Inca", "Lorem ipsum", "210000"),
-              newCarComponent(ComponentType.RIMS, "Spike II", "Lorem ipsum", "43000"),
-              newCarComponent(ComponentType.PAINT, "Ferrari red", "Lorem ipsum", "32000"),
-              newCarComponent(ComponentType.RADIO, "Cassette player", "Lorem ipsum", "11500"),
-              newCarComponent(ComponentType.ENGINE, "V8 Thunder", "Lorem ipsum", "190000"),
-              newCarComponent(ComponentType.RIMS, "Magnets", "Lorem ipsum", "31000"));
+              newCarComponent(CarComponentType.PAINT, "Pale yellow", "Lorem ipsum", "12000"),
+              newCarComponent(CarComponentType.RADIO, "FM radio", "Lorem ipsum", "8000"),
+              newCarComponent(CarComponentType.ENGINE, "V8 Inca", "Lorem ipsum", "210000"),
+              newCarComponent(CarComponentType.RIMS, "Spike II", "Lorem ipsum", "43000"),
+              newCarComponent(CarComponentType.PAINT, "Ferrari red", "Lorem ipsum", "32000"),
+              newCarComponent(CarComponentType.RADIO, "Cassette player", "Lorem ipsum", "11500"),
+              newCarComponent(CarComponentType.ENGINE, "V8 Thunder", "Lorem ipsum", "190000"),
+              newCarComponent(CarComponentType.RIMS, "Magnets", "Lorem ipsum", "31000"));
    }
 
-   private static CarComponent newCarComponent(ComponentType type,
+   private static CarComponent newCarComponent(CarComponentType type,
                                                String name,
                                                String description,
                                                String basePrice) {
       CarComponent comp = new CarComponent();
-      comp.setType(type.toString());
+      comp.setType(type);
       comp.setName(name);
       comp.setDescription(description);
       comp.setBasePrice(new Money(basePrice));
       return comp;
-   }
-
-   // Component types
-   ////////////////////
-
-   public static List<String> newCarComponentTypes() {
-      return Arrays.asList(
-              ComponentType.PAINT.toString(),
-              ComponentType.RADIO.toString(),
-              ComponentType.ENGINE.toString(),
-              ComponentType.RIMS.toString());
-   }
-
-   private enum ComponentType {
-      PAINT, RADIO, ENGINE, RIMS
    }
 }

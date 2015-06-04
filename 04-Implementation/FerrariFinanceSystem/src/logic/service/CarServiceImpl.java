@@ -2,7 +2,10 @@ package logic.service;
 
 import data.ConnectionService;
 import data.access.CarAccessImpl;
+import data.access.CarComponentAccessImpl;
 import domain.Car;
+import domain.CarComponent;
+import domain.CarConfig;
 import domain.CarModel;
 import util.jdbc.ConnectionHandler;
 
@@ -18,13 +21,31 @@ public class CarServiceImpl implements CarService {
 
    @Override
    public Optional<Car> readCar(int id) throws SQLException {
-      return ConnectionService.query(con ->
-              new CarAccessImpl(con).readCar(id));
+      return ConnectionService.query(con -> {
+         Optional<Car> res = new CarAccessImpl(con).readCar(id);
+
+         if (res.isPresent()) {
+            CarConfig config = res.get().getConfig();
+            List<CarComponent> components = new CarComponentAccessImpl(con).listCarComponents(config);
+            config.setComponents(components);
+         }
+
+         return res;
+      });
    }
 
    @Override
    public List<Car> listCars(CarModel model) throws SQLException {
-      return ConnectionService.query(con ->
-              new CarAccessImpl(con).listCars(model));
+      return ConnectionService.query(con -> {
+         List<Car> res = new CarAccessImpl(con).listCars(model);
+
+         for (Car car : res) {
+            CarConfig config = car.getConfig();
+            List<CarComponent> components = new CarComponentAccessImpl(con).listCarComponents(config);
+            config.setComponents(components);
+         }
+
+         return res;
+      });
    }
 }

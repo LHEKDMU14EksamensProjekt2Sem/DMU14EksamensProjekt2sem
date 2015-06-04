@@ -1,10 +1,11 @@
 package logic.service;
 
+import domain.CarComponentType;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface CarComponentTypeService {
-   void createCarComponentTypes(List<String> types, ConnectionHandler con) throws SQLException;
+   void createCarComponentTypes(List<CarComponentType> types, ConnectionHandler con) throws SQLException;
 }

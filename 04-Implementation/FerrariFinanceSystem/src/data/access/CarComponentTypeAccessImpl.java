@@ -1,5 +1,6 @@
 package data.access;
 
+import domain.CarComponentType;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
@@ -14,10 +15,10 @@ public class CarComponentTypeAccessImpl implements CarComponentTypeAccess {
    }
 
    @Override
-   public void createCarComponentTypes(List<String> types) throws SQLException {
+   public void createCarComponentTypes(List<CarComponentType> types) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         for (String type : types) {
-            st.setString(1, type);
+         for (CarComponentType type : types) {
+            st.setString(1, type.toString());
             st.executeUpdate();
          }
       }

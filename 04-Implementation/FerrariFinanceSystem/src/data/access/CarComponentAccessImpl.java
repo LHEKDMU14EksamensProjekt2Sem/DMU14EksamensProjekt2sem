@@ -1,6 +1,7 @@
 package data.access;
 
 import domain.CarComponent;
+import domain.CarComponentType;
 import domain.CarConfig;
 import util.finance.Money;
 import util.jdbc.ConnectionHandler;
@@ -24,7 +25,7 @@ public class CarComponentAccessImpl implements CarComponentAccess {
       try (PreparedStatement st = con.get().prepareStatement(
               SQL.INSERT_ONE, Statement.RETURN_GENERATED_KEYS)) {
          for (CarComponent comp : components) {
-            st.setString(1, comp.getType());
+            st.setString(1, comp.getType().toString());
             st.setString(2, comp.getName());
             st.setString(3, comp.getDescription());
             st.setBigDecimal(4, comp.getBasePrice().asBigDecimal());
@@ -53,7 +54,8 @@ public class CarComponentAccessImpl implements CarComponentAccess {
                comp.setDescription(rs.getString("description"));
                Money m = new Money(rs.getBigDecimal("base_price"));
                comp.setBasePrice(m);
-               comp.setType(rs.getString("type"));
+               comp.setType(CarComponentType.valueOf(rs.getString("type")));
+               list.add(comp);
             }
 
             return list;
@@ -68,9 +70,10 @@ public class CarComponentAccessImpl implements CarComponentAccess {
               + " VALUES ((SELECT id FROM car_component_type WHERE type = ?), ?, ?, ?)";
 
       static final String SELECT_MANY
-              = "SELECT component_id, name, description, base_price, type"
-              + " FROM car_config_component WHERE config_id = ?"
+              = "SELECT component_id, c.name, c.description, c.base_price, t.type"
+              + " FROM car_config_component"
               + " LEFT JOIN car_component c ON c.id = component_id"
-              + " LEFT JOIN car_component_type t ON c.type_id = t.id";
+              + " LEFT JOIN car_component_type t ON t.id = c.type_id"
+              + " WHERE config_id = ?";
    }
 }

@@ -4,7 +4,7 @@ import util.finance.Money;
 
 public class CarComponent {
    private int id;
-   private String type;
+   private CarComponentType type;
    private String name;
    private String description;
    private Money basePrice;
@@ -17,11 +17,11 @@ public class CarComponent {
       this.id = id;
    }
 
-   public String getType() {
+   public CarComponentType getType() {
       return type;
    }
 
-   public void setType(String type) {
+   public void setType(CarComponentType type) {
       this.type = type;
    }
 
