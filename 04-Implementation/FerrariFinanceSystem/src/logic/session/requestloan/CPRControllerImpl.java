@@ -3,6 +3,8 @@ package logic.session.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Identity;
 import domain.Person;
+import exceptions.InvalidCPRException;
+import exceptions.ValueRequiredException;
 import logic.command.FetchCreditRatingCommand;
 import logic.session.requestloan.validation.CPRValidator;
 import logic.session.requestloan.validation.CPRValidatorImpl;
@@ -34,17 +36,19 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public boolean validateCPR(String cpr) {
+   public String validateCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      cpr = cpr.trim();
+      if (cpr.isEmpty())
+         throw new ValueRequiredException("CPR");
+
       return validator.validateCPR(cpr);
    }
 
    @Override
-   public void specifyCPR(String cpr) {
-      if (validator.validateCPR(cpr)) {
-         // Normalize
-         cpr = cpr.replace("-", "");
-         identity.setCPR(cpr);
-      }
+   public void specifyCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      identity.setCPR(validator.validateCPR(cpr));
    }
 
    @Override

@@ -1,8 +1,11 @@
 package ui.requestloan;
 
 import com.ferrari.finances.dk.rki.Rating;
+import exceptions.InvalidCPRException;
+import exceptions.ValueRequiredException;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
+import ui.XTextField;
 import util.session.SessionView;
 
 import javax.swing.ImageIcon;
@@ -10,12 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
@@ -24,10 +24,17 @@ import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class CPRPanel extends JPanel implements SessionView {
+   private static final String
+           LABEL_CPR = "CPR:",
+           BUTTON_SEARCH = "Søg kunde",
+           PATTERN_CPR = "\\d{0,10}|\\d{0,6}-\\d{0,4}",
+           ERR_CPR_REQUIRED = "CPR skal angives",
+           ERR_CPR_INVALID = "CPR er ugyldigt";
+
    private RequestLoanDialog presenter;
 
    private JLabel lblCPR;
-   private JTextField tfCPR;
+   private XTextField tfCPR;
    private JButton btnSearch;
 
    public CPRPanel(RequestLoanDialog presenter) {
@@ -39,30 +46,40 @@ public class CPRPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      lblCPR = createLabel("CPR:");
+      lblCPR = createLabel(LABEL_CPR);
       tfCPR = createTextField(12);
-      // TODO: Use a document filter to restrict input to 0-10 digits
-
-      // Remove default action listener
-      for (ActionListener l : tfCPR.getActionListeners())
-         tfCPR.removeActionListener(l);
-
-      tfCPR.addKeyListener(new KeyAdapter() {
-         @Override
-         public void keyReleased(KeyEvent e) {
-            updateSearchButton();
-            if (e.getKeyCode() == KeyEvent.VK_ENTER
-                    && validateCPR())
-               fetchCreditRating();
+      tfCPR.setMessageLabel(createLabel());
+      tfCPR.restrictInput(PATTERN_CPR);
+      tfCPR.setVerifier(tf -> {
+         try {
+            presenter.getFacade().validateCPR(tf.getText());
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_CPR_REQUIRED);
+         } catch (InvalidCPRException e) {
+            tf.setError(ERR_CPR_INVALID);
          }
+         SwingUtilities.invokeLater(this::updateNavigation);
+      });
+      tfCPR.setCommitter(tf -> {
+         try {
+            presenter.getFacade().specifyCPR(tf.getText());
+         } catch (ValueRequiredException e) {
+            tf.setError(ERR_CPR_REQUIRED);
+         } catch (InvalidCPRException e) {
+            tf.setError(ERR_CPR_INVALID);
+         }
+         SwingUtilities.invokeLater(this::updateNavigation);
+      });
+      tfCPR.addActionListener(e -> {
+         tfCPR.commit();
+         fetchCreditRating();
       });
 
       // TODO REMOVE
 //      tfCPR.setText("1504619887");
 
-      btnSearch = UIFactory.createButton("Søg");
+      btnSearch = UIFactory.createButton(BUTTON_SEARCH);
       btnSearch.addActionListener(e -> fetchCreditRating());
-      updateSearchButton();
    }
 
    private void layoutComponents() {
@@ -81,19 +98,17 @@ public class CPRPanel extends JPanel implements SessionView {
 
       gbc.gridx++;
       add(btnSearch, gbc);
-   }
 
-   private void updateSearchButton() {
-      btnSearch.setEnabled(validateCPR());
-   }
-
-   private boolean validateCPR() {
-      return presenter.getFacade().validateCPR(tfCPR.getText());
+      gbc.gridx--;
+      gbc.gridy++;
+      gbc.gridwidth = 2;
+      add(tfCPR.getMessageLabel(), gbc);
    }
 
    private void fetchCreditRating() {
-      presenter.go(CUSTOMER_DETAILS);
-      presenter.getFacade().specifyCPR(tfCPR.getText());
+      if (!tfCPR.isVerified())
+         return;
+
       presenter.getFacade().fetchCreditRating(
               r -> {
                  presenter.clearMessage();
@@ -119,13 +134,20 @@ public class CPRPanel extends JPanel implements SessionView {
          String msg = "Henter kreditværdighed...";
          ImageIcon icon = AssetsUtil.loadLoaderIcon();
          presenter.setMessage(icon, msg);
-      } catch (IOException ex) {
+      } catch (IOException e) {
          // No-op
       }
+
+      presenter.go(CUSTOMER_DETAILS);
+   }
+
+   private void updateNavigation() {
+      btnSearch.setEnabled(tfCPR.isVerified());
    }
 
    @Override
    public void enter() {
-      // No-op
+      updateNavigation();
+      tfCPR.requestFocus();
    }
 }

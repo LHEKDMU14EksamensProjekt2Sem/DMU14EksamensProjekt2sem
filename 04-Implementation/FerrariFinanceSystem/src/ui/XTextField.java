@@ -132,10 +132,12 @@ public class XTextField extends JTextField {
 
          @Override
          public boolean shouldYieldFocus(JComponent input) {
-            // Return true if input has not changed
-            // since last verified commit
-            return ((!hasChanged() && (!isVerified() || isConfirmed() || !lastCommitFailed))
-                    || commit());
+            if (!hasChanged() && (!isVerified() || isConfirmed() || !lastCommitFailed))
+               return true;
+
+            commit();
+
+            return (isVerified() || isCommitting());
          }
       });
    }
@@ -195,7 +197,7 @@ public class XTextField extends JTextField {
          setState(State.VERIFIED);
    }
 
-   private boolean commit() {
+   public void commit() {
       state = State.COMMITTING;
       lastCommitFailed = false;
 
@@ -208,8 +210,6 @@ public class XTextField extends JTextField {
       } else if (!isVerified()) {
          selectAll();
       }
-
-      return (isVerified() || isCommitting());
    }
 
    public void confirmCommit() {
