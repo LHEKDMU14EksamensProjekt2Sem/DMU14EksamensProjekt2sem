@@ -209,6 +209,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
       lblPhone = createLabel(LABEL_PHONE);
       tfPhone = createTextField(9);
       tfPhone.setMessageLabel(createLabel());
+      tfPhone.restrictInput("\\d{0,8}|\\+((?<=\\+)4)?((?<=\\+4)5)?((?<=\\+45)\\s?\\d{0,8})?");
       tfPhone.setVerifier(tf -> {
          try {
             facade.validatePhone(tf.getText());
