@@ -46,7 +46,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            LABEL_DOWN_PAYMENT = "Udbetaling:",
            LABEL_DOWN_PAYMENT_PCT = "Udbetalingspct.:",
            LABEL_LOAN_AMOUNT = "Lånebeløb:",
-           LABEL_PREF_PAYMENT = "Ønsket afdrag:",
+           LABEL_PREF_PAYMENT = "Ønsket ydelse:",
            LABEL_PREF_TERM = "Ønsket løbetid:",
            LABEL_TERM_UNIT = "mdr.",
            ERR_INVALID_AMOUNT = "Ugyldigt beløb",
