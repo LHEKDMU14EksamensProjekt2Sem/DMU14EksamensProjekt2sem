@@ -9,11 +9,17 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public class XTextField extends JTextField {
    private static final Color
@@ -50,6 +56,43 @@ public class XTextField extends JTextField {
             selectAll();
          }
       });
+   }
+
+   public void restrictInput(String allowedPattern) {
+      Pattern p = Pattern.compile(allowedPattern);
+      AbstractDocument doc = (AbstractDocument) getDocument();
+
+      doc.setDocumentFilter(new DocumentFilter() {
+         @Override
+         public void insertString(FilterBypass fb, int offset, String s,
+                                  AttributeSet attr) throws BadLocationException {
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.insert(offset, s);
+
+            if (p.matcher(sb.toString()).matches())
+               fb.insertString(offset, s, attr);
+            else
+               beep();
+         }
+
+         @Override
+         public void replace(FilterBypass fb, int offset, int length, String s,
+                             AttributeSet attrs) throws BadLocationException {
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.replace(offset, offset + length, s);
+
+            if (p.matcher(sb.toString()).matches())
+               fb.replace(offset, length, s, attrs);
+            else
+               beep();
+         }
+      });
+   }
+
+   private void beep() {
+      Toolkit.getDefaultToolkit().beep();
    }
 
    public void setVerifier(Consumer<XTextField> verifier) {
