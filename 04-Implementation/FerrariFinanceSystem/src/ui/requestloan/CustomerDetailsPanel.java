@@ -9,6 +9,7 @@ import exceptions.InvalidStreetException;
 import exceptions.StreetMissingHouseNumberException;
 import exceptions.ValueRequiredException;
 import logic.session.requestloan.RequestLoanFacade;
+import logic.util.AssetsUtil;
 import ui.XTextField;
 import util.session.SessionView;
 
@@ -20,6 +21,7 @@ import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -190,6 +192,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
          try {
             hasValidPostalCode = false;
             lblCity.setText(null);
+            lblCity.setIcon(AssetsUtil.loadLoaderIcon());
 
             facade.specifyPostalCode(
                     tf.getText(),
@@ -199,6 +202,8 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
             tf.setError(ERR_POSTAL_CODE_INVALID);
          } catch (ValueRequiredException e) {
             tf.setError(ERR_POSTAL_CODE_REQUIRED);
+         } catch (IOException ignore) {
+            // No-op
          }
          SwingUtilities.invokeLater(this::updateNavigation);
       });
@@ -385,11 +390,13 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
             tfPostalCode.requestFocus();
       }
 
+      lblCity.setIcon(null);
       updateNavigation();
    }
 
    private void handlePostalCodeException(Throwable e) {
       tfPostalCode.setError("Fejl: Kunne ikke validere postnummer");
+      lblCity.setIcon(null);
       updateNavigation();
    }
 
