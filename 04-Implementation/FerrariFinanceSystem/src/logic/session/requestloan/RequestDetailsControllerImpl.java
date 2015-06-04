@@ -101,15 +101,11 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       double downPaymentPct = loanRequest.getDownPaymentPct();
 
       Sale sale = loanRequest.getSale();
-      if (discount.trim().isEmpty()) {
-         sale.setDiscount(Money.ZERO);
-      } else {
-         try {
-            Money value = validateDiscount(discount);
-            sale.setDiscount(value);
-         } catch (DiscountPctTooHighException e) {
-            sale.setDiscountPct(validator.getMaxDiscountPct());
-         }
+      try {
+         Money value = validateDiscount(discount);
+         sale.setDiscount(value);
+      } catch (DiscountPctTooHighException e) {
+         sale.setDiscountPct(validator.getMaxDiscountPct());
       }
 
       // Reapply down payment pct
@@ -122,17 +118,13 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       double downPaymentPct = loanRequest.getDownPaymentPct();
 
       Sale sale = loanRequest.getSale();
-      if (discountPct.trim().isEmpty()) {
-         sale.setDiscount(Money.ZERO);
-      } else {
-         double value;
-         try {
-            value = validateDiscountPct(discountPct);
-         } catch (DiscountPctTooHighException e) {
-            value = validator.getMaxDiscountPct();
-         }
-         sale.setDiscountPct(value);
+      double value;
+      try {
+         value = validateDiscountPct(discountPct);
+      } catch (DiscountPctTooHighException e) {
+         value = validator.getMaxDiscountPct();
       }
+      sale.setDiscountPct(value);
 
       // Reapply down payment pct
       loanRequest.setDownPaymentPct(downPaymentPct);
@@ -144,15 +136,14 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       double downPaymentPct = loanRequest.getDownPaymentPct();
 
       Sale sale = loanRequest.getSale();
-      if (!sellingPrice.trim().isEmpty()) {
-         try {
-            Money value = validateSellingPrice(sellingPrice);
-            sale.setSellingPrice(value);
-         } catch (DiscountPctTooHighException e) {
-            sale.setDiscountPct(validator.getMaxDiscountPct());
-         } catch (ValueRequiredException ignore) {
-            // Should never happen
-         }
+      try {
+         Money value = validateSellingPrice(sellingPrice);
+         sale.setSellingPrice(value);
+      } catch (DiscountPctTooHighException e) {
+         sale.setDiscountPct(validator.getMaxDiscountPct());
+      } catch (ValueRequiredException e) {
+         // No-op
+         return;
       }
 
       // Reapply down payment pct
@@ -161,62 +152,53 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
    @Override
    public void specifyDownPayment(String downPayment) throws ParseException {
-      if (!downPayment.trim().isEmpty()) {
-         try {
-            Money value = validateDownPayment(downPayment);
-            loanRequest.setDownPayment(value);
-         } catch (DownPaymentPctTooLowException e) {
-            loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
-         } catch (ValueRequiredException ignore) {
-            // Should never happen
-         }
+      try {
+         Money value = validateDownPayment(downPayment);
+         loanRequest.setDownPayment(value);
+      } catch (DownPaymentPctTooLowException e) {
+         loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
+      } catch (ValueRequiredException e) {
+         // No-op
+         return;
       }
    }
 
    @Override
    public void specifyDownPaymentPct(String downPaymentPct) throws ParseException {
-      if (!downPaymentPct.trim().isEmpty()) {
-         try {
-            double value = validateDownPaymentPct(downPaymentPct);
-            loanRequest.setDownPaymentPct(value);
-         } catch (DownPaymentPctTooLowException e) {
-            loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
-         }
+      try {
+         double value = validateDownPaymentPct(downPaymentPct);
+         loanRequest.setDownPaymentPct(value);
+      } catch (DownPaymentPctTooLowException e) {
+         loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
       }
    }
 
    @Override
    public void specifyLoanAmount(String loanAmount) throws ParseException {
-      if (!loanAmount.trim().isEmpty()) {
-         try {
-            Money value = validateLoanAmount(loanAmount);
-            loanRequest.setLoanAmount(value);
-         } catch (DownPaymentPctTooLowException e) {
-            loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
-         } catch (ValueRequiredException ignore) {
-            // Should never happen
-         }
+      try {
+         Money value = validateLoanAmount(loanAmount);
+         loanRequest.setLoanAmount(value);
+      } catch (DownPaymentPctTooLowException e) {
+         loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
+      } catch (ValueRequiredException e) {
+         // No-op
+         return;
       }
    }
 
    @Override
    public void specifyPreferredPayment(String prefPayment) throws ParseException {
-      Money value = null;
-      if (!prefPayment.trim().isEmpty()) {
-         value = validatePreferredPayment(prefPayment);
-      }
+      Money value = validatePreferredPayment(prefPayment);
       loanRequest.setPreferredPayment(value);
    }
 
    @Override
    public void specifyPreferredTerm(String prefTerm) throws ParseException {
-      Integer value = null;
-      if (!prefTerm.trim().isEmpty()) {
-         try {
-            value = validatePreferredTerm(prefTerm);
-         } catch (TermTooLongException e) {
-            value = validator.getMaxTermLength();
-         }
+      Integer value;
+      try {
+         value = validatePreferredTerm(prefTerm);
+      } catch (TermTooLongException e) {
+         value = validator.getMaxTermLength();
       }
       loanRequest.setPreferredTerm(value);
    }
@@ -237,21 +219,31 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    @Override
    public Money validateDiscount(String discount) throws
            ParseException, DiscountPctTooHighException {
+      discount = discount.trim();
+      // Optional field, empty means 0
+      if (discount.isEmpty())
+         discount = "0";
+
       return validator.validateDiscount(
-              discount.trim(), loanRequest.getSale().getBasePrice());
+              discount, loanRequest.getSale().getBasePrice());
    }
 
    @Override
    public double validateDiscountPct(String discountPct) throws
            ParseException, DiscountPctTooHighException {
-      return validator.validateDiscountPct(
-              discountPct.trim());
+      discountPct = discountPct.trim();
+      // Optional field, empty means 0
+      if (discountPct.isEmpty())
+         discountPct = "0";
+
+      return validator.validateDiscountPct(discountPct);
    }
 
    @Override
    public Money validateSellingPrice(String sellingPrice) throws
            ParseException, DiscountPctTooHighException, ValueRequiredException {
       sellingPrice = sellingPrice.trim();
+      // Required field
       if (sellingPrice.isEmpty())
          throw new ValueRequiredException("Selling price");
 
@@ -263,6 +255,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    public Money validateDownPayment(String downPayment) throws
            ParseException, DownPaymentPctTooLowException, ValueRequiredException {
       downPayment = downPayment.trim();
+      // Required field
       if (downPayment.isEmpty())
          throw new ValueRequiredException("Down payment");
 
@@ -273,14 +266,20 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    @Override
    public double validateDownPaymentPct(String downPaymentPct) throws
            ParseException, DownPaymentPctTooLowException {
+      downPaymentPct = downPaymentPct.trim();
+      // Optional field, empty means 0
+      if (downPaymentPct.isEmpty())
+         downPaymentPct = "0";
+
       return validator.validateDownPaymentPct(
-              downPaymentPct.trim(), loanRequest.getSale().getSellingPrice());
+              downPaymentPct, loanRequest.getSale().getSellingPrice());
    }
 
    @Override
    public Money validateLoanAmount(String loanAmount) throws
            ParseException, DownPaymentPctTooLowException, ValueRequiredException {
       loanAmount = loanAmount.trim();
+      // Required field
       if (loanAmount.isEmpty())
          throw new ValueRequiredException("Loan amount");
 
@@ -290,14 +289,22 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
    @Override
    public Money validatePreferredPayment(String prefPayment) throws ParseException {
-      return validator.validatePreferredPayment(
-              prefPayment.trim());
+      prefPayment = prefPayment.trim();
+      // Optional field, empty means unspecified (null)
+      if (prefPayment.isEmpty())
+         return null;
+
+      return validator.validatePreferredPayment(prefPayment);
    }
 
    @Override
-   public int validatePreferredTerm(String prefTerm) throws
+   public Integer validatePreferredTerm(String prefTerm) throws
            ParseException, TermTooLongException {
-      return validator.validatePreferredTerm(
-              prefTerm.trim());
+      prefTerm = prefTerm.trim();
+      // Optional field, empty means unspecified (null)
+      if (prefTerm.isEmpty())
+         return null;
+
+      return validator.validatePreferredTerm(prefTerm);
    }
 }

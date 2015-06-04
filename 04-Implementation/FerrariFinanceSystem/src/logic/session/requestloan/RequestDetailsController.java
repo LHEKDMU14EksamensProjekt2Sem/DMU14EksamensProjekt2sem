@@ -151,6 +151,6 @@ public interface RequestDetailsController {
 
    Money validatePreferredPayment(String prefPayment) throws ParseException;
 
-   int validatePreferredTerm(String prefTerm) throws
+   Integer validatePreferredTerm(String prefTerm) throws
            ParseException, TermTooLongException;
 }

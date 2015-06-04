@@ -291,7 +291,7 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public int validatePreferredTerm(String prefTerm) throws
+   public Integer validatePreferredTerm(String prefTerm) throws
            ParseException, TermTooLongException {
       return requestDetailsCtrl.validatePreferredTerm(prefTerm);
    }
