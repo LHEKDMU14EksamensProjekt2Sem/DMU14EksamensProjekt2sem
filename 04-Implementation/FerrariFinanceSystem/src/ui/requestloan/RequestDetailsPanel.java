@@ -386,6 +386,7 @@ public class RequestDetailsPanel extends JPanel {
               downPayment = "",
               downPaymentPct = "",
               loanAmount = "",
+              prefPayment = "",
               prefTerm = "";
 
       if (sale.hasCar()) {
@@ -401,6 +402,9 @@ public class RequestDetailsPanel extends JPanel {
          downPaymentPct = f.formatPercent(lr.getDownPaymentPct());
          loanAmount = f.formatAmount(lr.getLoanAmount());
 
+         if (lr.hasPreferredPayment())
+            prefPayment = f.formatAmount(lr.getPreferredPayment());
+
          if (lr.hasPreferredTerm())
             prefTerm = f.formatInteger(lr.getPreferredTerm());
       }
@@ -412,7 +416,7 @@ public class RequestDetailsPanel extends JPanel {
       tfDownPayment.setText(downPayment);
       tfDownPaymentPct.setText(downPaymentPct);
       tfLoanAmount.setText(loanAmount);
-
+      tfPrefPayment.setText(prefPayment);
       tfPrefTerm.setText(prefTerm);
    }
 
