@@ -10,6 +10,7 @@ import exceptions.StreetMissingHouseNumberException;
 import exceptions.ValueRequiredException;
 import logic.session.requestloan.RequestLoanFacade;
 import ui.XTextField;
+import util.session.SessionView;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,7 +30,7 @@ import static logic.session.requestloan.RequestLoanViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
-public class CustomerDetailsPanel extends JPanel {
+public class CustomerDetailsPanel extends JPanel implements SessionView {
    private static final String
            LABEL_FIRST_NAME = "Fornavn:",
            LABEL_LAST_NAME = "Efternavn:",
@@ -391,6 +392,7 @@ public class CustomerDetailsPanel extends JPanel {
       updateNavigation();
    }
 
+   @Override
    public void enter() {
       SwingUtilities.invokeLater(tfFirstName::requestFocus);
    }

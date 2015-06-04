@@ -5,6 +5,7 @@ import logic.session.requestloan.RequestLoanViewToken;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
 import util.session.SessionPresenter;
+import util.session.SessionView;
 import util.session.UnsupportedViewException;
 import util.swing.ImagePanel;
 
@@ -13,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -30,9 +32,9 @@ public class RequestLoanDialog extends JDialog implements
    private JLabel messageLabel;
 
    private CardLayout layout;
-   private CPRPanel cprPanel;
-   private CustomerDetailsPanel customerDetailsPanel;
-   private RequestDetailsPanel requestDetailsPanel;
+   private SessionView cprPanel;
+   private SessionView customerDetailsPanel;
+   private SessionView requestDetailsPanel;
 
    public RequestLoanDialog(Window owner, RequestLoanFacade facade, String title) {
       super(owner, title, ModalityType.APPLICATION_MODAL);
@@ -83,14 +85,16 @@ public class RequestLoanDialog extends JDialog implements
       gbc.anchor = CENTER;
       add(contentPanel, gbc);
 
-      contentPanel.add(cprPanel);
-      layout.addLayoutComponent(cprPanel, CPR.toString());
+      addView(cprPanel, CPR);
+      addView(customerDetailsPanel, CUSTOMER_DETAILS);
+      addView(requestDetailsPanel, REQUEST_DETAILS);
+   }
 
-      contentPanel.add(customerDetailsPanel);
-      layout.addLayoutComponent(customerDetailsPanel, CUSTOMER_DETAILS.toString());
+   private void addView(SessionView view, RequestLoanViewToken token) {
+      contentPanel.add((Component) view);
+      layout.addLayoutComponent((Component) view, token.toString());
+   }
 
-      contentPanel.add(requestDetailsPanel);
-      layout.addLayoutComponent(requestDetailsPanel, REQUEST_DETAILS.toString());
    @Override
    public RequestLoanFacade getFacade() {
       return facade;

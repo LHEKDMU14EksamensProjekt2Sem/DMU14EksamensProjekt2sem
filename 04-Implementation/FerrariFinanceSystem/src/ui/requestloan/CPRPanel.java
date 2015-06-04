@@ -3,6 +3,7 @@ package ui.requestloan;
 import com.ferrari.finances.dk.rki.Rating;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
+import util.session.SessionView;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,7 +23,7 @@ import static logic.session.requestloan.RequestLoanViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
-public class CPRPanel extends JPanel {
+public class CPRPanel extends JPanel implements SessionView {
    private RequestLoanDialog presenter;
 
    private JLabel lblCPR;
@@ -123,6 +124,7 @@ public class CPRPanel extends JPanel {
       }
    }
 
+   @Override
    public void enter() {
       // No-op
    }

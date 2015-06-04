@@ -4,6 +4,7 @@ import logic.session.main.MainFacade;
 import logic.session.main.MainViewToken;
 import logic.util.AssetsUtil;
 import util.session.SessionPresenter;
+import util.session.SessionView;
 import util.session.UnsupportedViewException;
 import util.swing.ImagePanel;
 
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.io.IOException;
 
 import static logic.session.main.MainViewToken.*;
@@ -22,8 +24,8 @@ public class MainFrame extends JFrame implements
    private MainFacade facade;
 
    private CardLayout layout;
-   private LoginPanel loginPanel;
-   private MainMenuPanel mainMenuPanel;
+   private SessionView loginPanel;
+   private SessionView mainMenuPanel;
 
    public MainFrame(MainFacade facade, String title) {
       super(title);
@@ -58,11 +60,15 @@ public class MainFrame extends JFrame implements
       layout = new CardLayout();
       setLayout(layout);
 
-      add(loginPanel);
-      layout.addLayoutComponent(loginPanel, LOGIN.toString());
+      addView(loginPanel, LOGIN);
+      addView(mainMenuPanel, MAIN_MENU);
+   }
 
-      add(mainMenuPanel);
-      layout.addLayoutComponent(mainMenuPanel, MAIN_MENU.toString());
+   private void addView(SessionView view, MainViewToken token) {
+      add((Component) view);
+      layout.addLayoutComponent((Component) view, token.toString());
+   }
+
    @Override
    public MainFacade getFacade() {
       return facade;

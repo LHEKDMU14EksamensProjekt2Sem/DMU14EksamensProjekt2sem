@@ -1,5 +1,7 @@
 package ui.main;
 
+import util.session.SessionView;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import static logic.session.main.MainViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements SessionView {
    private MainFrame presenter;
 
    private JLabel lblUsername, lblPassword, lblMessage;
@@ -93,6 +95,7 @@ public class LoginPanel extends JPanel {
       );
    }
 
+   @Override
    public void enter() {
       // No-op
    }

@@ -13,6 +13,7 @@ import logic.session.requestloan.RequestLoanFacade;
 import ui.UIFactory;
 import ui.XTextField;
 import util.finance.Money;
+import util.session.SessionView;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,7 +30,7 @@ import static java.awt.GridBagConstraints.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
-public class RequestDetailsPanel extends JPanel {
+public class RequestDetailsPanel extends JPanel implements SessionView {
    private static final String
            LABEL_MODEL = "Model:",
            LABEL_CAR = "Bil:",
@@ -446,6 +447,7 @@ public class RequestDetailsPanel extends JPanel {
               Throwable::printStackTrace);
    }
 
+   @Override
    public void enter() {
       presenter.getFacade().fetchCarModels(
               this::updateCarModels,

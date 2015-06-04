@@ -2,6 +2,7 @@ package ui.main;
 
 import logic.session.requestloan.RequestLoanFacade;
 import ui.requestloan.RequestLoanDialog;
+import util.session.SessionView;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,7 +16,7 @@ import static java.awt.GridBagConstraints.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
-public class MainMenuPanel extends JPanel {
+public class MainMenuPanel extends JPanel implements SessionView {
    private MainFrame presenter;
 
    private JLabel lblCurrentUser;
@@ -63,6 +64,7 @@ public class MainMenuPanel extends JPanel {
       add(comp, gbc);
    }
 
+   @Override
    public void enter() {
       String fullName = presenter.getFacade().getUser().getEntity().getPerson().getFullName();
       lblCurrentUser.setText(fullName);
