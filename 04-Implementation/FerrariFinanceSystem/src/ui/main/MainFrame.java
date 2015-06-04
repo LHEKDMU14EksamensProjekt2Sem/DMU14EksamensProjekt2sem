@@ -39,6 +39,8 @@ public class MainFrame extends JFrame implements
 
       // Center on screen
       setLocationRelativeTo(null);
+
+      go(LOGIN);
    }
 
    private void initComponents() {

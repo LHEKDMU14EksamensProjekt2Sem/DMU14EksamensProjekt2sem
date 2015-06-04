@@ -97,6 +97,6 @@ public class LoginPanel extends JPanel implements SessionView {
 
    @Override
    public void enter() {
-      // No-op
+      tfUsername.requestFocus();
    }
 }
