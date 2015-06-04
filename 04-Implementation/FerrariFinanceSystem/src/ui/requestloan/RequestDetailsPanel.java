@@ -125,8 +125,13 @@ public class RequestDetailsPanel extends JPanel {
             tf.setError(ERR_INVALID_AMOUNT);
          }
       });
-      // Skip discount pct on [Enter]
-      tfDiscount.addActionListener(e -> tfSellingPrice.requestFocus());
+      // If non-empty, skip discount pct on [Enter]
+      tfDiscount.addActionListener(e -> {
+         if (tfDiscount.getText().trim().isEmpty())
+            tfDiscount.transferFocus();
+         else
+            tfSellingPrice.requestFocus();
+      });
 
       lblDiscountPct = createLabel(LABEL_DISCOUNT_PCT);
       tfDiscountPct = createTextField(4);
@@ -196,8 +201,13 @@ public class RequestDetailsPanel extends JPanel {
             tf.setError(ERR_INVALID_AMOUNT);
          }
       });
-      // Skip down payment pct on [Enter]
-      tfDownPayment.addActionListener(e -> tfLoanAmount.requestFocus());
+      // If non-empty, skip down payment pct on [Enter]
+      tfDownPayment.addActionListener(e -> {
+         if (tfDownPayment.getText().trim().isEmpty())
+            tfDownPayment.transferFocus();
+         else
+            tfLoanAmount.requestFocus();
+      });
 
       lblDownPaymentPct = createLabel(LABEL_DOWN_PAYMENT_PCT);
       tfDownPaymentPct = createTextField(4);
