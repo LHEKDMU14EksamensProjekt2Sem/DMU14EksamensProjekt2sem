@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 
 import static dev.sample.CarSample.*;
 
-public class CreateCarSampleCommand implements Callable<Void> {
+public class CreateCarSampleCommand implements Callable<List<Car>> {
    private final ConnectionHandler con;
 
    public CreateCarSampleCommand(ConnectionHandler con) {
@@ -23,19 +23,19 @@ public class CreateCarSampleCommand implements Callable<Void> {
    }
 
    @Override
-   public Void call() throws SQLException {
+   public List<Car> call() throws SQLException {
       createCarComponentTypes();
       List<CarComponent> components = createCarComponents();
       List<CarModel> models = createCarModels();
       List<CarConfig> configs = createCarConfigs(models, components);
-      createCars(configs);
-      return null;
+      return createCars(configs);
    }
 
-   private void createCars(List<CarConfig> configs) throws SQLException {
+   private List<Car> createCars(List<CarConfig> configs) throws SQLException {
       List<Car> cars = newCars(configs);
       CarService service = new CarServiceImpl();
       service.createCars(cars, con);
+      return cars;
    }
 
    private List<CarConfig> createCarConfigs(List<CarModel> models,

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LoanRequestService {
-   void createLoanRequest(LoanRequest loanRequest, ConnectionHandler con) throws SQLException;
+   void createLoanRequests(List<LoanRequest> loanRequests, ConnectionHandler con) throws SQLException;
 
    void createLoanRequest(LoanRequest loanRequest) throws SQLException;
 

@@ -2,12 +2,17 @@ package dev.command;
 
 import data.ConnectionService;
 import dev.option.Option;
+import domain.Car;
+import domain.Customer;
+import domain.Employee;
+import domain.LoanRequest;
 import logic.command.CreateDatabaseCommand;
 import logic.util.DataUtil;
 import util.jdbc.ConnectionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class StartupCommand implements Callable<Void> {
@@ -33,9 +38,11 @@ public class StartupCommand implements Callable<Void> {
                new CreateDatabaseCommand(con).call();
 
                if (Option.SAMPLE.get()) {
-                  new CreateEmployeeSampleCommand(con).call();
-                  new CreateCustomerSampleCommand(con).call();
-                  new CreateCarSampleCommand(con).call();
+                  List<Employee> employees = new CreateEmployeeSampleCommand(con).call();
+                  List<Customer> customers = new CreateCustomerSampleCommand(con).call();
+                  List<Car> cars = new CreateCarSampleCommand(con).call();
+                  List<LoanRequest> loanRequests =
+                          new CreateLoanRequestSampleCommand(cars, customers, employees, con).call();
                }
 
                con.commit();

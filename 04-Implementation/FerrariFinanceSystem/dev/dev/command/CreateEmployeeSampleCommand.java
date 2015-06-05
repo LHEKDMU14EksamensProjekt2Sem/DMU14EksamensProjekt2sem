@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 
 import static dev.sample.EmployeeSample.*;
 
-public class CreateEmployeeSampleCommand implements Callable<Void> {
+public class CreateEmployeeSampleCommand implements Callable<List<Employee>> {
    private final ConnectionHandler con;
 
    public CreateEmployeeSampleCommand(ConnectionHandler con) {
@@ -20,12 +20,11 @@ public class CreateEmployeeSampleCommand implements Callable<Void> {
    }
 
    @Override
-   public Void call() throws SQLException {
-      createEmployees();
-      return null;
+   public List<Employee> call() throws SQLException {
+      return createEmployees();
    }
 
-   private void createEmployees() throws SQLException {
+   private List<Employee> createEmployees() throws SQLException {
       List<Employee> employees = newEmployees();
       List<String> cprs = newEmployeeCPRs();
       EmployeeService logic = new EmployeeServiceImpl();
@@ -36,5 +35,6 @@ public class CreateEmployeeSampleCommand implements Callable<Void> {
          identity.setPerson(em.getPerson());
          logic.createEmployee(em, identity, con);
       }
+      return employees;
    }
 }

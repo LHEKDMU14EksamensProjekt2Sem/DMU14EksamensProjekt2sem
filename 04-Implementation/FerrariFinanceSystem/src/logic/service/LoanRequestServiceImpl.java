@@ -2,6 +2,7 @@ package logic.service;
 
 import data.ConnectionService;
 import data.access.LoanRequestAccessImpl;
+import data.access.SaleAccess;
 import data.access.SaleAccessImpl;
 import domain.Customer;
 import domain.Employee;
@@ -12,20 +13,27 @@ import domain.Sale;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class LoanRequestServiceImpl implements LoanRequestService {
    @Override
-   public void createLoanRequest(LoanRequest loanRequest, ConnectionHandler con) throws SQLException {
-      new SaleAccessImpl(con).createSale(loanRequest.getSale());
-      new LoanRequestAccessImpl(con).createLoanRequest(loanRequest);
+   public void createLoanRequests(List<LoanRequest> loanRequests, ConnectionHandler con) throws SQLException {
+      // FK constraints dictate that Sale records
+      // must exist before LoanRequest records
+      SaleAccess saleAccess = new SaleAccessImpl(con);
+      for (LoanRequest lr : loanRequests) {
+         saleAccess.createSale(lr.getSale());
+      }
+
+      new LoanRequestAccessImpl(con).createLoanRequests(loanRequests);
    }
 
    @Override
    public void createLoanRequest(LoanRequest loanRequest) throws SQLException {
       ConnectionService.execute(con ->
-              createLoanRequest(loanRequest));
+              createLoanRequests(Collections.singletonList(loanRequest), con));
    }
 
    @Override
