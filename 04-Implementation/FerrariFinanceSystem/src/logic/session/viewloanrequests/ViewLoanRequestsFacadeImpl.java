@@ -1,6 +1,8 @@
 package logic.session.viewloanrequests;
 
 import domain.LoanRequest;
+import logic.format.GeneralDateFormat;
+import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
 
 import java.util.List;
@@ -15,6 +17,16 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    public ViewLoanRequestsFacadeImpl(MainFacade owner) {
       this.owner = owner;
       loanRequestsCtrl = new LoanRequestsControllerImpl(this);
+   }
+
+   @Override
+   public GeneralNumberFormat getGeneralNumberFormat() {
+      return owner.getGeneralNumberFormat();
+   }
+
+   @Override
+   public GeneralDateFormat getGeneralDateFormat() {
+      return owner.getGeneralDateFormat();
    }
 
    @Override

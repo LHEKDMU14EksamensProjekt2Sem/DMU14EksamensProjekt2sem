@@ -2,6 +2,7 @@ package logic.session.main;
 
 import domain.Employee;
 import domain.User;
+import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
 import logic.session.createloanrequest.CreateLoanRequestFacade;
 import logic.session.createloanrequest.CreateLoanRequestFacadeImpl;
@@ -47,6 +48,11 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public GeneralNumberFormat getGeneralNumberFormat() {
       return mainCtrl.getGeneralNumberFormat();
+   }
+
+   @Override
+   public GeneralDateFormat getGeneralDateFormat() {
+      return mainCtrl.getGeneralDateFormat();
    }
 
    // LoginController
