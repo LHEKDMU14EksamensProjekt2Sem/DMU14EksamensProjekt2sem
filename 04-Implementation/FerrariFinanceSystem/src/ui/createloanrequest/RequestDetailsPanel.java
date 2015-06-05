@@ -57,7 +57,8 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            INF_SELLING_PRICE_REQUIRED = "Salgspris skal angives",
            INF_DOWN_PAYMENT_REQUIRED = "Udbetaling skal angives",
            INF_LOAN_AMOUNT_REQUIRED = "Lånebeløb skal angives",
-           BUTTON_SUBMIT = "Opret";
+           BUTTON_SUBMIT = "Opret",
+           BUTTON_CANCEL = "Annuller";
 
    private CreateLoanRequestDialog presenter;
 
@@ -75,7 +76,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
    private JComboBox<CarModel> cbCarModel;
    private JComboBox<Car> cbCar;
 
-   private JButton btnSubmit;
+   private JButton btnSubmit, btnCancel;
 
    private JPanel carDescriptionWrapperPanel, carDescriptionPanel;
 
@@ -308,6 +309,9 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       btnSubmit = createButton(BUTTON_SUBMIT);
       btnSubmit.addActionListener(e -> submit());
 
+      btnCancel = createButton(BUTTON_CANCEL);
+      btnCancel.addActionListener(e -> presenter.dispose());
+
       JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
       p.setBackground(new Color(0, 0, 0, 20));
       p.setVisible(false);
@@ -393,10 +397,17 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       gbc.gridwidth = 2;
       addNext(tfPrefTerm.getMessageLabel(), gbc);
 
-      gbc.gridx = 4;
-      gbc.gridy++;
-      add(btnSubmit, gbc);
+      JPanel btnPanel = new JPanel();
+      btnPanel.setOpaque(false);
+      btnPanel.add(btnSubmit);
+      btnPanel.add(btnCancel);
 
+      gbc.gridx = 0;
+      gbc.gridwidth = REMAINDER;
+      gbc.anchor = EAST;
+      addNext(btnPanel, gbc);
+
+      gbc.gridx = 4;
       gbc.gridy = 0;
       gbc.anchor = NORTHWEST;
       gbc.gridheight = 19;

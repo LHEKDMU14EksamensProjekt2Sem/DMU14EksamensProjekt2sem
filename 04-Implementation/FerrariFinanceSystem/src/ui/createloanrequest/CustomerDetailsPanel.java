@@ -54,7 +54,8 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
            ERR_PHONE_INVALID = "Telefon er ugyldig",
            ERR_EMAIL_REQUIRED = "Email skal angives",
            ERR_EMAIL_INVALID = "Email er ugyldig",
-           BUTTON_NEXT = "Næste >";
+           BUTTON_NEXT = "Næste >",
+           BUTTON_CANCEL = "Annuller";
 
    private CreateLoanRequestDialog presenter;
 
@@ -70,7 +71,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
 
    private Set<XTextField> fieldSet;
 
-   private JButton btnNext;
+   private JButton btnNext, btnCancel;
 
    private boolean forwardScheduled;
    private boolean hasValidPostalCode;
@@ -266,6 +267,9 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
       btnNext = createButton(BUTTON_NEXT);
       btnNext.addActionListener(e -> next());
 
+      btnCancel = createButton(BUTTON_CANCEL);
+      btnCancel.addActionListener(e -> presenter.dispose());
+
       // TODO REMOVE
 //      tfFirstName.setText("John");
 //      tfLastName.setText("Doe");
@@ -325,11 +329,15 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
       addNext(tfEmail, gbc);
       addNext(tfEmail.getMessageLabel(), gbc);
 
+      JPanel btnPanel = new JPanel();
+      btnPanel.setOpaque(false);
+      btnPanel.add(btnCancel);
+      btnPanel.add(btnNext);
+
       gbc.gridx = 0;
-      gbc.gridy++;
-      gbc.gridwidth = 3;
+      gbc.gridwidth = REMAINDER;
       gbc.anchor = EAST;
-      add(btnNext, gbc);
+      addNext(btnPanel, gbc);
    }
 
    private void addNext(Component comp, GridBagConstraints gbc) {
