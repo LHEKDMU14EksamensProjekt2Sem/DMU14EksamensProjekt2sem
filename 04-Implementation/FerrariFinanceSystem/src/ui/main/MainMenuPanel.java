@@ -1,7 +1,7 @@
 package ui.main;
 
-import logic.session.requestloan.RequestLoanFacade;
-import ui.requestloan.RequestLoanDialog;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
+import ui.createloanrequest.CreateLoanRequestDialog;
 import util.session.SessionView;
 
 import javax.swing.JButton;
@@ -10,17 +10,23 @@ import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 
 import static java.awt.GridBagConstraints.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class MainMenuPanel extends JPanel implements SessionView {
+   private static final String
+           BUTTON_CREATE_LOAN_REQUEST = "Opret låneanmodning",
+           DIALOG_CREATE_LOAN_REQUEST = BUTTON_CREATE_LOAN_REQUEST,
+           BUTTON_VIEW_LOAN_REQUESTS = "Se låneanmodninger",
+           DIALOG_VIEW_LOAN_REQUESTS = BUTTON_VIEW_LOAN_REQUESTS;
+
    private MainFrame presenter;
 
    private JLabel lblCurrentUser;
-   private JButton btnRequestLoan;
+   private JButton btnCreateLoanRequest;
+   private JButton btnViewLoanRequests;
 
    public MainMenuPanel(MainFrame presenter) {
       this.presenter = presenter;
@@ -33,11 +39,16 @@ public class MainMenuPanel extends JPanel implements SessionView {
    private void initComponents() {
       lblCurrentUser = createLabel(" ");
 
-      btnRequestLoan = createButton("Anmod om lån");
-      btnRequestLoan.addActionListener(e -> {
-         String title = "Anmod om lån";
-         RequestLoanFacade facade = presenter.getFacade().newRequestLoanFacade();
-         new RequestLoanDialog(presenter, facade, title).setVisible(true);
+      btnCreateLoanRequest = createButton(BUTTON_CREATE_LOAN_REQUEST);
+      btnCreateLoanRequest.addActionListener(e -> {
+         String title = DIALOG_CREATE_LOAN_REQUEST;
+         CreateLoanRequestFacade facade = presenter.getFacade().newCreateLoanRequestFacade();
+         new CreateLoanRequestDialog(presenter, facade, title).setVisible(true);
+      });
+
+      btnViewLoanRequests = createButton(BUTTON_VIEW_LOAN_REQUESTS);
+      btnViewLoanRequests.addActionListener(e -> {
+         System.out.println(DIALOG_VIEW_LOAN_REQUESTS);
       });
    }
 
@@ -51,12 +62,10 @@ public class MainMenuPanel extends JPanel implements SessionView {
       gbc.anchor = EAST;
       addNext(lblCurrentUser, gbc);
 
-      JPanel grid = new JPanel(new GridLayout(2, 2));
-      grid.setOpaque(false);
-      grid.add(btnRequestLoan);
-
       gbc.anchor = CENTER;
-      addNext(grid, gbc);
+      gbc.fill = HORIZONTAL;
+      addNext(btnCreateLoanRequest, gbc);
+      addNext(btnViewLoanRequests, gbc);
    }
 
    private void addNext(Component comp, GridBagConstraints gbc) {

@@ -1,4 +1,4 @@
-package logic.session.requestloan.validation;
+package logic.session.createloanrequest.validation;
 
 import exceptions.InvalidEmailException;
 import exceptions.InvalidNameException;

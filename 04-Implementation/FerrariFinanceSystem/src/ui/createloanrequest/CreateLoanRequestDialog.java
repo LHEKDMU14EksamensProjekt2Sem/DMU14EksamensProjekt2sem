@@ -1,7 +1,7 @@
-package ui.requestloan;
+package ui.createloanrequest;
 
-import logic.session.requestloan.RequestLoanFacade;
-import logic.session.requestloan.RequestLoanViewToken;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
+import logic.session.createloanrequest.CreateLoanRequestViewToken;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
 import util.session.SessionPresenter;
@@ -22,12 +22,12 @@ import java.awt.Window;
 import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanViewToken.*;
+import static logic.session.createloanrequest.CreateLoanRequestViewToken.*;
 
-public class RequestLoanDialog extends JDialog implements
-        SessionPresenter<RequestLoanFacade, RequestLoanViewToken> {
+public class CreateLoanRequestDialog extends JDialog implements
+        SessionPresenter<CreateLoanRequestFacade, CreateLoanRequestViewToken> {
 
-   private RequestLoanFacade facade;
+   private CreateLoanRequestFacade facade;
    private JPanel contentPanel;
    private JLabel messageLabel;
 
@@ -36,7 +36,7 @@ public class RequestLoanDialog extends JDialog implements
    private SessionView customerDetailsPanel;
    private SessionView requestDetailsPanel;
 
-   public RequestLoanDialog(Window owner, RequestLoanFacade facade, String title) {
+   public CreateLoanRequestDialog(Window owner, CreateLoanRequestFacade facade, String title) {
       super(owner, title, ModalityType.APPLICATION_MODAL);
       this.facade = facade;
 
@@ -49,7 +49,7 @@ public class RequestLoanDialog extends JDialog implements
       // Center on screen
       setLocationRelativeTo(null);
 
-      go(CPR);
+      go(REQUEST_DETAILS);
    }
 
    private void initComponents() {
@@ -92,18 +92,18 @@ public class RequestLoanDialog extends JDialog implements
       addView(requestDetailsPanel, REQUEST_DETAILS);
    }
 
-   private void addView(SessionView view, RequestLoanViewToken token) {
+   private void addView(SessionView view, CreateLoanRequestViewToken token) {
       contentPanel.add((Component) view);
       layout.addLayoutComponent((Component) view, token.toString());
    }
 
    @Override
-   public RequestLoanFacade getFacade() {
+   public CreateLoanRequestFacade getFacade() {
       return facade;
    }
 
    @Override
-   public void go(RequestLoanViewToken token) {
+   public void go(CreateLoanRequestViewToken token) {
       switch (token) {
          case CPR:
             cprPanel.enter();

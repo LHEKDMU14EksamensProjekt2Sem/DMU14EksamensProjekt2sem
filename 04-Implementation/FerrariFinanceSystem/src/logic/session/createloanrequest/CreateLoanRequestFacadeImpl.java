@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Car;
@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class RequestLoanFacadeImpl implements RequestLoanFacade {
+public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
    private final MainFacade owner;
    private final CPRController cprCtrl;
    private final CustomerDetailsController customerDetailsCtrl;
    private final RequestDetailsController requestDetailsCtrl;
-   private RequestLoanViewToken view;
+   private CreateLoanRequestViewToken view;
 
-   public RequestLoanFacadeImpl(MainFacade owner) {
+   public CreateLoanRequestFacadeImpl(MainFacade owner) {
       this.owner = owner;
       this.cprCtrl = new CPRControllerImpl(this);
       this.customerDetailsCtrl = new CustomerDetailsControllerImpl(this);
@@ -35,12 +35,12 @@ public class RequestLoanFacadeImpl implements RequestLoanFacade {
    }
 
    @Override
-   public RequestLoanViewToken getViewToken() {
+   public CreateLoanRequestViewToken getViewToken() {
       return view;
    }
 
    @Override
-   public void setViewToken(RequestLoanViewToken view) {
+   public void setViewToken(CreateLoanRequestViewToken view) {
       this.view = view;
    }
 

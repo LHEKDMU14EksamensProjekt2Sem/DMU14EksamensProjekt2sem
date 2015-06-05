@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import domain.Car;
 import domain.CarModel;
@@ -14,24 +14,24 @@ import exceptions.ValueRequiredException;
 import logic.command.FetchCarModelsCommand;
 import logic.command.FetchCarsCommand;
 import logic.command.SubmitLoanRequestCommand;
-import logic.session.requestloan.validation.RequestDetailsValidator;
-import logic.session.requestloan.validation.RequestDetailsValidatorImpl;
+import logic.session.createloanrequest.validation.RequestDetailsValidator;
+import logic.session.createloanrequest.validation.RequestDetailsValidatorImpl;
 import util.finance.Money;
 import util.swing.SwingCommand;
 
-import java.sql.Date;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class RequestDetailsControllerImpl implements RequestDetailsController {
-   private final RequestLoanFacade facade;
+   private final CreateLoanRequestFacade facade;
    private final RequestDetailsValidator validator;
    private final LoanRequest loanRequest;
    private final Sale sale;
 
-   public RequestDetailsControllerImpl(RequestLoanFacade facade) {
+   public RequestDetailsControllerImpl(CreateLoanRequestFacade facade) {
       this.facade = facade;
 
       validator = new RequestDetailsValidatorImpl(facade.getGeneralNumberFormat());
@@ -48,7 +48,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       loanRequest.setSale(sale);
       loanRequest.setStatus(LoanRequestStatus.PENDING);
       loanRequest.setStatusByEmployee(employee);
-      loanRequest.setDate(new Date(System.currentTimeMillis()));
+      loanRequest.setDate(LocalDate.now());
       loanRequest.setLoanAmount(Money.ZERO);
    }
 

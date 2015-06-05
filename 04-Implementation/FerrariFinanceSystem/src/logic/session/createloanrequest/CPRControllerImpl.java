@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Identity;
@@ -6,19 +6,19 @@ import domain.Person;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
 import logic.command.FetchCreditRatingCommand;
-import logic.session.requestloan.validation.CPRValidator;
-import logic.session.requestloan.validation.CPRValidatorImpl;
+import logic.session.createloanrequest.validation.CPRValidator;
+import logic.session.createloanrequest.validation.CPRValidatorImpl;
 import util.swing.SwingCommand;
 
 import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
-   private final RequestLoanFacade facade;
+   private final CreateLoanRequestFacade facade;
    private final CPRValidator validator;
    private final Identity identity;
    private Rating creditRating;
 
-   public CPRControllerImpl(RequestLoanFacade facade) {
+   public CPRControllerImpl(CreateLoanRequestFacade facade) {
       this.facade = facade;
       validator = new CPRValidatorImpl();
       identity = new Identity();

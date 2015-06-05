@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import domain.Customer;
 import domain.Person;
@@ -11,20 +11,20 @@ import exceptions.InvalidStreetException;
 import exceptions.StreetMissingHouseNumberException;
 import exceptions.ValueRequiredException;
 import logic.command.FetchPostalCodeCommand;
-import logic.session.requestloan.validation.CustomerDetailsValidator;
-import logic.session.requestloan.validation.CustomerDetailsValidatorImpl;
+import logic.session.createloanrequest.validation.CustomerDetailsValidator;
+import logic.session.createloanrequest.validation.CustomerDetailsValidatorImpl;
 import util.swing.SwingCommand;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CustomerDetailsControllerImpl implements CustomerDetailsController {
-   private final RequestLoanFacade facade;
+   private final CreateLoanRequestFacade facade;
    private final CustomerDetailsValidator validator;
    private final Customer customer;
    private final Person person;
 
-   public CustomerDetailsControllerImpl(RequestLoanFacade facade) {
+   public CustomerDetailsControllerImpl(CreateLoanRequestFacade facade) {
       this.facade = facade;
       validator = new CustomerDetailsValidatorImpl();
 

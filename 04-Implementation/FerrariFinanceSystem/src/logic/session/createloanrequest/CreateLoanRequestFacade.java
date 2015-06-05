@@ -1,12 +1,12 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import domain.Employee;
 import domain.User;
 import logic.format.GeneralNumberFormat;
 import util.session.SessionFacade;
 
-public interface RequestLoanFacade extends
-        SessionFacade<RequestLoanViewToken>,
+public interface CreateLoanRequestFacade extends
+        SessionFacade<CreateLoanRequestViewToken>,
         CPRController,
         CustomerDetailsController,
         RequestDetailsController {

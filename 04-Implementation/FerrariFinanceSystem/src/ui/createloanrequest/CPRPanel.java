@@ -1,9 +1,9 @@
-package ui.requestloan;
+package ui.createloanrequest;
 
 import com.ferrari.finances.dk.rki.Rating;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
-import logic.session.requestloan.RequestLoanFacade;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
 import logic.util.AssetsUtil;
 import ui.UIFactory;
 import ui.XTextField;
@@ -20,7 +20,7 @@ import java.awt.GridBagLayout;
 import java.io.IOException;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanViewToken.*;
+import static logic.session.createloanrequest.CreateLoanRequestViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
@@ -31,13 +31,13 @@ public class CPRPanel extends JPanel implements SessionView {
            ERR_CPR_REQUIRED = "CPR skal angives",
            ERR_CPR_INVALID = "CPR er ugyldigt";
 
-   private RequestLoanDialog presenter;
+   private CreateLoanRequestDialog presenter;
 
    private JLabel lblCPR;
    private XTextField tfCPR;
    private JButton btnSearch;
 
-   public CPRPanel(RequestLoanDialog presenter) {
+   public CPRPanel(CreateLoanRequestDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -46,7 +46,7 @@ public class CPRPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      RequestLoanFacade facade = presenter.getFacade();
+      CreateLoanRequestFacade facade = presenter.getFacade();
 
       lblCPR = createLabel(LABEL_CPR);
       tfCPR = createTextField(12);

@@ -1,4 +1,4 @@
-package ui.requestloan;
+package ui.createloanrequest;
 
 import domain.PostalCode;
 import exceptions.InvalidEmailException;
@@ -8,7 +8,7 @@ import exceptions.InvalidPostalCodeException;
 import exceptions.InvalidStreetException;
 import exceptions.StreetMissingHouseNumberException;
 import exceptions.ValueRequiredException;
-import logic.session.requestloan.RequestLoanFacade;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
 import logic.util.AssetsUtil;
 import ui.XTextField;
 import util.session.SessionView;
@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.requestloan.RequestLoanViewToken.*;
+import static logic.session.createloanrequest.CreateLoanRequestViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
@@ -56,7 +56,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
            ERR_EMAIL_INVALID = "Email er ugyldig",
            BUTTON_NEXT = "Næste >";
 
-   private RequestLoanDialog presenter;
+   private CreateLoanRequestDialog presenter;
 
    private JLabel
            lblFirstName, lblLastName,
@@ -75,7 +75,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
    private boolean forwardScheduled;
    private boolean hasValidPostalCode;
 
-   public CustomerDetailsPanel(RequestLoanDialog presenter) {
+   public CustomerDetailsPanel(CreateLoanRequestDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -93,7 +93,7 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      RequestLoanFacade facade = presenter.getFacade();
+      CreateLoanRequestFacade facade = presenter.getFacade();
 
       lblFirstName = createLabel(LABEL_FIRST_NAME);
       tfFirstName = createTextField(18);

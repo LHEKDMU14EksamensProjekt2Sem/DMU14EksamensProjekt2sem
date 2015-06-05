@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Identity;

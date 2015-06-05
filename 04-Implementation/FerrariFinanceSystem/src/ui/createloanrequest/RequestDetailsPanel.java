@@ -1,4 +1,4 @@
-package ui.requestloan;
+package ui.createloanrequest;
 
 import domain.Car;
 import domain.CarModel;
@@ -9,7 +9,7 @@ import exceptions.DownPaymentPctTooLowException;
 import exceptions.TermTooLongException;
 import exceptions.ValueRequiredException;
 import logic.format.GeneralNumberFormat;
-import logic.session.requestloan.RequestLoanFacade;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
 import ui.UIFactory;
 import ui.XTextField;
 import util.finance.Money;
@@ -57,9 +57,9 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            INF_SELLING_PRICE_REQUIRED = "Salgspris skal angives",
            INF_DOWN_PAYMENT_REQUIRED = "Udbetaling skal angives",
            INF_LOAN_AMOUNT_REQUIRED = "Lånebeløb skal angives",
-           BUTTON_SUBMIT = "Send";
+           BUTTON_SUBMIT = "Opret";
 
-   private RequestLoanDialog presenter;
+   private CreateLoanRequestDialog presenter;
 
    private JLabel
            lblCarModel, lblCar,
@@ -79,7 +79,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
 
    private JPanel carDescriptionWrapperPanel, carDescriptionPanel;
 
-   public RequestDetailsPanel(RequestLoanDialog presenter) {
+   public RequestDetailsPanel(CreateLoanRequestDialog presenter) {
       this.presenter = presenter;
 
       setOpaque(false);
@@ -88,7 +88,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      RequestLoanFacade facade = presenter.getFacade();
+      CreateLoanRequestFacade facade = presenter.getFacade();
 
       lblCarModel = createLabel(LABEL_MODEL);
       cbCarModel = createComboBox();
@@ -427,7 +427,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
    }
 
    public void updateFields() {
-      RequestLoanFacade facade = presenter.getFacade();
+      CreateLoanRequestFacade facade = presenter.getFacade();
       LoanRequest lr = facade.getLoanRequest();
       Sale sale = lr.getSale();
 

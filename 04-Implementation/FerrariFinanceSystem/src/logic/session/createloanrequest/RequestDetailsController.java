@@ -1,4 +1,4 @@
-package logic.session.requestloan;
+package logic.session.createloanrequest;
 
 import domain.Car;
 import domain.CarModel;
@@ -10,7 +10,6 @@ import exceptions.TermTooLongException;
 import exceptions.ValueRequiredException;
 import util.finance.Money;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;

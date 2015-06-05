@@ -3,8 +3,8 @@ package logic.session.main;
 import domain.Employee;
 import domain.User;
 import logic.format.GeneralNumberFormat;
-import logic.session.requestloan.RequestLoanFacade;
-import logic.session.requestloan.RequestLoanFacadeImpl;
+import logic.session.createloanrequest.CreateLoanRequestFacade;
+import logic.session.createloanrequest.CreateLoanRequestFacadeImpl;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -20,8 +20,8 @@ public class MainFacadeImpl implements MainFacade {
    }
 
    @Override
-   public RequestLoanFacade newRequestLoanFacade() {
-      return new RequestLoanFacadeImpl(this);
+   public CreateLoanRequestFacade newCreateLoanRequestFacade() {
+      return new CreateLoanRequestFacadeImpl(this);
    }
 
    @Override
