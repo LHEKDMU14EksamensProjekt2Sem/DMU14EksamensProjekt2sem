@@ -2,14 +2,20 @@ package data.access;
 
 import domain.LoanRequest;
 import domain.LoanRequestStatus;
+import domain.Sale;
+import util.finance.Money;
 import util.jdbc.ConnectionHandler;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class LoanRequestAccessImpl implements LoanRequestAccess {
    private ConnectionHandler con;
@@ -48,21 +54,50 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
       }
    }
 
-   // TODO
    @Override
-   public LoanRequest readLoanRequest(int id) throws SQLException {
-      return null;
+   public Optional<LoanRequest> readLoanRequest(int id) throws SQLException {
+      // TODO
+      return Optional.empty();
    }
 
-   // TODO
    @Override
-   public List<LoanRequest> listLoanRequests(LoanRequestStatus status) throws SQLException {
-      return null;
+   public List<LoanRequest> listLoanRequests() throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL)) {
+         try (ResultSet rs = st.executeQuery()) {
+            List<LoanRequest> res = new ArrayList<>();
+
+            while (rs.next()) {
+               LoanRequest lr = new LoanRequest();
+               lr.setDate(rs.getDate("date").toLocalDate());
+               Money m = new Money(rs.getBigDecimal("loan_amount"));
+               lr.setLoanAmount(m);
+
+               BigDecimal bd = rs.getBigDecimal("pref_payment");
+               if (bd != null)
+                  lr.setPreferredPayment(new Money(bd));
+
+               lr.setPreferredTerm(rs.getInt("pref_term"));
+               lr.setStatus(LoanRequestStatus.valueOf(rs.getString("status")));
+
+               Sale s = new Sale();
+               s.setId(rs.getInt("id"));
+               m = new Money(rs.getBigDecimal("base_price"));
+               s.setBasePrice(m);
+               m = new Money(rs.getBigDecimal("selling_price"));
+               s.setSellingPrice(m);
+               lr.setSale(s);
+
+               res.add(lr);
+            }
+
+            return res;
+         }
+      }
    }
 
-   // TODO
    @Override
    public void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException {
+      // TODO
       return;
    }
 
@@ -72,11 +107,20 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
               + "(id, status_id, status_by_employee_id, date, loan_amount, pref_payment, pref_term)"
               + "VALUES (?, (SELECT id FROM loan_request_status WHERE status = ?), ?, ?, ?, ?, ?)";
 
-      // TODO
-      static final String SELECT_ONE = "";
+      static final String SELECT_ONE
+              = "SELECT lr.id, date, loan_amount, pref_payment, pref_term"
+              + " status, base_price, selling_price"
+              + " FROM loan_request lr"
+              + " LEFT JOIN loan_request_status lrs ON lrs.id = status_id"
+              + " LEFT JOIN sale s ON s.id = lr.id"
+              + " WHERE lr.id = ?";
 
-      // TODO
-      static final String SELECT_MANY = "";
+      static final String SELECT_ALL
+              = "SELECT lr.id, date, loan_amount, pref_payment, pref_term,"
+              + " status, base_price, selling_price"
+              + " FROM loan_request lr"
+              + " LEFT JOIN loan_request_status lrs ON lrs.id = status_id"
+              + " LEFT JOIN sale s ON s.id = lr.id";
 
       // TODO
       static final String UPDATE_ONE = "";

@@ -3,6 +3,7 @@ package data.access;
 import domain.Car;
 import domain.CarConfig;
 import domain.CarModel;
+import domain.Sale;
 import util.finance.Money;
 import util.jdbc.ConnectionHandler;
 
@@ -39,7 +40,16 @@ public class CarAccessImpl implements CarAccess {
 
    @Override
    public Optional<Car> readCar(int id) throws SQLException {
-      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ONE)) {
+      return readCar(id, SQL.BY_ID);
+   }
+
+   @Override
+   public Car readCar(Sale sale) throws SQLException {
+      return readCar(sale.getId(), SQL.BY_SALE).get();
+   }
+
+   private Optional<Car> readCar(int id, String by) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.selectOne(by))) {
          st.setInt(1, id);
 
          try (ResultSet rs = st.executeQuery()) {
@@ -101,7 +111,7 @@ public class CarAccessImpl implements CarAccess {
               + " FROM car c"
               + " LEFT JOIN car_config cc ON cc.id = c.config_id"
               + " LEFT JOIN car_model m ON cc.model_id = m.id"
-              + " WHERE c.id = ?";
+              + " WHERE c.id = %s";
 
       static final String SELECT_MANY
               = "SELECT c.id AS car_id, c.config_id,"
@@ -111,5 +121,14 @@ public class CarAccessImpl implements CarAccess {
               + " LEFT JOIN car_config cc ON cc.id = c.config_id"
               + " LEFT JOIN car_model m ON cc.model_id = m.id"
               + " WHERE m.id = ?";
+
+      static final String BY_ID = "?";
+
+      static final String BY_SALE
+              = "(SELECT car_id FROM sale WHERE id = ?)";
+
+      static String selectOne(String by) {
+         return String.format(SELECT_ONE, by);
+      }
    }
 }

@@ -1,9 +1,16 @@
 package logic.service;
 
 import data.ConnectionService;
+import data.access.CarAccess;
+import data.access.CarAccessImpl;
+import data.access.CustomerAccess;
+import data.access.CustomerAccessImpl;
+import data.access.EmployeeAccess;
+import data.access.EmployeeAccessImpl;
 import data.access.LoanRequestAccessImpl;
 import data.access.SaleAccess;
 import data.access.SaleAccessImpl;
+import domain.Car;
 import domain.Customer;
 import domain.Employee;
 import domain.Identity;
@@ -37,18 +44,47 @@ public class LoanRequestServiceImpl implements LoanRequestService {
    }
 
    @Override
+   public Optional<LoanRequest> readLoanRequest(int id) throws SQLException {
+      return ConnectionService.query(con ->
+              new LoanRequestAccessImpl(con).readLoanRequest(id));
+   }
+
+   @Override
    public List<LoanRequest> listLoanRequests() throws SQLException {
-      return null;
+      return ConnectionService.query(con -> {
+         List<LoanRequest> res = new LoanRequestAccessImpl(con).listLoanRequests();
+
+         CustomerAccess customerAccess = new CustomerAccessImpl(con);
+         EmployeeAccess employeeAccess = new EmployeeAccessImpl(con);
+         CarAccess carAccess = new CarAccessImpl(con);
+         for (LoanRequest lr : res) {
+            Sale sale = lr.getSale();
+
+            Customer customer = customerAccess.readCustomer(sale);
+            sale.setCustomer(customer);
+
+            Employee seller = employeeAccess.readEmployee(sale);
+            sale.setSeller(seller);
+
+            Car car = carAccess.readCar(sale);
+            sale.setCar(car);
+
+            Employee statusBy = employeeAccess.readEmployee(lr);
+            lr.setStatusByEmployee(statusBy);
+         }
+
+         return res;
+      });
    }
 
    @Override
    public void approveLoanRequest(LoanRequest loanRequest) throws SQLException {
-
+      // TODO
    }
 
    @Override
    public void declineLoanRequest(LoanRequest loanRequest) throws SQLException {
-
+      // TODO
    }
 
    @Override

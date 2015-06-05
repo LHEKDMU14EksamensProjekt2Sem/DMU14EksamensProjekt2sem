@@ -19,6 +19,10 @@ public class LoanRequest {
       prefTerm = Optional.empty();
    }
 
+   public int getId() {
+      return sale.getId();
+   }
+
    public Sale getSale() {
       return sale;
    }

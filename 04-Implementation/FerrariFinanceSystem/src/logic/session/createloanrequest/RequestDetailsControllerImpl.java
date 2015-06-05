@@ -87,6 +87,8 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       double downPaymentPct = loanRequest.getDownPaymentPct();
 
       sale.setCar(car);
+      sale.setBasePrice(car.getBasePrice());
+      sale.setSellingPrice(car.getBasePrice());
 
       // Reapply discount pct and
       // down payment pct, in order

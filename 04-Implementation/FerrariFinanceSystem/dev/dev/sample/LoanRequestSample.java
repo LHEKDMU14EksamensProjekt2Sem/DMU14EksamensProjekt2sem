@@ -45,6 +45,8 @@ public class LoanRequestSample {
       s.setSeller(seller);
       s.setCustomer(customer);
       s.setCar(car);
+      s.setBasePrice(car.getBasePrice());
+      s.setSellingPrice(car.getBasePrice());
       return s;
    }
 }

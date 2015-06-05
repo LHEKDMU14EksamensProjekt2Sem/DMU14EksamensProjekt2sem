@@ -1,11 +1,13 @@
 package ui.viewloanrequests;
 
+import domain.LoanRequest;
 import util.session.SessionView;
 
 import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
@@ -41,8 +43,24 @@ public class ListPanel extends JPanel implements SessionView {
       add(comp, gbc);
    }
 
+   private void fetchLoanRequests() {
+      presenter.getFacade().fetchLoanRequests(
+              this::handleFetchResult,
+              this::handleFetchException);
+   }
+
+   private void handleFetchResult(List<LoanRequest> result) {
+      for (LoanRequest lr : result) {
+         System.out.println("Loan request: " + lr.getId() + ", customer: " + lr.getSale().getCustomer().getPerson().getFullName());
+      }
+   }
+
+   private void handleFetchException(Throwable e) {
+      e.printStackTrace();
+   }
+
    @Override
    public void enter() {
-      // No-op
+      fetchLoanRequests();
    }
 }

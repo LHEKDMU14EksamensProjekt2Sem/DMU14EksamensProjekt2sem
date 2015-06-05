@@ -3,6 +3,7 @@ package logic.command;
 import com.ferrari.finances.dk.rki.CreditRator;
 import com.ferrari.finances.dk.rki.Rating;
 
+import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 public class FetchCreditRatingCommand implements Callable<Rating> {
@@ -13,7 +14,7 @@ public class FetchCreditRatingCommand implements Callable<Rating> {
    }
 
    @Override
-   public Rating call() throws Exception {
+   public Rating call() throws SQLException {
       return CreditRator.i().rate(cpr);
    }
 }

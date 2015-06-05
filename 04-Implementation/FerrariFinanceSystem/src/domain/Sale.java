@@ -46,10 +46,6 @@ public class Sale {
 
    public void setCar(Car car) {
       this.car = Optional.ofNullable(car);
-      if (hasCar()) {
-         basePrice = car.getBasePrice();
-         sellingPrice = basePrice;
-      }
    }
 
    public Money getBasePrice() {

@@ -4,6 +4,7 @@ import domain.Car;
 import domain.CarModel;
 import logic.service.CarServiceImpl;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -15,7 +16,7 @@ public class FetchCarsCommand implements Callable<List<Car>> {
    }
 
    @Override
-   public List<Car> call() throws Exception {
+   public List<Car> call() throws SQLException {
       return new CarServiceImpl().listCars(model);
    }
 }
