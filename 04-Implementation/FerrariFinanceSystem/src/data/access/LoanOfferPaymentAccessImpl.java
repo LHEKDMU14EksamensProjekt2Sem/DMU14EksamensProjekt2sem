@@ -5,6 +5,7 @@ import domain.LoanOfferPayment;
 import util.finance.Money;
 import util.jdbc.ConnectionHandler;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ public class LoanOfferPaymentAccessImpl implements LoanOfferPaymentAccess {
    public void createPayments(List<LoanOfferPayment> payments) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
          for (LoanOfferPayment p : payments) {
-            st.setDate(1, p.getDate());
+            st.setDate(1, Date.valueOf(p.getDate()));
             st.setBigDecimal(2, p.getBalance().asBigDecimal());
             st.setBigDecimal(3, p.getAmount().asBigDecimal());
             st.setBigDecimal(4, p.getRepayment().asBigDecimal());

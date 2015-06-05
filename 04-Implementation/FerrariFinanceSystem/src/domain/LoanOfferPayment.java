@@ -2,20 +2,20 @@ package domain;
 
 import util.finance.Money;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class LoanOfferPayment {
-   private Date date;
+   private LocalDate date;
    private Money balance;
    private Money amount;
    private Money repayment;
    private Money interest;
 
-   public Date getDate() {
+   public LocalDate getDate() {
       return date;
    }
 
-   public void setDate(Date date) {
+   public void setDate(LocalDate date) {
       this.date = date;
    }
 

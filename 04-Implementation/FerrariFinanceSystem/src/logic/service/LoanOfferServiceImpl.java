@@ -3,11 +3,11 @@ package logic.service;
 import domain.LoanOffer;
 import util.finance.Money;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class LoanOfferServiceImpl implements LoanOfferService {
    @Override
-   public void createLoanOffer(Date date, Money principal, double interestRate) {
+   public void createLoanOffer(LocalDate date, Money principal, double interestRate) {
       LoanOffer offer = new LoanOffer();
       offer.setDate(date);
       offer.setPrincipal(principal);

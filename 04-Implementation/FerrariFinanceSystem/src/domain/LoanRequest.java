@@ -2,14 +2,14 @@ package domain;
 
 import util.finance.Money;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class LoanRequest {
    private Sale sale;
    private LoanRequestStatus status;
    private Employee statusByEmployee;
-   private Date date;
+   private LocalDate date;
    private Money loanAmount;
    private Optional<Money> prefPayment;
    private Optional<Integer> prefTerm;
@@ -43,11 +43,11 @@ public class LoanRequest {
       this.statusByEmployee = statusByEmployee;
    }
 
-   public Date getDate() {
+   public LocalDate getDate() {
       return date;
    }
 
-   public void setDate(Date date) {
+   public void setDate(LocalDate date) {
       this.date = date;
    }
 

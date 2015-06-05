@@ -4,6 +4,7 @@ import domain.LoanRequest;
 import domain.LoanRequestStatus;
 import util.jdbc.ConnectionHandler;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -29,7 +30,7 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
             st.setInt(1, loanRequest.getSale().getId());
             st.setString(2, loanRequest.getStatus().toString());
             st.setInt(3, loanRequest.getStatusByEmployee().getId());
-            st.setDate(4, loanRequest.getDate());
+            st.setDate(4, Date.valueOf(loanRequest.getDate()));
             st.setBigDecimal(5, loanRequest.getLoanAmount().asBigDecimal());
 
             if (loanRequest.hasPreferredPayment())

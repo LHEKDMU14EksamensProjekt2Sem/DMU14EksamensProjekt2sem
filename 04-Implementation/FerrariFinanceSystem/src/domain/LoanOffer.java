@@ -2,11 +2,11 @@ package domain;
 
 import util.finance.Money;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class LoanOffer {
    private int id;
-   private Date date;
+   private LocalDate date;
    private Money principal;
    private double interestRate;
 
@@ -18,11 +18,11 @@ public class LoanOffer {
       this.id = id;
    }
 
-   public Date getDate() {
+   public LocalDate getDate() {
       return date;
    }
 
-   public void setDate(Date date) {
+   public void setDate(LocalDate date) {
       this.date = date;
    }
 
