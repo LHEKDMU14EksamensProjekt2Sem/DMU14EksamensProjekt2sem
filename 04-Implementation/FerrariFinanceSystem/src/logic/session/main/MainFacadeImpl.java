@@ -10,13 +10,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MainFacadeImpl implements MainFacade {
-   private final MainController mainController;
-   private final LoginController loginController;
+   private final MainController mainCtrl;
+   private final LoginController loginCtrl;
    private MainViewToken view;
 
    public MainFacadeImpl() {
-      mainController = new MainControllerImpl(this);
-      loginController = new LoginControllerImpl(this);
+      mainCtrl = new MainControllerImpl(this);
+      loginCtrl = new LoginControllerImpl(this);
    }
 
    @Override
@@ -39,7 +39,7 @@ public class MainFacadeImpl implements MainFacade {
 
    @Override
    public GeneralNumberFormat getGeneralNumberFormat() {
-      return mainController.getGeneralNumberFormat();
+      return mainCtrl.getGeneralNumberFormat();
    }
 
    // LoginController
@@ -47,18 +47,18 @@ public class MainFacadeImpl implements MainFacade {
 
    @Override
    public User<Employee> getUser() {
-      return loginController.getUser();
+      return loginCtrl.getUser();
    }
 
    @Override
    public boolean isLoggedIn() {
-      return loginController.isLoggedIn();
+      return loginCtrl.isLoggedIn();
    }
 
    @Override
    public void login(String username, char[] password,
                      Consumer<Optional<User<Employee>>> resultConsumer,
                      Consumer<Throwable> exceptionConsumer) {
-      loginController.login(username, password, resultConsumer, exceptionConsumer);
+      loginCtrl.login(username, password, resultConsumer, exceptionConsumer);
    }
 }
