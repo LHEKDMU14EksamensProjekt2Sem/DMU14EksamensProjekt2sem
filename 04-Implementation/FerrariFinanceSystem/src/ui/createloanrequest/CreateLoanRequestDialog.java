@@ -27,7 +27,8 @@ import static logic.session.createloanrequest.CreateLoanRequestViewToken.*;
 public class CreateLoanRequestDialog extends JDialog implements
         SessionPresenter<CreateLoanRequestFacade, CreateLoanRequestViewToken> {
 
-   private CreateLoanRequestFacade facade;
+   private final CreateLoanRequestFacade facade;
+
    private JPanel contentPanel;
    private JLabel messageLabel;
 
@@ -56,7 +57,7 @@ public class CreateLoanRequestDialog extends JDialog implements
       // Attempt to load background image
       try {
          setContentPane(new ImagePanel(AssetsUtil.loadBackgroundImage()));
-      } catch (IOException e) {
+      } catch (IOException ignore) {
          // No-op
       }
 

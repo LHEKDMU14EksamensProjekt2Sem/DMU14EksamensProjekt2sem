@@ -21,7 +21,7 @@ import static logic.session.main.MainViewToken.*;
 public class MainFrame extends JFrame implements
         SessionPresenter<MainFacade, MainViewToken> {
 
-   private MainFacade facade;
+   private final MainFacade facade;
 
    private CardLayout layout;
    private SessionView loginPanel;
@@ -47,7 +47,7 @@ public class MainFrame extends JFrame implements
       // Attempt to load background image
       try {
          setContentPane(new ImagePanel(AssetsUtil.loadBackgroundImage()));
-      } catch (IOException e) {
+      } catch (IOException ignore) {
          // No-op
       }
 
