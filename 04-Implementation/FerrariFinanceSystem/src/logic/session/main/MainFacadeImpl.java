@@ -5,6 +5,8 @@ import domain.User;
 import logic.format.GeneralNumberFormat;
 import logic.session.createloanrequest.CreateLoanRequestFacade;
 import logic.session.createloanrequest.CreateLoanRequestFacadeImpl;
+import logic.session.viewloanrequests.ViewLoanRequestsFacade;
+import logic.session.viewloanrequests.ViewLoanRequestsFacadeImpl;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -22,6 +24,11 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public CreateLoanRequestFacade newCreateLoanRequestFacade() {
       return new CreateLoanRequestFacadeImpl(this);
+   }
+
+   @Override
+   public ViewLoanRequestsFacade newViewLoanRequestsFacade() {
+      return new ViewLoanRequestsFacadeImpl(this);
    }
 
    @Override

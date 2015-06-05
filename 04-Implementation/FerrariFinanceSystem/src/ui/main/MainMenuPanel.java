@@ -1,7 +1,9 @@
 package ui.main;
 
 import logic.session.createloanrequest.CreateLoanRequestFacade;
+import logic.session.viewloanrequests.ViewLoanRequestsFacade;
 import ui.createloanrequest.CreateLoanRequestDialog;
+import ui.viewloanrequests.ViewLoanRequestsDialog;
 import util.session.SessionView;
 
 import javax.swing.JButton;
@@ -48,7 +50,9 @@ public class MainMenuPanel extends JPanel implements SessionView {
 
       btnViewLoanRequests = createButton(BUTTON_VIEW_LOAN_REQUESTS);
       btnViewLoanRequests.addActionListener(e -> {
-         System.out.println(DIALOG_VIEW_LOAN_REQUESTS);
+         String title = DIALOG_VIEW_LOAN_REQUESTS;
+         ViewLoanRequestsFacade facade = presenter.getFacade().newViewLoanRequestsFacade();
+         new ViewLoanRequestsDialog(presenter, facade, title).setVisible(true);
       });
    }
 
