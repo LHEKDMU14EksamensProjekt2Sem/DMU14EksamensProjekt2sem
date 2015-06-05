@@ -12,11 +12,11 @@ public interface CPRController {
 
    Rating getCreditRating();
 
-   void fetchCreditRating(Consumer<Rating> resultConsumer,
-                          Consumer<Throwable> exceptionConsumer);
-
    void specifyCPR(String cpr) throws
            InvalidCPRException, ValueRequiredException;
+
+   void fetchCreditRating(Consumer<Rating> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer);
 
    // Validation
    ///////////////

@@ -1,6 +1,8 @@
 package logic.session.main;
 
+import com.ferrari.finances.dk.rki.Rating;
 import domain.Employee;
+import domain.Identity;
 import domain.User;
 import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
@@ -53,6 +55,19 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public GeneralDateFormat getGeneralDateFormat() {
       return mainCtrl.getGeneralDateFormat();
+   }
+
+   @Override
+   public void fetchCreditRating(Identity identity,
+                                 Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      mainCtrl.fetchCreditRating(identity, resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void fetchOvernightRate(Consumer<Double> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      mainCtrl.fetchOvernightRate(resultConsumer, exceptionConsumer);
    }
 
    // LoginController

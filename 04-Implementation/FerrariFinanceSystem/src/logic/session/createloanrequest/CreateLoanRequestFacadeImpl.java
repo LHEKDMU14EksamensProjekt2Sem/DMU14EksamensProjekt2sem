@@ -4,12 +4,10 @@ import com.ferrari.finances.dk.rki.Rating;
 import domain.Car;
 import domain.CarModel;
 import domain.Customer;
-import domain.Employee;
 import domain.Identity;
 import domain.LoanOffer;
 import domain.LoanRequest;
 import domain.PostalCode;
-import domain.User;
 import exceptions.*;
 import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
@@ -29,9 +27,14 @@ public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
 
    public CreateLoanRequestFacadeImpl(MainFacade owner) {
       this.owner = owner;
-      this.cprCtrl = new CPRControllerImpl(this);
+      this.cprCtrl = new CPRControllerImpl(this, owner);
       this.customerDetailsCtrl = new CustomerDetailsControllerImpl(this);
-      this.requestDetailsCtrl = new RequestDetailsControllerImpl(this);
+      this.requestDetailsCtrl = new RequestDetailsControllerImpl(this, owner);
+   }
+
+   @Override
+   public GeneralNumberFormat getGeneralNumberFormat() {
+      return owner.getGeneralNumberFormat();
    }
 
    @Override
@@ -42,16 +45,6 @@ public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
    @Override
    public void setViewToken(CreateLoanRequestViewToken view) {
       this.view = view;
-   }
-
-   @Override
-   public GeneralNumberFormat getGeneralNumberFormat() {
-      return owner.getGeneralNumberFormat();
-   }
-
-   @Override
-   public User<Employee> getUser() {
-      return owner.getUser();
    }
 
    // CPRController
@@ -68,15 +61,15 @@ public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
    }
 
    @Override
-   public void fetchCreditRating(Consumer<Rating> resultConsumer,
-                                 Consumer<Throwable> exceptionConsumer) {
-      cprCtrl.fetchCreditRating(resultConsumer, exceptionConsumer);
-   }
-
-   @Override
    public void specifyCPR(String cpr) throws
            InvalidCPRException, ValueRequiredException {
       cprCtrl.specifyCPR(cpr);
+   }
+
+   @Override
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      cprCtrl.fetchCreditRating(resultConsumer, exceptionConsumer);
    }
 
    // CPR validation

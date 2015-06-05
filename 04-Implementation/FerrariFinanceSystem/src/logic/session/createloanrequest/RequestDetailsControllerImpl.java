@@ -16,6 +16,7 @@ import logic.command.FetchCarsCommand;
 import logic.command.SubmitLoanRequestCommand;
 import logic.session.createloanrequest.validation.RequestDetailsValidator;
 import logic.session.createloanrequest.validation.RequestDetailsValidatorImpl;
+import logic.session.main.MainFacade;
 import util.finance.Money;
 import util.swing.SwingCommand;
 
@@ -27,16 +28,18 @@ import java.util.function.Consumer;
 
 public class RequestDetailsControllerImpl implements RequestDetailsController {
    private final CreateLoanRequestFacade facade;
+   private final MainFacade mainFacade;
    private final RequestDetailsValidator validator;
    private final LoanRequest loanRequest;
    private final Sale sale;
 
-   public RequestDetailsControllerImpl(CreateLoanRequestFacade facade) {
+   public RequestDetailsControllerImpl(CreateLoanRequestFacade facade, MainFacade mainFacade) {
       this.facade = facade;
+      this.mainFacade = mainFacade;
 
       validator = new RequestDetailsValidatorImpl(facade.getGeneralNumberFormat());
 
-      Employee employee = facade.getUser().getEntity();
+      Employee employee = mainFacade.getUser().getEntity();
 
       sale = new Sale();
       sale.setSeller(employee);

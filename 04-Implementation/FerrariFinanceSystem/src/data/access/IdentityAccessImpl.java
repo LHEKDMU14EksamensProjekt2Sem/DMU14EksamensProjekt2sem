@@ -1,6 +1,7 @@
 package data.access;
 
 import domain.Identity;
+import domain.Person;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.PreparedStatement;
@@ -30,8 +31,28 @@ public class IdentityAccessImpl implements IdentityAccess {
       }
    }
 
+   @Override
+   public Identity readIdentity(Person person) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ONE)) {
+         st.setInt(1, person.getId());
+
+         try (ResultSet rs = st.executeQuery()) {
+            Identity identity = new Identity();
+            identity.setPerson(person);
+
+            if (rs.next())
+               identity.setCPR(rs.getString("cpr"));
+
+            return identity;
+         }
+      }
+   }
+
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO cpr(cpr) VALUES (?)";
+
+      static final String SELECT_ONE
+              = "SELECT cpr FROM cpr WHERE id = ?";
    }
 }

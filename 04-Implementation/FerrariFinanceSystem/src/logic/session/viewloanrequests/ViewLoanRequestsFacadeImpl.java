@@ -1,5 +1,6 @@
 package logic.session.viewloanrequests;
 
+import com.ferrari.finances.dk.rki.Rating;
 import domain.LoanRequest;
 import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
@@ -16,7 +17,7 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
 
    public ViewLoanRequestsFacadeImpl(MainFacade owner) {
       this.owner = owner;
-      loanRequestsCtrl = new LoanRequestsControllerImpl(this);
+      loanRequestsCtrl = new LoanRequestsControllerImpl(this, owner);
    }
 
    @Override
@@ -43,8 +44,35 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    ///////////////////////////
 
    @Override
+   public boolean hasSelectedLoanRequest() {
+      return loanRequestsCtrl.hasSelectedLoanRequest();
+   }
+
+   @Override
+   public LoanRequest getSelectedLoanRequest() {
+      return loanRequestsCtrl.getSelectedLoanRequest();
+   }
+
+   @Override
+   public void setSelectedLoanRequest(LoanRequest loanRequest) {
+      loanRequestsCtrl.setSelectedLoanRequest(loanRequest);
+   }
+
+   @Override
    public void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       loanRequestsCtrl.fetchLoanRequests(resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void fetchCreditRating(Consumer<Rating> resultConsumer,
+                                 Consumer<Throwable> exceptionConsumer) {
+      loanRequestsCtrl.fetchCreditRating(resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void fetchOvernightRate(Consumer<Double> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      loanRequestsCtrl.fetchOvernightRate(resultConsumer, exceptionConsumer);
    }
 }

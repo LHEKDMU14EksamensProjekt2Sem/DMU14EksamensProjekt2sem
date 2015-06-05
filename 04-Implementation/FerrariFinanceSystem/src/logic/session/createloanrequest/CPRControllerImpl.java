@@ -5,21 +5,22 @@ import domain.Identity;
 import domain.Person;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
-import logic.command.FetchCreditRatingCommand;
 import logic.session.createloanrequest.validation.CPRValidator;
 import logic.session.createloanrequest.validation.CPRValidatorImpl;
-import util.swing.SwingCommand;
+import logic.session.main.MainFacade;
 
 import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
    private final CreateLoanRequestFacade facade;
+   private final MainFacade mainFacade;
    private final CPRValidator validator;
    private final Identity identity;
    private Rating creditRating;
 
-   public CPRControllerImpl(CreateLoanRequestFacade facade) {
+   public CPRControllerImpl(CreateLoanRequestFacade facade, MainFacade mainFacade) {
       this.facade = facade;
+      this.mainFacade = mainFacade;
       validator = new CPRValidatorImpl();
       identity = new Identity();
       identity.setPerson(new Person());
@@ -36,22 +37,21 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
+   public void specifyCPR(String cpr) throws
+           InvalidCPRException, ValueRequiredException {
+      identity.setCPR(validator.validateCPR(cpr));
+   }
+
+   @Override
    public void fetchCreditRating(Consumer<Rating> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
-      new SwingCommand<>(
-              new FetchCreditRatingCommand(identity.getCPR()),
+      mainFacade.fetchCreditRating(
+              identity,
               r -> {
                  creditRating = r;
                  resultConsumer.accept(r);
               },
-              exceptionConsumer::accept
-      ).execute();
-   }
-
-   @Override
-   public void specifyCPR(String cpr) throws
-           InvalidCPRException, ValueRequiredException {
-      identity.setCPR(validator.validateCPR(cpr));
+              exceptionConsumer::accept);
    }
 
    // Validation
