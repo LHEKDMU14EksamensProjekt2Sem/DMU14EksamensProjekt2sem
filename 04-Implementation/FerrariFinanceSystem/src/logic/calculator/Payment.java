@@ -2,36 +2,14 @@ package logic.calculator;
 
 import util.finance.Money;
 
-public class Payment {
-   private final Money balance;
-   private final Money amount;
-   private final Money principalPaid;
-   private final Money interestPaid;
+public interface Payment {
+   Money getBalance();
 
-   public Payment(Money balance, Money amount, Money principalPaid, Money interestPaid) {
-      this.balance = balance;
-      this.amount = amount;
-      this.principalPaid = principalPaid;
-      this.interestPaid = interestPaid;
-   }
+   Money getAmount();
 
-   public Money getBalance() {
-      return balance;
-   }
+   Money getRepayment();
 
-   public Money getAmount() {
-      return amount;
-   }
+   Money getInterest();
 
-   public Money getPrincipalPaid() {
-      return principalPaid;
-   }
-
-   public Money getInterestPaid() {
-      return interestPaid;
-   }
-
-   public Money getEndingBalance() {
-      return balance.subtract(getPrincipalPaid());
-   }
+   Money getEndingBalance();
 }

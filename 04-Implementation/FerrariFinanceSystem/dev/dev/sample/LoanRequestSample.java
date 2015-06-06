@@ -33,13 +33,17 @@ public class LoanRequestSample {
          int lastYear = now.getYear() - 1;
          Random rand = new Random();
          int month = rand.nextInt(12) + 1;
-         int dayOfMonth = rand.nextInt(29) + 1;
+         int dayOfMonth = rand.nextInt(28) + 1;
          LocalDate date = LocalDate.of(lastYear, month, dayOfMonth);
          lr.setDate(date);
 
          lr.setStatus(LoanRequestStatus.PENDING);
          lr.setStatusByEmployee(employees.get(i));
          lr.setPreferredTerm(60 * (i + 1));
+
+         if (i % 2 == 0)
+            lr.setPreferredPayment(new Money(25000 * (i + 1)));
+
          lr.setLoanAmount(new Money(s.getSellingPrice().doubleValue() * 0.60));
          list.add(lr);
 

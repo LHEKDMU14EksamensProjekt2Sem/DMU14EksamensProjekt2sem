@@ -110,8 +110,7 @@ public interface RequestDetailsController {
    void specifyPreferredPayment(String prefPayment) throws ParseException;
 
    /**
-    * Specifies a preferred term given in number of months. Must be specified
-    * unless a preferred monthly repayment is specified instead.
+    * Specifies a preferred term given in number of months.
     *
     * @param prefTerm a preferred term given in months
     * @throws ParseException
@@ -151,5 +150,5 @@ public interface RequestDetailsController {
    Money validatePreferredPayment(String prefPayment) throws ParseException;
 
    Integer validatePreferredTerm(String prefTerm) throws
-           ParseException, TermTooLongException;
+           ParseException, TermTooLongException, ValueRequiredException;
 }

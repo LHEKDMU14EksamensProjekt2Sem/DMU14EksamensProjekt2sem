@@ -5,8 +5,8 @@ import com.ferrari.finances.dk.rki.Rating;
 public class InterestRateCalculator {
    private static final double ONE_PCT = 0.01;
 
-   double computeInterestRate(double overnightRate, Rating creditRating,
-                              double downPaymentPct, int term) {
+   public double computeInterestRate(double overnightRate, Rating creditRating,
+                                     double downPaymentPct, int term) {
       if (creditRating == null)
          throw new NullPointerException("Credit rating cannot be null");
 

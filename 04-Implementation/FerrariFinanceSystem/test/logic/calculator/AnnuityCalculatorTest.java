@@ -25,15 +25,15 @@ public class AnnuityCalculatorTest {
                           Money expInterestPaid,
                           Money expEndingBalance) {
       assertEquals("Amount", expAmount, p.getAmount());
-      assertEquals("Principal paid", expPrincipalPaid, p.getPrincipalPaid());
-      assertEquals("Interest paid", expInterestPaid, p.getInterestPaid());
+      assertEquals("Principal paid", expPrincipalPaid, p.getRepayment());
+      assertEquals("Interest paid", expInterestPaid, p.getInterest());
       assertEquals("Ending balance", expEndingBalance, p.getEndingBalance());
    }
 
    @Test // TC-01
    public void test2TermPeriod1() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 2;
       int period = 1;
 
@@ -42,14 +42,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(8.33);
       Money expEndingBalance = new Money(502.07);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-02
    public void test2TermPeriod2() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 2;
       int period = 2;
 
@@ -58,14 +58,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(4.18);
       Money expEndingBalance = new Money(0);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-03
    public void testMinimumAmountPeriod1() {
       Money principal = new Money(0.01);
-      double interest = 1;
+      double interestRate = 1;
       int term = 2;
       int period = 1;
 
@@ -74,14 +74,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(0.00);
       Money expEndingBalance = new Money(0.01);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-04
    public void testMinimumAmountPeriod2() {
       Money principal = new Money(0.01);
-      double interest = 1;
+      double interestRate = 1;
       int term = 2;
       int period = 2;
 
@@ -90,14 +90,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(0);
       Money expEndingBalance = new Money(0);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-05
-   public void testVerySmallInterestPeriod1() {
+   public void testVerySmallInterestRatePeriod1() {
       Money principal = new Money(1000);
-      double interest = 0.00001;
+      double interestRate = 0.00001;
       int term = 2;
       int period = 1;
 
@@ -106,14 +106,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(0);
       Money expEndingBalance = new Money(500);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-06
-   public void testVerySmallInterestPeriod2() {
+   public void testVerySmallInterestRatePeriod2() {
       Money principal = new Money(1000);
-      double interest = 0.00001;
+      double interestRate = 0.00001;
       int term = 2;
       int period = 2;
 
@@ -122,14 +122,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(0);
       Money expEndingBalance = new Money(0);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-07
    public void testMinimumTerm() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 1;
       int period = 1;
 
@@ -138,98 +138,98 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(8.33);
       Money expEndingBalance = new Money(0);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-08
    public void testPoint004PrincipalThrowsIllegalArgumentException() {
       Money principal = new Money(0.004);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
       thrown.expectMessage("principal must be >= 0.01");
-      calc.computePayment(principal, interest, term, period);
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-09
-   public void testZeroInterestThrowsIllegalArgumentException() {
+   public void testZeroInterestRateThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = 0;
+      double interestRate = 0;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("interest must be > 0");
-      calc.computePayment(principal, interest, term, period);
+      thrown.expectMessage("interestRate must be > 0");
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-10
    public void testZeroTermsThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 0;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
       thrown.expectMessage("term must be > 0");
-      calc.computePayment(principal, interest, term, period);
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-11
    public void testPeriodZeroThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 2;
       int period = 0;
 
       thrown.expect(IllegalArgumentException.class);
       thrown.expectMessage("period must be > 0");
-      calc.computePayment(principal, interest, term, period);
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-12
-   public void testInterestPositiveInfinityThrowsIllegalArgumentException() {
+   public void testInterestRatePositiveInfinityThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = Double.POSITIVE_INFINITY;
+      double interestRate = Double.POSITIVE_INFINITY;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("interest cannot be Double.POSITIVE_INFINITY");
-      calc.computePayment(principal, interest, term, period);
+      thrown.expectMessage("interestRate cannot be Double.POSITIVE_INFINITY");
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-13
-   public void testInterestNaNThrowsIllegalArgumentException() {
+   public void testInterestRateNaNThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = Double.NaN;
+      double interestRate = Double.NaN;
       int term = 2;
       int period = 1;
 
       thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("interest cannot be Double.NaN");
-      calc.computePayment(principal, interest, term, period);
+      thrown.expectMessage("interestRate cannot be Double.NaN");
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-14
    public void testPeriodGreaterThanTermThrowsIllegalArgumentException() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 1;
       int period = 2;
 
       thrown.expect(IllegalArgumentException.class);
       thrown.expectMessage("period must be <= term");
-      calc.computePayment(principal, interest, term, period);
+      calc.computePayment(principal, interestRate, term, period);
    }
 
    @Test // TC-15
    public void test10TermPeriod1() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 10;
       int period = 1;
 
@@ -238,14 +238,14 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(8.33);
       Money expEndingBalance = new Money(903.69);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-16
    public void test10TermPeriod10() {
       Money principal = new Money(1000);
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 10;
       int period = 10;
 
@@ -254,19 +254,19 @@ public class AnnuityCalculatorTest {
       Money expInterestPaid = new Money(0.86);
       Money expEndingBalance = new Money(0);
 
-      Payment p = calc.computePayment(principal, interest, term, period);
+      Payment p = calc.computePayment(principal, interestRate, term, period);
       doAsserts(p, expAmount, expPrincipalPaid, expInterestPaid, expEndingBalance);
    }
 
    @Test // TC-17
    public void testPrincipalNullThrowsNullPointerException() {
       Money principal = null;
-      double interest = 0.10;
+      double interestRate = 0.10;
       int term = 2;
       int period = 1;
 
       thrown.expect(NullPointerException.class);
       thrown.expectMessage("principal cannot be null");
-      calc.computePayment(principal, interest, term, period);
+      calc.computePayment(principal, interestRate, term, period);
    }
 }

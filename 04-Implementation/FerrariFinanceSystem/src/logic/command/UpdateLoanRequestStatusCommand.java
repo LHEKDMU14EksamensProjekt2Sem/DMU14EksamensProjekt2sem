@@ -3,6 +3,7 @@ package logic.command;
 import domain.LoanRequest;
 import logic.service.LoanRequestServiceImpl;
 
+import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 public class UpdateLoanRequestStatusCommand implements Callable<Void> {
@@ -13,7 +14,7 @@ public class UpdateLoanRequestStatusCommand implements Callable<Void> {
    }
 
    @Override
-   public Void call() throws Exception {
+   public Void call() throws SQLException {
       new LoanRequestServiceImpl().updateLoanRequestStatus(loanRequest);
       return null;
    }

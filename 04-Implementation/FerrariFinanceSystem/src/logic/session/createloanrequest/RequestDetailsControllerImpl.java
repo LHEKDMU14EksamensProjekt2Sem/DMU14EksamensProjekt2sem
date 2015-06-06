@@ -27,6 +27,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class RequestDetailsControllerImpl implements RequestDetailsController {
+   private static final int DEFAULT_TERM = 36;
+
    private final CreateLoanRequestFacade facade;
    private final MainFacade mainFacade;
    private final RequestDetailsValidator validator;
@@ -53,6 +55,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
       loanRequest.setStatusByEmployee(employee);
       loanRequest.setDate(LocalDate.now());
       loanRequest.setLoanAmount(Money.ZERO);
+      loanRequest.setPreferredTerm(DEFAULT_TERM);
    }
 
    @Override
@@ -164,7 +167,6 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
          loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
       } catch (ValueRequiredException e) {
          // No-op
-         return;
       }
    }
 
@@ -187,7 +189,6 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
          loanRequest.setDownPaymentPct(validator.getMinDownPaymentPct());
       } catch (ValueRequiredException e) {
          // No-op
-         return;
       }
    }
 
@@ -204,6 +205,8 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
          value = validatePreferredTerm(prefTerm);
       } catch (TermTooLongException e) {
          value = validator.getMaxTermLength();
+      } catch (ValueRequiredException e) {
+         value = DEFAULT_TERM;
       }
       loanRequest.setPreferredTerm(value);
    }
@@ -304,7 +307,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
    @Override
    public Integer validatePreferredTerm(String prefTerm) throws
-           ParseException, TermTooLongException {
+           ParseException, TermTooLongException, ValueRequiredException {
       prefTerm = prefTerm.trim();
       // Optional field, empty means unspecified (null)
       if (prefTerm.isEmpty())

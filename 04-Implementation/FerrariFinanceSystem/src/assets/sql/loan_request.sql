@@ -5,5 +5,5 @@ CREATE TABLE loan_request (
   date DATE NOT NULL,
   loan_amount NUMERIC NOT NULL,
   pref_payment NUMERIC,
-  pref_term INTEGER
+  pref_term INTEGER NOT NULL
 );

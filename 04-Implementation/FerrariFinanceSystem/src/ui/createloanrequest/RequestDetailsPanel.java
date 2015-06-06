@@ -57,6 +57,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            INF_SELLING_PRICE_REQUIRED = "Salgspris skal angives",
            INF_DOWN_PAYMENT_REQUIRED = "Udbetaling skal angives",
            INF_LOAN_AMOUNT_REQUIRED = "Lånebeløb skal angives",
+           INF_PREF_TERM_REQUIRED = "Ønsket løbetid skal angives",
            BUTTON_SUBMIT = "Opret",
            BUTTON_CANCEL = "Annuller";
 
@@ -66,7 +67,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
            lblCarModel, lblCar,
            lblBasePrice, lblDiscount, lblDiscountPct, lblSellingPrice,
            lblDownPayment, lblDownPaymentPct, lblLoanAmount,
-           lblPrefRepayment, lblPrefTerm;
+           lblPrefPayment, lblPrefTerm;
 
    private XTextField
            tfBasePrice, tfDiscount, tfDiscountPct, tfSellingPrice,
@@ -264,7 +265,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       });
       addDefaultActionListener(tfLoanAmount);
 
-      lblPrefRepayment = createLabel(LABEL_PREF_PAYMENT);
+      lblPrefPayment = createLabel(LABEL_PREF_PAYMENT);
       tfPrefPayment = createTextField(14);
       tfPrefPayment.setMessageLabel(createLabel());
       tfPrefPayment.setVerifier(tf -> {
@@ -294,6 +295,8 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
             tf.setError(ERR_INVALID_AMOUNT);
          } catch (TermTooLongException e) {
             tf.setInfo(INF_TERM_TOO_LONG);
+         } catch (ValueRequiredException e) {
+            tf.setInfo(INF_PREF_TERM_REQUIRED);
          }
       });
       tfPrefTerm.setCommitter(tf -> {
@@ -351,7 +354,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       gbc.gridy++;
       addNext(lblLoanAmount, gbc);
       gbc.gridy++;
-      addNext(lblPrefRepayment, gbc);
+      addNext(lblPrefPayment, gbc);
       gbc.gridy++;
       addNext(lblPrefTerm, gbc);
 
@@ -471,8 +474,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
          if (lr.hasPreferredPayment())
             prefPayment = f.formatAmount(lr.getPreferredPayment());
 
-         if (lr.hasPreferredTerm())
-            prefTerm = f.formatInteger(lr.getPreferredTerm());
+         prefTerm = f.formatInteger(lr.getPreferredTerm());
       }
 
       tfBasePrice.setText(basePrice);

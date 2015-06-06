@@ -44,11 +44,7 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
             else
                st.setNull(6, Types.NUMERIC);
 
-            if (loanRequest.hasPreferredTerm())
-               st.setInt(7, loanRequest.getPreferredTerm());
-            else
-               st.setNull(7, Types.INTEGER);
-
+            st.setInt(7, loanRequest.getPreferredTerm());
             st.executeUpdate();
          }
       }
@@ -93,11 +89,12 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
    private LoanRequest extractLoanRequest(ResultSet rs) throws SQLException {
       LoanRequest lr = new LoanRequest();
       lr.setDate(rs.getDate("date").toLocalDate());
+
       Money m = new Money(rs.getBigDecimal("loan_amount"));
       lr.setLoanAmount(m);
 
       BigDecimal bd = rs.getBigDecimal("pref_payment");
-      if (bd != null)
+      if (!rs.wasNull())
          lr.setPreferredPayment(new Money(bd));
 
       lr.setPreferredTerm(rs.getInt("pref_term"));

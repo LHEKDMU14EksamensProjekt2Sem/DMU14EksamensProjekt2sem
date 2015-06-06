@@ -25,8 +25,8 @@ public class CustomerServiceImpl implements CustomerService {
 
    @Override
    public Optional<Customer> readCustomer(int id) throws SQLException {
-      // TODO
-      return Optional.empty();
+      return ConnectionService.query(con ->
+              new CustomerAccessImpl(con).readCustomer(id));
    }
 
    @Override

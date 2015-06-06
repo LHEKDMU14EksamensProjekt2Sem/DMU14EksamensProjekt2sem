@@ -4,7 +4,7 @@ import util.finance.Money;
 
 import java.time.LocalDate;
 
-public class LoanOfferPayment {
+public class RepaymentPlanPayment {
    private LocalDate date;
    private Money balance;
    private Money amount;
@@ -49,5 +49,9 @@ public class LoanOfferPayment {
 
    public void setInterest(Money interest) {
       this.interest = interest;
+   }
+
+   public Money getEndingBalance() {
+      return balance.subtract(repayment);
    }
 }

@@ -174,7 +174,7 @@ public class DetailsPanel extends JPanel implements SessionView {
       facade.fetchOvernightRate(
               r -> {
                  lblOvernightRate.setIcon(null);
-                 lblOvernightRate.setText("✓ " + facade.getGeneralNumberFormat().formatPercent(r / 100) + " %");
+                 lblOvernightRate.setText("✓ " + facade.getGeneralNumberFormat().formatPercent(r) + " %");
                  lblOvernightRate.setPreferredSize(lblOvernightRate.getSize());
                  updateNavigation();
               },

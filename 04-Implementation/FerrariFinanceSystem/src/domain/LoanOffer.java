@@ -3,12 +3,15 @@ package domain;
 import util.finance.Money;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public class LoanOffer {
+public class LoanOffer implements AnnuityLoan {
    private int id;
    private LocalDate date;
    private Money principal;
    private double interestRate;
+   private List<RepaymentPlanPayment> payments;
+   private LoanRequest loanRequest;
 
    public int getId() {
       return id;
@@ -26,6 +29,7 @@ public class LoanOffer {
       this.date = date;
    }
 
+   @Override
    public Money getPrincipal() {
       return principal;
    }
@@ -34,11 +38,40 @@ public class LoanOffer {
       this.principal = principal;
    }
 
+   @Override
    public double getInterestRate() {
       return interestRate;
    }
 
    public void setInterestRate(double interestRate) {
       this.interestRate = interestRate;
+   }
+
+   public List<RepaymentPlanPayment> getPayments() {
+      return payments;
+   }
+
+   public void setPayments(List<RepaymentPlanPayment> payments) {
+      this.payments = payments;
+   }
+
+   public int getTerm() {
+      return payments.size();
+   }
+
+   public Money getMonthlyPayment() {
+      return payments.get(0).getAmount();
+   }
+
+   public LocalDate getDateOfFirstPayment() {
+      return payments.get(0).getDate();
+   }
+
+   public LoanRequest getLoanRequest() {
+      return loanRequest;
+   }
+
+   public void setLoanRequest(LoanRequest loanRequest) {
+      this.loanRequest = loanRequest;
    }
 }

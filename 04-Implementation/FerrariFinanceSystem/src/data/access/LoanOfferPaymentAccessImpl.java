@@ -1,7 +1,7 @@
 package data.access;
 
 import domain.LoanOffer;
-import domain.LoanOfferPayment;
+import domain.RepaymentPlanPayment;
 import util.finance.Money;
 import util.jdbc.ConnectionHandler;
 
@@ -20,28 +20,32 @@ public class LoanOfferPaymentAccessImpl implements LoanOfferPaymentAccess {
    }
 
    @Override
-   public void createPayments(List<LoanOfferPayment> payments) throws SQLException {
+   public void createPayments(LoanOffer offer) throws SQLException {
+      deletePayments(offer);
+
       try (PreparedStatement st = con.get().prepareStatement(SQL.INSERT_ONE)) {
-         for (LoanOfferPayment p : payments) {
-            st.setDate(1, Date.valueOf(p.getDate()));
-            st.setBigDecimal(2, p.getBalance().asBigDecimal());
-            st.setBigDecimal(3, p.getAmount().asBigDecimal());
-            st.setBigDecimal(4, p.getRepayment().asBigDecimal());
-            st.setBigDecimal(5, p.getInterest().asBigDecimal());
+         for (RepaymentPlanPayment p : offer.getPayments()) {
+            st.setInt(1, offer.getId());
+            st.setDate(2, Date.valueOf(p.getDate()));
+            st.setBigDecimal(3, p.getBalance().asBigDecimal());
+            st.setBigDecimal(4, p.getAmount().asBigDecimal());
+            st.setBigDecimal(5, p.getRepayment().asBigDecimal());
+            st.setBigDecimal(6, p.getInterest().asBigDecimal());
             st.executeUpdate();
          }
       }
    }
 
    @Override
-   public List<LoanOfferPayment> listPayments(LoanOffer offer) throws SQLException {
+   public List<RepaymentPlanPayment> listPayments(LoanOffer offer) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_MANY)) {
          st.setInt(1, offer.getId());
 
          try (ResultSet rs = st.executeQuery()) {
-            List<LoanOfferPayment> res = new ArrayList<>();
+            List<RepaymentPlanPayment> payments = new ArrayList<>();
             while (rs.next()) {
-               LoanOfferPayment p = new LoanOfferPayment();
+               RepaymentPlanPayment p = new RepaymentPlanPayment();
+               p.setDate(rs.getDate("date").toLocalDate());
                Money m = new Money(rs.getBigDecimal("balance"));
                p.setBalance(m);
                m = new Money(rs.getBigDecimal("amount"));
@@ -50,22 +54,33 @@ public class LoanOfferPaymentAccessImpl implements LoanOfferPaymentAccess {
                p.setRepayment(m);
                m = new Money(rs.getBigDecimal("interest"));
                p.setInterest(m);
-               res.add(p);
+               payments.add(p);
             }
-            return res;
+            return payments;
          }
+      }
+   }
+
+   private void deletePayments(LoanOffer offer) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.DELETE_MANY)) {
+         st.setInt(1, offer.getId());
+         st.executeUpdate();
       }
    }
 
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO loan_offer_payment"
-              + " (date, balance, amount, repayment, interest)"
-              + " VALUES (?, ?, ?, ?, ?)";
+              + " (offer_id, \"date\", balance, amount, repayment, interest)"
+              + " VALUES (?, ?, ?, ?, ?, ?)";
 
       static final String SELECT_MANY
-              = "SELECT date, balance, amount, repayment, interest"
+              = "SELECT \"date\", balance, amount, repayment, interest"
               + " FROM loan_offer_payment"
+              + " WHERE offer_id = ?";
+
+      static final String DELETE_MANY
+              = "DELETE FROM loan_offer_payment"
               + " WHERE offer_id = ?";
    }
 }

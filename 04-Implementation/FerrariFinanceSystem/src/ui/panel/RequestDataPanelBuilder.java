@@ -30,9 +30,8 @@ public class RequestDataPanelBuilder extends DataPanelBuilder {
 
       if (loanRequest.hasPreferredPayment())
          addField("Ønsket ydelse", "DKK " + numberFormat.formatAmount(loanRequest.getPreferredPayment()));
-      if (loanRequest.hasPreferredTerm())
-         addField("Ønsket løbetid", numberFormat.formatInteger(loanRequest.getPreferredTerm()) + " mdr.");
 
+      addField("Ønsket løbetid", numberFormat.formatInteger(loanRequest.getPreferredTerm()) + " mdr.");
       addField("Status", LoanRequestStatusTranslator.translate(loanRequest.getStatus()));
    }
 }

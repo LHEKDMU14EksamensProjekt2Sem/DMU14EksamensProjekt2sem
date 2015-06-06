@@ -12,11 +12,10 @@ public class LoanRequest {
    private LocalDate date;
    private Money loanAmount;
    private Optional<Money> prefPayment;
-   private Optional<Integer> prefTerm;
+   private int prefTerm;
 
    public LoanRequest() {
       prefPayment = Optional.empty();
-      prefTerm = Optional.empty();
    }
 
    public int getId() {
@@ -94,16 +93,12 @@ public class LoanRequest {
       this.prefPayment = Optional.ofNullable(prefPayment);
    }
 
-   public boolean hasPreferredTerm() {
-      return prefTerm.isPresent();
+   public int getPreferredTerm() {
+      return prefTerm;
    }
 
-   public Integer getPreferredTerm() {
-      return prefTerm.get();
-   }
-
-   public void setPreferredTerm(Integer prefTerm) {
-      this.prefTerm = Optional.ofNullable(prefTerm);
+   public void setPreferredTerm(int prefTerm) {
+      this.prefTerm = prefTerm;
    }
 
    public boolean isPending() {

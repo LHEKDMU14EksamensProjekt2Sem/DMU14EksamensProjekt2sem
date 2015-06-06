@@ -300,7 +300,7 @@ public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
 
    @Override
    public Integer validatePreferredTerm(String prefTerm) throws
-           ParseException, TermTooLongException {
+           ParseException, TermTooLongException, ValueRequiredException {
       return requestDetailsCtrl.validatePreferredTerm(prefTerm);
    }
 }
