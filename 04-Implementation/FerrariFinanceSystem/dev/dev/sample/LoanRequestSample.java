@@ -11,6 +11,7 @@ import util.finance.Money;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class LoanRequestSample {
    // Loan requests
@@ -27,7 +28,15 @@ public class LoanRequestSample {
 
          LoanRequest lr = new LoanRequest();
          lr.setSale(s);
-         lr.setDate(LocalDate.now());
+
+         LocalDate now = LocalDate.now();
+         int lastYear = now.getYear() - 1;
+         Random rand = new Random();
+         int month = rand.nextInt(12) + 1;
+         int dayOfMonth = rand.nextInt(29) + 1;
+         LocalDate date = LocalDate.of(lastYear, month, dayOfMonth);
+         lr.setDate(date);
+
          lr.setStatus(LoanRequestStatus.PENDING);
          lr.setStatusByEmployee(employees.get(i));
          lr.setPreferredTerm(60 * (i + 1));
