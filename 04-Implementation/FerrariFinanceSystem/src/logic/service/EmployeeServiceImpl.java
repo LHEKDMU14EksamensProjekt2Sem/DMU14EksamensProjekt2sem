@@ -1,5 +1,6 @@
 package logic.service;
 
+import data.ConnectionService;
 import data.access.EmployeeAccessImpl;
 import domain.Employee;
 import domain.Identity;
@@ -18,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
    @Override
    public Optional<Employee> readEmployee(int id) throws SQLException {
-      // TODO
-      return Optional.empty();
+      return ConnectionService.query(con ->
+              new EmployeeAccessImpl(con).readEmployee(id));
    }
 }

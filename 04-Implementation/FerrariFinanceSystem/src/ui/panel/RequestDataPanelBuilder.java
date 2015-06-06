@@ -3,6 +3,7 @@ package ui.panel;
 import domain.LoanRequest;
 import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
+import ui.translation.LoanRequestStatusTranslator;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -32,20 +33,6 @@ public class RequestDataPanelBuilder extends DataPanelBuilder {
       if (loanRequest.hasPreferredTerm())
          addField("Ønsket løbetid", numberFormat.formatInteger(loanRequest.getPreferredTerm()) + " mdr.");
 
-      String status;
-      switch (loanRequest.getStatus()) {
-         case PENDING:
-            status = "Afventer";
-            break;
-         case APPROVED:
-            status = "Godkendt";
-            break;
-         case DECLINED:
-            status = "Afvist";
-            break;
-         default:
-            status = "N/A";
-      }
-      addField("Status", status);
+      addField("Status", LoanRequestStatusTranslator.translate(loanRequest.getStatus()));
    }
 }

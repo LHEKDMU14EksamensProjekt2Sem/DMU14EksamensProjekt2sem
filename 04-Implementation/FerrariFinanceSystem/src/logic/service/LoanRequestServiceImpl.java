@@ -78,13 +78,9 @@ public class LoanRequestServiceImpl implements LoanRequestService {
    }
 
    @Override
-   public void approveLoanRequest(LoanRequest loanRequest) throws SQLException {
-      // TODO
-   }
-
-   @Override
-   public void declineLoanRequest(LoanRequest loanRequest) throws SQLException {
-      // TODO
+   public void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException {
+      ConnectionService.execute(con ->
+              new LoanRequestAccessImpl(con).updateLoanRequestStatus(loanRequest));
    }
 
    @Override

@@ -9,11 +9,13 @@ import ui.panel.CustomerDataPanelBuilder;
 import ui.panel.DataPanelBuilder;
 import ui.panel.RequestDataPanelBuilder;
 import ui.panel.SellerDataPanelBuilder;
+import ui.panel.StatusByDataPanelBuilder;
 import util.session.SessionView;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -53,7 +55,9 @@ public class DetailsPanel extends JPanel implements SessionView {
       lblOvernightRate = createLabel();
 
       btnApprove = createButton(BUTTON_APPROVE);
+      btnApprove.addActionListener(e -> approve());
       btnDecline = createButton(BUTTON_DECLINE);
+      btnDecline.addActionListener(e -> decline());
       btnClose = createButton(BUTTON_CLOSE);
       btnClose.addActionListener(e -> presenter.dispose());
    }
@@ -82,7 +86,17 @@ public class DetailsPanel extends JPanel implements SessionView {
       add(comp, gbc);
    }
 
+   public void updateNavigation() {
+      ViewLoanRequestsFacade facade = presenter.getFacade();
+      boolean isPending = facade.getSelectedLoanRequest().isPending();
+      btnDecline.setVisible(isPending);
+      btnApprove.setVisible(isPending);
+      btnApprove.setEnabled(facade.hasAcceptedCreditRating() && facade.hasOvernightRate());
+   }
+
    public void updateView() {
+      updateNavigation();
+
       dataPanel.removeAll();
       GridBagConstraints gbc = new GridBagConstraints();
 
@@ -111,11 +125,16 @@ public class DetailsPanel extends JPanel implements SessionView {
       CustomerDataPanelBuilder pbCustomer = new CustomerDataPanelBuilder(dataPanel, gbc);
       pbCustomer.addCustomerData(sale.getCustomer());
 
-      DataPanelBuilder pb = new DataPanelBuilder(dataPanel, gbc);
-      pb.addHeader("Kreditværdighed");
-      pb.addField(null, lblCreditRating);
-      pb.addHeader("Dagsrente");
-      pb.addField(null, lblOvernightRate);
+      if (facade.getSelectedLoanRequest().isPending()) {
+         DataPanelBuilder pb = new DataPanelBuilder(dataPanel, gbc);
+         pb.addHeader("Kreditværdighed");
+         pb.addField(null, lblCreditRating);
+         pb.addHeader("Dagsrente");
+         pb.addField(null, lblOvernightRate);
+      } else {
+         StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(dataPanel, gbc);
+         pbStatusBy.addStatusByData(lr.getStatus(), lr.getStatusByEmployee());
+      }
 
       presenter.pack();
    }
@@ -133,6 +152,7 @@ public class DetailsPanel extends JPanel implements SessionView {
                  lblCreditRating.setIcon(null);
                  lblCreditRating.setText("✓ " + r);
                  lblCreditRating.setPreferredSize(lblCreditRating.getSize());
+                 updateNavigation();
               },
               x -> {
                  lblCreditRating.setIcon(null);
@@ -156,6 +176,7 @@ public class DetailsPanel extends JPanel implements SessionView {
                  lblOvernightRate.setIcon(null);
                  lblOvernightRate.setText("✓ " + facade.getGeneralNumberFormat().formatPercent(r / 100) + " %");
                  lblOvernightRate.setPreferredSize(lblOvernightRate.getSize());
+                 updateNavigation();
               },
               x -> {
                  lblOvernightRate.setIcon(null);
@@ -165,10 +186,47 @@ public class DetailsPanel extends JPanel implements SessionView {
       );
    }
 
+   private void approve() {
+      presenter.getFacade().approveLoanRequest(
+              r -> presenter.dispose(),
+              x -> {
+                 x.printStackTrace();
+                 JOptionPane.showMessageDialog(presenter,
+                         "Fejl: Kunne ikke godkende låneanmodning.",
+                         "Uventet fejl",
+                         JOptionPane.ERROR_MESSAGE);
+                 presenter.dispose();
+              }
+      );
+   }
+
+   private void decline() {
+      int choice = JOptionPane.showConfirmDialog(presenter,
+              "Er du sikker på at du vil afvise denne låneanmodning?",
+              "Afviser låneanmodning",
+              JOptionPane.YES_NO_OPTION);
+
+      if (choice == JOptionPane.YES_OPTION) {
+         presenter.getFacade().declineLoanRequest(
+                 r -> presenter.dispose(),
+                 x -> {
+                    x.printStackTrace();
+                    JOptionPane.showMessageDialog(presenter,
+                            "Fejl: Kunne ikke afvise låneanmodning.",
+                            "Uventet fejl",
+                            JOptionPane.ERROR_MESSAGE);
+                 }
+         );
+      }
+   }
+
    @Override
    public void enter() {
       updateView();
-      fetchCreditRating();
-      fetchOvernightRate();
+
+      if (presenter.getFacade().getSelectedLoanRequest().isPending()) {
+         fetchCreditRating();
+         fetchOvernightRate();
+      }
    }
 }

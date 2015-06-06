@@ -56,73 +56,86 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
 
    @Override
    public Optional<LoanRequest> readLoanRequest(int id) throws SQLException {
-      // TODO
-      return Optional.empty();
-   }
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ONE)) {
+         st.setInt(1, id);
 
-   @Override
-   public List<LoanRequest> listLoanRequests() throws SQLException {
-      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL)) {
          try (ResultSet rs = st.executeQuery()) {
-            List<LoanRequest> res = new ArrayList<>();
-
-            while (rs.next()) {
-               LoanRequest lr = new LoanRequest();
-               lr.setDate(rs.getDate("date").toLocalDate());
-               Money m = new Money(rs.getBigDecimal("loan_amount"));
-               lr.setLoanAmount(m);
-
-               BigDecimal bd = rs.getBigDecimal("pref_payment");
-               if (bd != null)
-                  lr.setPreferredPayment(new Money(bd));
-
-               lr.setPreferredTerm(rs.getInt("pref_term"));
-               lr.setStatus(LoanRequestStatus.valueOf(rs.getString("status")));
-
-               Sale s = new Sale();
-               s.setId(rs.getInt("id"));
-               m = new Money(rs.getBigDecimal("base_price"));
-               s.setBasePrice(m);
-               m = new Money(rs.getBigDecimal("selling_price"));
-               s.setSellingPrice(m);
-               lr.setSale(s);
-
-               res.add(lr);
-            }
-
-            return res;
+            if (rs.next())
+               return Optional.of(extractLoanRequest(rs));
+            else
+               return Optional.empty();
          }
       }
    }
 
    @Override
+   public List<LoanRequest> listLoanRequests() throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL);
+           ResultSet rs = st.executeQuery()) {
+         List<LoanRequest> res = new ArrayList<>();
+         while (rs.next())
+            res.add(extractLoanRequest(rs));
+
+         return res;
+      }
+   }
+
+   @Override
    public void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException {
-      // TODO
-      return;
+      try (PreparedStatement st = con.get().prepareStatement(SQL.UPDATE_ONE_STATUS)) {
+         st.setString(1, loanRequest.getStatus().toString());
+         st.setInt(2, loanRequest.getStatusByEmployee().getId());
+         st.setInt(3, loanRequest.getId());
+         st.executeUpdate();
+      }
+   }
+
+   private LoanRequest extractLoanRequest(ResultSet rs) throws SQLException {
+      LoanRequest lr = new LoanRequest();
+      lr.setDate(rs.getDate("date").toLocalDate());
+      Money m = new Money(rs.getBigDecimal("loan_amount"));
+      lr.setLoanAmount(m);
+
+      BigDecimal bd = rs.getBigDecimal("pref_payment");
+      if (bd != null)
+         lr.setPreferredPayment(new Money(bd));
+
+      lr.setPreferredTerm(rs.getInt("pref_term"));
+      lr.setStatus(LoanRequestStatus.valueOf(rs.getString("status")));
+
+      Sale s = new Sale();
+      s.setId(rs.getInt("id"));
+      m = new Money(rs.getBigDecimal("base_price"));
+      s.setBasePrice(m);
+      m = new Money(rs.getBigDecimal("selling_price"));
+      s.setSellingPrice(m);
+      lr.setSale(s);
+
+      return lr;
    }
 
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO loan_request"
-              + "(id, status_id, status_by_employee_id, date, loan_amount, pref_payment, pref_term)"
+              + "(id, status_id, status_by_employee_id, \"date\", loan_amount, pref_payment, pref_term)"
               + "VALUES (?, (SELECT id FROM loan_request_status WHERE status = ?), ?, ?, ?, ?, ?)";
 
-      static final String SELECT_ONE
-              = "SELECT lr.id, date, loan_amount, pref_payment, pref_term"
+      static final String SELECT_ALL
+              = "SELECT lr.id, \"date\", loan_amount, pref_payment, pref_term,"
               + " status, base_price, selling_price"
               + " FROM loan_request lr"
               + " LEFT JOIN loan_request_status lrs ON lrs.id = status_id"
               + " LEFT JOIN sale s ON s.id = lr.id"
+              + " ORDER BY \"date\" DESC";
+
+      static final String SELECT_ONE
+              = SELECT_ALL
               + " WHERE lr.id = ?";
 
-      static final String SELECT_ALL
-              = "SELECT lr.id, date, loan_amount, pref_payment, pref_term,"
-              + " status, base_price, selling_price"
-              + " FROM loan_request lr"
-              + " LEFT JOIN loan_request_status lrs ON lrs.id = status_id"
-              + " LEFT JOIN sale s ON s.id = lr.id";
-
-      // TODO
-      static final String UPDATE_ONE = "";
+      static final String UPDATE_ONE_STATUS
+              = "UPDATE loan_request SET"
+              + " status_id = (SELECT id FROM loan_request_status WHERE status = ?),"
+              + " status_by_employee_id = ?"
+              + " WHERE id = ?";
    }
 }

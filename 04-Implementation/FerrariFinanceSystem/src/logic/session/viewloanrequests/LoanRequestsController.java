@@ -13,6 +13,10 @@ public interface LoanRequestsController {
 
    void setSelectedLoanRequest(LoanRequest loanRequest);
 
+   boolean hasAcceptedCreditRating();
+
+   boolean hasOvernightRate();
+
    void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);
 
@@ -20,5 +24,11 @@ public interface LoanRequestsController {
                           Consumer<Throwable> exceptionConsumer);
 
    void fetchOvernightRate(Consumer<Double> resultConsumer,
+                           Consumer<Throwable> exceptionConsumer);
+
+   void approveLoanRequest(Consumer<Void> resultConsumer,
+                           Consumer<Throwable> exceptionConsumer);
+
+   void declineLoanRequest(Consumer<Void> resultConsumer,
                            Consumer<Throwable> exceptionConsumer);
 }

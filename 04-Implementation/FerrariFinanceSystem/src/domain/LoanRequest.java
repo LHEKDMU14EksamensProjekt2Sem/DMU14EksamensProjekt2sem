@@ -105,4 +105,8 @@ public class LoanRequest {
    public void setPreferredTerm(Integer prefTerm) {
       this.prefTerm = Optional.ofNullable(prefTerm);
    }
+
+   public boolean isPending() {
+      return (status == LoanRequestStatus.PENDING);
+   }
 }

@@ -2,9 +2,11 @@ package logic.session.viewloanrequests;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 import domain.Person;
 import logic.command.FetchIdentityCommand;
 import logic.command.FetchLoanRequestsCommand;
+import logic.command.UpdateLoanRequestStatusCommand;
 import logic.session.main.MainFacade;
 import util.swing.SwingCommand;
 
@@ -24,6 +26,8 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
       this.facade = facade;
       this.mainFacade = mainFacade;
       selectedLoanRequest = Optional.empty();
+      creditRating = Optional.empty();
+      overnightRate = Optional.empty();
    }
 
    @Override
@@ -39,6 +43,16 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
    @Override
    public void setSelectedLoanRequest(LoanRequest loanRequest) {
       selectedLoanRequest = Optional.ofNullable(loanRequest);
+   }
+
+   @Override
+   public boolean hasAcceptedCreditRating() {
+      return (creditRating.isPresent() && creditRating.get() != Rating.D);
+   }
+
+   @Override
+   public boolean hasOvernightRate() {
+      return overnightRate.isPresent();
    }
 
    @Override
@@ -79,5 +93,31 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
                  resultConsumer.accept(r);
               },
               exceptionConsumer::accept);
+   }
+
+   @Override
+   public void approveLoanRequest(Consumer<Void> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      LoanRequest lr = selectedLoanRequest.get();
+      lr.setStatus(LoanRequestStatus.APPROVED);
+      lr.setStatusByEmployee(mainFacade.getUser().getEntity());
+      new SwingCommand<>(
+              new UpdateLoanRequestStatusCommand(selectedLoanRequest.get()),
+              resultConsumer,
+              exceptionConsumer
+      ).execute();
+   }
+
+   @Override
+   public void declineLoanRequest(Consumer<Void> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      LoanRequest lr = selectedLoanRequest.get();
+      lr.setStatus(LoanRequestStatus.DECLINED);
+      lr.setStatusByEmployee(mainFacade.getUser().getEntity());
+      new SwingCommand<>(
+              new UpdateLoanRequestStatusCommand(selectedLoanRequest.get()),
+              resultConsumer,
+              exceptionConsumer
+      ).execute();
    }
 }

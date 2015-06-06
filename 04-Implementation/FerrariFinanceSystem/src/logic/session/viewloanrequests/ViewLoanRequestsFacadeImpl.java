@@ -59,6 +59,16 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    }
 
    @Override
+   public boolean hasAcceptedCreditRating() {
+      return loanRequestsCtrl.hasAcceptedCreditRating();
+   }
+
+   @Override
+   public boolean hasOvernightRate() {
+      return loanRequestsCtrl.hasOvernightRate();
+   }
+
+   @Override
    public void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       loanRequestsCtrl.fetchLoanRequests(resultConsumer, exceptionConsumer);
@@ -74,5 +84,17 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    public void fetchOvernightRate(Consumer<Double> resultConsumer,
                                   Consumer<Throwable> exceptionConsumer) {
       loanRequestsCtrl.fetchOvernightRate(resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void approveLoanRequest(Consumer<Void> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      loanRequestsCtrl.approveLoanRequest(resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void declineLoanRequest(Consumer<Void> resultConsumer,
+                                  Consumer<Throwable> exceptionConsumer) {
+      loanRequestsCtrl.declineLoanRequest(resultConsumer, exceptionConsumer);
    }
 }

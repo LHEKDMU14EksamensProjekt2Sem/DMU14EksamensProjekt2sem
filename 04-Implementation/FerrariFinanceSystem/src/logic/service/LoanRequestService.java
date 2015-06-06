@@ -18,9 +18,7 @@ public interface LoanRequestService {
 
    List<LoanRequest> listLoanRequests() throws SQLException;
 
-   void approveLoanRequest(LoanRequest loanRequest) throws SQLException;
-
-   void declineLoanRequest(LoanRequest loanRequest) throws SQLException;
+   void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException;
 
    Optional<LoanOffer> submitLoanRequest(LoanRequest loanRequest,
                                          Optional<Identity> identity) throws SQLException;
