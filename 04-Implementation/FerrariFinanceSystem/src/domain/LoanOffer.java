@@ -3,6 +3,7 @@ package domain;
 import util.finance.Money;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class LoanOffer implements AnnuityLoan {
@@ -10,7 +11,7 @@ public class LoanOffer implements AnnuityLoan {
    private LocalDate date;
    private Money principal;
    private double interestRate;
-   private List<RepaymentPlanPayment> payments;
+   private List<RepaymentPlanPayment> payments = Collections.emptyList();
    private LoanRequest loanRequest;
 
    public int getId() {
@@ -65,6 +66,10 @@ public class LoanOffer implements AnnuityLoan {
 
    public LocalDate getDateOfFirstPayment() {
       return payments.get(0).getDate();
+   }
+
+   public LocalDate getDateOfLastPayment() {
+      return payments.get(payments.size() - 1).getDate();
    }
 
    public LoanRequest getLoanRequest() {

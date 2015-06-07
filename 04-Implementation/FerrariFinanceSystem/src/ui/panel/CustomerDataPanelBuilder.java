@@ -11,7 +11,7 @@ public class CustomerDataPanelBuilder extends DataPanelBuilder {
       super(container, gbc);
    }
 
-   public void addCustomerData(Customer customer) {
+   public void addData(Customer customer) {
       addHeader("Kunde");
 
       Person p = customer.getPerson();

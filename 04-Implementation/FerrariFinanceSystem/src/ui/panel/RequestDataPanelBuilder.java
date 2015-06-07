@@ -19,11 +19,11 @@ public class RequestDataPanelBuilder extends DataPanelBuilder {
       this.dateFormat = dateFormat;
    }
 
-   public void addRequestData(LoanRequest loanRequest) {
+   public void addData(LoanRequest loanRequest) {
       addHeader("Låneanmodning");
 
       addField("Id", loanRequest.getId());
-      addField("Dato", dateFormat.formatLongDate(loanRequest.getDate()));
+      addField("Oprettet", dateFormat.formatLongDate(loanRequest.getDate()));
       addField("Lånebeløb", "DKK " + numberFormat.formatAmount(loanRequest.getLoanAmount()));
       addField("Udbetaling", "DKK " + numberFormat.formatAmount(loanRequest.getDownPayment()));
       addField("Udbetalingspct.", numberFormat.formatPercent(loanRequest.getDownPaymentPct()) + " %");

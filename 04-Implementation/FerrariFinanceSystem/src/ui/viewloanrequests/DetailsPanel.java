@@ -35,7 +35,7 @@ public class DetailsPanel extends JPanel implements SessionView {
 
    private final ViewLoanRequestsDialog presenter;
 
-   private JPanel dataPanel;
+   private JPanel leftDataPanel, rightDataPanel;
    private JLabel lblCreditRating, lblOvernightRate;
    private JButton btnApprove, btnDecline, btnClose;
 
@@ -48,8 +48,10 @@ public class DetailsPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      dataPanel = new JPanel(new GridBagLayout());
-      dataPanel.setOpaque(false);
+      leftDataPanel = new JPanel(new GridBagLayout());
+      leftDataPanel.setOpaque(false);
+      rightDataPanel = new JPanel(new GridBagLayout());
+      rightDataPanel.setOpaque(false);
 
       lblCreditRating = createLabel();
       lblOvernightRate = createLabel();
@@ -68,8 +70,15 @@ public class DetailsPanel extends JPanel implements SessionView {
 
       gbc.insets = DEFAULT_GBC_INSETS;
       gbc.gridx = 0;
-      gbc.gridy = -1;
-      addNext(dataPanel, gbc);
+      gbc.gridy = 0;
+      gbc.anchor = NORTH;
+      add(leftDataPanel, gbc);
+
+      gbc.gridx++;
+      add(Box.createRigidArea(new Dimension(40, 0)), gbc);
+
+      gbc.gridx++;
+      add(rightDataPanel, gbc);
 
       JPanel btnPanel = new JPanel();
       btnPanel.setOpaque(false);
@@ -77,6 +86,8 @@ public class DetailsPanel extends JPanel implements SessionView {
       btnPanel.add(btnDecline);
       btnPanel.add(btnClose);
 
+      gbc.gridx = 0;
+      gbc.gridwidth = REMAINDER;
       gbc.anchor = EAST;
       addNext(btnPanel, gbc);
    }
@@ -97,7 +108,7 @@ public class DetailsPanel extends JPanel implements SessionView {
    public void updateView() {
       updateNavigation();
 
-      dataPanel.removeAll();
+      leftDataPanel.removeAll();
       GridBagConstraints gbc = new GridBagConstraints();
 
       ViewLoanRequestsFacade facade = presenter.getFacade();
@@ -107,33 +118,28 @@ public class DetailsPanel extends JPanel implements SessionView {
 
       gbc.gridx = 0;
       gbc.gridy = 0;
-      RequestDataPanelBuilder pbRequest = new RequestDataPanelBuilder(dataPanel, gbc, facade.getGeneralNumberFormat(), facade.getGeneralDateFormat());
-      pbRequest.addRequestData(lr);
+      RequestDataPanelBuilder pbRequest = new RequestDataPanelBuilder(leftDataPanel, gbc, facade.getGeneralNumberFormat(), facade.getGeneralDateFormat());
+      pbRequest.addData(lr);
 
-      CarDataPanelBuilder pbCar = new CarDataPanelBuilder(dataPanel, gbc, facade.getGeneralNumberFormat());
-      pbCar.addCarData(sale);
+      CarDataPanelBuilder pbCar = new CarDataPanelBuilder(leftDataPanel, gbc, facade.getGeneralNumberFormat());
+      pbCar.addData(sale);
 
-      gbc.gridx += 2;
       gbc.gridy = 0;
-      dataPanel.add(Box.createRigidArea(new Dimension(40, 0)), gbc);
+      SellerDataPanelBuilder pbSeller = new SellerDataPanelBuilder(rightDataPanel, gbc);
+      pbSeller.addData(sale.getSeller());
 
-      gbc.gridx++;
-      gbc.weightx = 1;
-      SellerDataPanelBuilder pbSeller = new SellerDataPanelBuilder(dataPanel, gbc);
-      pbSeller.addSellerData(sale.getSeller());
-
-      CustomerDataPanelBuilder pbCustomer = new CustomerDataPanelBuilder(dataPanel, gbc);
-      pbCustomer.addCustomerData(sale.getCustomer());
+      CustomerDataPanelBuilder pbCustomer = new CustomerDataPanelBuilder(rightDataPanel, gbc);
+      pbCustomer.addData(sale.getCustomer());
 
       if (facade.getSelectedLoanRequest().isPending()) {
-         DataPanelBuilder pb = new DataPanelBuilder(dataPanel, gbc);
+         DataPanelBuilder pb = new DataPanelBuilder(rightDataPanel, gbc);
          pb.addHeader("Kreditværdighed");
          pb.addField(null, lblCreditRating);
          pb.addHeader("Dagsrente");
          pb.addField(null, lblOvernightRate);
       } else {
-         StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(dataPanel, gbc);
-         pbStatusBy.addStatusByData(lr.getStatus(), lr.getStatusByEmployee());
+         StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
+         pbStatusBy.addData(lr.getStatus(), lr.getStatusByEmployee());
       }
 
       presenter.pack();

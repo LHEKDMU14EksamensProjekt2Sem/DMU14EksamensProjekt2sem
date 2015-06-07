@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class LoanOfferAccessImpl implements LoanOfferAccess {
    private final ConnectionHandler con;
@@ -44,31 +45,57 @@ public class LoanOfferAccessImpl implements LoanOfferAccess {
    }
 
    @Override
+   public Optional<LoanOffer> readLoanOffer(int id) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ONE)) {
+         st.setInt(1, id);
+
+         try (ResultSet rs = st.executeQuery()) {
+            if (rs.next())
+               return Optional.of(extractLoanOffer(rs));
+            else
+               return Optional.empty();
+         }
+      }
+   }
+
+   @Override
    public List<LoanOffer> listLoanOffers() throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL);
            ResultSet rs = st.executeQuery()) {
          List<LoanOffer> res = new ArrayList<>();
-         while (rs.next()) {
-            LoanOffer offer = new LoanOffer();
-            offer.setId(rs.getInt("id"));
-            offer.setDate(rs.getDate("date").toLocalDate());
-            Money m = new Money(rs.getBigDecimal("principal"));
-            offer.setPrincipal(m);
-            offer.setInterestRate(rs.getDouble("interest_rate"));
-            res.add(offer);
-         }
+         while (rs.next())
+            res.add(extractLoanOffer(rs));
+
          return res;
       }
+   }
+
+   private LoanOffer extractLoanOffer(ResultSet rs) throws SQLException {
+      LoanOffer lo = new LoanOffer();
+      lo.setId(rs.getInt("id"));
+      lo.setDate(rs.getDate("date").toLocalDate());
+      Money m = new Money(rs.getBigDecimal("principal"));
+      lo.setPrincipal(m);
+      lo.setInterestRate(rs.getDouble("interest_rate"));
+      return lo;
    }
 
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO loan_offer"
-              + " (date, principal, interest_rate)"
+              + " (\"date\", principal, interest_rate)"
               + " VALUES (?, ?, ?)";
 
-      static final String SELECT_ALL
-              = "SELECT id, date, principal, interest_rate"
+      static final String SELECT_BASE
+              = "SELECT id, \"date\", principal, interest_rate"
               + " FROM loan_offer";
+
+      static final String SELECT_ALL
+              = SELECT_BASE
+              + " ORDER BY \"date\" DESC";
+
+      static final String SELECT_ONE
+              = SELECT_BASE
+              + " WHERE id = ?";
    }
 }

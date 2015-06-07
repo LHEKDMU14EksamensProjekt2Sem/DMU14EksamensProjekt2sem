@@ -13,7 +13,7 @@ public class StatusByDataPanelBuilder extends DataPanelBuilder {
       super(container, gbc);
    }
 
-   public void addStatusByData(LoanRequestStatus status, Employee employee) {
+   public void addData(LoanRequestStatus status, Employee employee) {
       addHeader(LoanRequestStatusTranslator.translate(status) + " af");
 
       Person p = employee.getPerson();

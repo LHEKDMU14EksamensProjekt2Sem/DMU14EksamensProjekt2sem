@@ -1,18 +1,16 @@
-package ui.viewloanrequests;
+package ui.viewloanoffers;
 
+import domain.LoanOffer;
 import domain.LoanRequest;
-import domain.LoanRequestStatus;
 import ui.table.DateCellRenderer;
 import ui.table.MoneyCellRenderer;
 import ui.table.NumberCellRenderer;
-import ui.table.StatusCellRenderer;
 import ui.table.TableModelBase;
 import ui.table.TextCellRenderer;
 import util.finance.Money;
 import util.session.SessionView;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,22 +26,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.GridBagConstraints.*;
-import static logic.session.viewloanrequests.ViewLoanRequestsViewToken.*;
+import static logic.session.viewloanoffers.ViewLoanOffersViewToken.*;
 import static ui.UIConstants.*;
 import static ui.UIFactory.*;
 
 public class ListPanel extends JPanel implements SessionView {
-   private final ViewLoanRequestsDialog presenter;
-   private final List<LoanRequest> loanRequests;
+   private final ViewLoanOffersDialog presenter;
+   private final List<LoanOffer> loanOffers;
 
-   private JComboBox<LoanRequestStatusFilter> cbFilter;
    private TableModel tableModel;
    private JTable table;
    private JButton btnViewDetails, btnClose;
 
-   public ListPanel(ViewLoanRequestsDialog presenter) {
+   public ListPanel(ViewLoanOffersDialog presenter) {
       this.presenter = presenter;
-      loanRequests = new ArrayList<>();
+      loanOffers = new ArrayList<>();
 
       setOpaque(false);
       initComponents();
@@ -51,12 +48,6 @@ public class ListPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
-      cbFilter = createComboBox();
-      for (LoanRequestStatusFilter filter : LoanRequestStatusFilter.values())
-         cbFilter.addItem(filter);
-
-      cbFilter.addActionListener(e -> updateView());
-
       tableModel = new TableModel();
       table = new JTable(tableModel);
       table.setFillsViewportHeight(true);
@@ -67,17 +58,16 @@ public class ListPanel extends JPanel implements SessionView {
       table.setDefaultRenderer(Integer.class, new NumberCellRenderer());
       table.setDefaultRenderer(Money.class, new MoneyCellRenderer(presenter.getFacade().getGeneralNumberFormat()));
       table.setDefaultRenderer(LocalDate.class, new DateCellRenderer(presenter.getFacade().getGeneralDateFormat()));
-      table.setDefaultRenderer(LoanRequestStatus.class, new StatusCellRenderer());
       table.addMouseListener(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {
             int row = table.rowAtPoint(e.getPoint());
             if (row == -1) {
                table.clearSelection();
-               presenter.getFacade().setSelectedLoanRequest(null);
+               presenter.getFacade().setSelectedLoanOffer(null);
             } else {
-               LoanRequest lr = loanRequests.get(row);
-               presenter.getFacade().setSelectedLoanRequest(lr);
+               LoanOffer lo = loanOffers.get(row);
+               presenter.getFacade().setSelectedLoanOffer(lo);
 
                if (e.getClickCount() == 2)
                   presenter.go(DETAILS);
@@ -95,9 +85,6 @@ public class ListPanel extends JPanel implements SessionView {
                break;
             case 4: // Date
                width = 40;
-               break;
-            case 5: // Status
-               width = 50;
                break;
             default:
                width = 100;
@@ -118,15 +105,7 @@ public class ListPanel extends JPanel implements SessionView {
       gbc.insets = DEFAULT_GBC_INSETS;
       gbc.gridx = 0;
       gbc.gridy = 0;
-      gbc.anchor = WEST;
-      add(createLabel("Vis:"), gbc);
-
-      gbc.gridx++;
-      add(cbFilter, gbc);
-
-      gbc.gridx--;
-      gbc.gridwidth = REMAINDER;
-      addNext(new JScrollPane(table), gbc);
+      add(new JScrollPane(table), gbc);
 
       JPanel btnPanel = new JPanel();
       btnPanel.setOpaque(false);
@@ -142,16 +121,15 @@ public class ListPanel extends JPanel implements SessionView {
       add(comp, gbc);
    }
 
-   private void fetchLoanRequests(LoanRequestStatus status) {
-      presenter.getFacade().fetchLoanRequests(
-              status,
+   private void fetchLoanOffers() {
+      presenter.getFacade().fetchLoanOffers(
               this::handleFetchResult,
               this::handleFetchException);
    }
 
-   private void handleFetchResult(List<LoanRequest> result) {
-      loanRequests.clear();
-      loanRequests.addAll(result);
+   private void handleFetchResult(List<LoanOffer> result) {
+      loanOffers.clear();
+      loanOffers.addAll(result);
       tableModel.refresh();
    }
 
@@ -160,46 +138,41 @@ public class ListPanel extends JPanel implements SessionView {
    }
 
    private void updateNavigation() {
-      btnViewDetails.setEnabled(presenter.getFacade().hasSelectedLoanRequest());
-   }
-
-   private void updateView() {
-      fetchLoanRequests(((LoanRequestStatusFilter) cbFilter.getSelectedItem()).getStatus());
-      updateNavigation();
+      btnViewDetails.setEnabled(presenter.getFacade().hasSelectedLoanOffer());
    }
 
    @Override
    public void enter() {
-      updateView();
+      updateNavigation();
+      fetchLoanOffers();
    }
 
    private class TableModel extends TableModelBase {
       TableModel() {
-         super("Id", "Kunde", "Sælger", "Lånebeløb / DKK", "Oprettet", "Status");
+         super("Id", "Kunde", "Godkendt af", "Hovedstol / DKK", "Oprettet");
       }
 
       @Override
       public int getRowCount() {
-         return loanRequests.size();
+         return loanOffers.size();
       }
 
       @Override
       public Object getValueAt(int rowIndex, int columnIndex) {
-         LoanRequest lr = loanRequests.get(rowIndex);
+         LoanOffer lo = loanOffers.get(rowIndex);
+         LoanRequest lr = lo.getLoanRequest();
 
          switch (columnIndex) {
             case 0:
-               return lr.getId();
+               return lo.getId();
             case 1:
                return lr.getSale().getCustomer().getPerson().getFullName();
             case 2:
-               return lr.getSale().getSeller().getPerson().getFullName();
+               return lr.getStatusByEmployee().getPerson().getFullName();
             case 3:
-               return lr.getLoanAmount();
+               return lo.getPrincipal();
             case 4:
-               return lr.getDate();
-            case 5:
-               return lr.getStatus();
+               return lo.getDate();
             default:
                throw new IllegalArgumentException("columnIndex out of bounds");
          }

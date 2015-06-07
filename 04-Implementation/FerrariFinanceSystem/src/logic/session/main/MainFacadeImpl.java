@@ -8,6 +8,8 @@ import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
 import logic.session.createloanrequest.CreateLoanRequestFacade;
 import logic.session.createloanrequest.CreateLoanRequestFacadeImpl;
+import logic.session.viewloanoffers.ViewLoanOffersFacade;
+import logic.session.viewloanoffers.ViewLoanOffersFacadeImpl;
 import logic.session.viewloanrequests.ViewLoanRequestsFacade;
 import logic.session.viewloanrequests.ViewLoanRequestsFacadeImpl;
 
@@ -32,6 +34,11 @@ public class MainFacadeImpl implements MainFacade {
    @Override
    public ViewLoanRequestsFacade newViewLoanRequestsFacade() {
       return new ViewLoanRequestsFacadeImpl(this);
+   }
+
+   @Override
+   public ViewLoanOffersFacade newViewLoanOffersFacade() {
+      return new ViewLoanOffersFacadeImpl(this);
    }
 
    @Override

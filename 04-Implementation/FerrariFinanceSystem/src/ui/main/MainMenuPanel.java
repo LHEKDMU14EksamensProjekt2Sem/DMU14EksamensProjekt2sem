@@ -1,8 +1,10 @@
 package ui.main;
 
 import logic.session.createloanrequest.CreateLoanRequestFacade;
+import logic.session.viewloanoffers.ViewLoanOffersFacade;
 import logic.session.viewloanrequests.ViewLoanRequestsFacade;
 import ui.createloanrequest.CreateLoanRequestDialog;
+import ui.viewloanoffers.ViewLoanOffersDialog;
 import ui.viewloanrequests.ViewLoanRequestsDialog;
 import util.session.SessionView;
 
@@ -22,13 +24,16 @@ public class MainMenuPanel extends JPanel implements SessionView {
            BUTTON_CREATE_LOAN_REQUEST = "Opret låneanmodning",
            DIALOG_CREATE_LOAN_REQUEST = BUTTON_CREATE_LOAN_REQUEST,
            BUTTON_VIEW_LOAN_REQUESTS = "Se låneanmodninger",
-           DIALOG_VIEW_LOAN_REQUESTS = BUTTON_VIEW_LOAN_REQUESTS;
+           DIALOG_VIEW_LOAN_REQUESTS = BUTTON_VIEW_LOAN_REQUESTS,
+           BUTTON_VIEW_LOAN_OFFERS = "Se lånetilbud",
+           DIALOG_VIEW_LOAN_OFFERS = BUTTON_VIEW_LOAN_OFFERS;
 
    private MainFrame presenter;
 
    private JLabel lblCurrentUser;
    private JButton btnCreateLoanRequest;
    private JButton btnViewLoanRequests;
+   private JButton btnViewLoanOffers;
 
    public MainMenuPanel(MainFrame presenter) {
       this.presenter = presenter;
@@ -54,6 +59,13 @@ public class MainMenuPanel extends JPanel implements SessionView {
          ViewLoanRequestsFacade facade = presenter.getFacade().newViewLoanRequestsFacade();
          new ViewLoanRequestsDialog(presenter, facade, title).setVisible(true);
       });
+
+      btnViewLoanOffers = createButton(BUTTON_VIEW_LOAN_OFFERS);
+      btnViewLoanOffers.addActionListener(e -> {
+         String title = DIALOG_VIEW_LOAN_OFFERS;
+         ViewLoanOffersFacade facade = presenter.getFacade().newViewLoanOffersFacade();
+         new ViewLoanOffersDialog(presenter, facade, title).setVisible(true);
+      });
    }
 
    private void layoutComponents() {
@@ -70,6 +82,7 @@ public class MainMenuPanel extends JPanel implements SessionView {
       gbc.fill = HORIZONTAL;
       addNext(btnCreateLoanRequest, gbc);
       addNext(btnViewLoanRequests, gbc);
+      addNext(btnViewLoanOffers, gbc);
    }
 
    private void addNext(Component comp, GridBagConstraints gbc) {

@@ -16,7 +16,7 @@ public class CarDataPanelBuilder extends DataPanelBuilder {
       this.numberFormat = numberFormat;
    }
 
-   public void addCarData(Sale sale) {
+   public void addData(Sale sale) {
       addHeader("Bil");
 
       Car car = sale.getCar();

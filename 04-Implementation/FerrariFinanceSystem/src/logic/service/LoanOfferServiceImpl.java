@@ -12,6 +12,7 @@ import util.jdbc.ConnectionHandler;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class LoanOfferServiceImpl implements LoanOfferService {
    @Override
@@ -33,8 +34,33 @@ public class LoanOfferServiceImpl implements LoanOfferService {
    }
 
    @Override
+   public Optional<LoanOffer> readLoanOffer(int id) throws SQLException {
+      return ConnectionService.query(con -> {
+         Optional<LoanOffer> opt = new LoanOfferAccessImpl(con).readLoanOffer(id);
+
+         LoanRequestService requestService = new LoanRequestServiceImpl();
+         LoanOfferPaymentAccess paymentAccess = new LoanOfferPaymentAccessImpl(con);
+         if (opt.isPresent()) {
+            LoanOffer lo = opt.get();
+            lo.setLoanRequest(requestService.readLoanRequest(lo.getId()).get());
+            lo.setPayments(paymentAccess.listPayments(lo));
+         }
+
+         return opt;
+      });
+   }
+
+   @Override
    public List<LoanOffer> listLoanOffers() throws SQLException {
-      return ConnectionService.query(con ->
-              new LoanOfferAccessImpl(con).listLoanOffers());
+      return ConnectionService.query(con -> {
+         List<LoanOffer> res = new LoanOfferAccessImpl(con).listLoanOffers();
+
+         LoanRequestService requestService = new LoanRequestServiceImpl();
+         for (LoanOffer lo : res) {
+            lo.setLoanRequest(requestService.readLoanRequest(lo.getId()).get());
+         }
+
+         return res;
+      });
    }
 }
