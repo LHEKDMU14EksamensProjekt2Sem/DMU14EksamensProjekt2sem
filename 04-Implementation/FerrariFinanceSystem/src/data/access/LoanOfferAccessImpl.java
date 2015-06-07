@@ -25,15 +25,16 @@ public class LoanOfferAccessImpl implements LoanOfferAccess {
    public void createLoanOffers(List<LoanOffer> loanOffers) throws SQLException {
       try (PreparedStatement st = con.get().prepareStatement(
               SQL.INSERT_ONE, Statement.RETURN_GENERATED_KEYS)) {
-         for (LoanOffer offer : loanOffers) {
-            st.setDate(1, Date.valueOf(offer.getDate()));
-            st.setBigDecimal(2, offer.getPrincipal().asBigDecimal());
-            st.setDouble(3, offer.getInterestRate());
+         for (LoanOffer lo : loanOffers) {
+            st.setInt(1, lo.getId());
+            st.setDate(2, Date.valueOf(lo.getDate()));
+            st.setBigDecimal(3, lo.getPrincipal().asBigDecimal());
+            st.setDouble(4, lo.getInterestRate());
             st.executeUpdate();
 
             try (ResultSet rs = st.getGeneratedKeys()) {
                rs.next();
-               offer.setId(rs.getInt(1));
+               lo.setId(rs.getInt(1));
             }
          }
       }
@@ -83,8 +84,8 @@ public class LoanOfferAccessImpl implements LoanOfferAccess {
    private static class SQL {
       static final String INSERT_ONE
               = "INSERT INTO loan_offer"
-              + " (\"date\", principal, interest_rate)"
-              + " VALUES (?, ?, ?)";
+              + " (id, \"date\", principal, interest_rate)"
+              + " VALUES (?, ?, ?, ?)";
 
       static final String SELECT_BASE
               = "SELECT id, \"date\", principal, interest_rate"

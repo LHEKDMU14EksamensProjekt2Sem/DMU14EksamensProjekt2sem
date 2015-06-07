@@ -160,10 +160,11 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
 
    private LoanOffer createLoanOffer() {
       LoanRequest lr = selectedLoanRequest.get();
-      LoanOffer offer = new LoanOffer();
-      offer.setLoanRequest(lr);
-      offer.setDate(LocalDate.now());
-      offer.setPrincipal(lr.getLoanAmount());
+      LoanOffer lo = new LoanOffer();
+      lo.setId(lr.getId());
+      lo.setLoanRequest(lr);
+      lo.setDate(LocalDate.now());
+      lo.setPrincipal(lr.getLoanAmount());
 
       int term = 0;
       double interestRate = 0;
@@ -175,7 +176,7 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
          double r;
          do {
             term = annuityCalculator.computeTerm(
-                    offer.getPrincipal(), interestRate, lr.getPreferredPayment());
+                    lo.getPrincipal(), interestRate, lr.getPreferredPayment());
 
             if (term == 0) {
                // Requested payment is less than required
@@ -193,15 +194,15 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
          interestRate = computeInterestRate(term);
       }
 
-      offer.setInterestRate(interestRate);
+      lo.setInterestRate(interestRate);
 
       // Payments start on the 1st of the second month from now
       LocalDate startsOn = LocalDate.now().withDayOfMonth(1).plusMonths(2);
 
       RepaymentPlanner planner = new RepaymentPlanner(new AnnuityCalculator(), TermUnit.MONTH);
-      offer.setPayments(planner.listPaymentsFor(offer, term, startsOn));
+      lo.setPayments(planner.listPaymentsFor(lo, term, startsOn));
 
-      return offer;
+      return lo;
    }
 
    private double computeInterestRate(int term) {
