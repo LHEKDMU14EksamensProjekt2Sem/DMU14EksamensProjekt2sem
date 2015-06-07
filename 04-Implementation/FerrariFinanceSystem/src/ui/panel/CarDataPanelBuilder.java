@@ -9,6 +9,8 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 
 public class CarDataPanelBuilder extends DataPanelBuilder {
+   private static final String PLACEHOLDER = "—";
+
    private final GeneralNumberFormat numberFormat;
 
    public CarDataPanelBuilder(Container container, GridBagConstraints gbc, GeneralNumberFormat numberFormat) {
@@ -19,11 +21,25 @@ public class CarDataPanelBuilder extends DataPanelBuilder {
    public void addData(Sale sale) {
       addHeader("Bil");
 
-      Car car = sale.getCar();
-      CarConfig config = car.getConfig();
-      addField("Serienummer", car.getId());
-      addField("Konfiguration", config.getName());
-      addField("Model", config.getModel().getName());
-      addField("Salgspris", "DKK " + numberFormat.formatAmount(sale.getSellingPrice()));
+      String
+              strSerialNumber = PLACEHOLDER,
+              strConfig = PLACEHOLDER,
+              strModel = PLACEHOLDER,
+              strSellingPrice = PLACEHOLDER;
+
+      if (sale.hasCar()) {
+         Car car = sale.getCar();
+         CarConfig config = car.getConfig();
+
+         strSerialNumber = String.valueOf(car.getId());
+         strConfig = config.getName();
+         strModel = config.getModel().getName();
+         strSellingPrice = "DKK " + numberFormat.formatAmount(sale.getSellingPrice());
+      }
+
+      addField("Serienummer", strSerialNumber);
+      addField("Konfiguration", strConfig);
+      addField("Model", strModel);
+      addField("Salgspris", strSellingPrice);
    }
 }

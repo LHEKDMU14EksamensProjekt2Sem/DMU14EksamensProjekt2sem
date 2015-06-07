@@ -1,22 +1,24 @@
 package ui.panel;
 
 import domain.Employee;
-import domain.LoanRequestStatus;
-import domain.Person;
+import domain.LoanRequest;
 import ui.translation.LoanRequestStatusTranslator;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 
 public class StatusByDataPanelBuilder extends DataPanelBuilder {
+   private static final String PLACEHOLDER = "—";
+
    public StatusByDataPanelBuilder(Container container, GridBagConstraints gbc) {
       super(container, gbc);
    }
 
-   public void addData(LoanRequestStatus status, Employee employee) {
-      addHeader(LoanRequestStatusTranslator.translate(status) + " af");
+   public void addData(LoanRequest loanRequest) {
+      addHeader(LoanRequestStatusTranslator.translate(loanRequest.getStatus()) + " af");
 
-      Person p = employee.getPerson();
-      addField("Navn", p.getFullName());
+      Employee em = loanRequest.getStatusByEmployee();
+      String strFullName = (em == null ? PLACEHOLDER : em.getPerson().getFullName());
+      addField("Navn", strFullName);
    }
 }

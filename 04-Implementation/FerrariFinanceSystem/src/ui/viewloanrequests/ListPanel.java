@@ -124,9 +124,12 @@ public class ListPanel extends JPanel implements SessionView {
       gbc.gridx++;
       add(cbFilter, gbc);
 
+      JScrollPane scrollPane = new JScrollPane(table);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
       gbc.gridx--;
       gbc.gridwidth = REMAINDER;
-      addNext(new JScrollPane(table), gbc);
+      addNext(scrollPane, gbc);
 
       JPanel btnPanel = new JPanel();
       btnPanel.setOpaque(false);

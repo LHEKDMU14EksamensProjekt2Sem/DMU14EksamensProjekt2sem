@@ -109,6 +109,7 @@ public class DetailsPanel extends JPanel implements SessionView {
       updateNavigation();
 
       leftDataPanel.removeAll();
+      rightDataPanel.removeAll();
       GridBagConstraints gbc = new GridBagConstraints();
 
       ViewLoanRequestsFacade facade = presenter.getFacade();
@@ -139,9 +140,11 @@ public class DetailsPanel extends JPanel implements SessionView {
          pb.addField(null, lblOvernightRate);
       } else {
          StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
-         pbStatusBy.addData(lr.getStatus(), lr.getStatusByEmployee());
+         pbStatusBy.addData(lr);
       }
 
+      leftDataPanel.repaint();
+      rightDataPanel.repaint();
       presenter.pack();
    }
 
@@ -238,6 +241,7 @@ public class DetailsPanel extends JPanel implements SessionView {
 
    @Override
    public void enter() {
+      updateView();
       fetchLoanRequest();
 
       if (presenter.getFacade().getSelectedLoanRequest().isPending()) {

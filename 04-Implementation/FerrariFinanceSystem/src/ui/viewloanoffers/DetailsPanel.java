@@ -84,18 +84,21 @@ public class DetailsPanel extends JPanel implements SessionView {
       gbc.insets = DEFAULT_GBC_INSETS;
       gbc.gridx = 0;
       gbc.gridy = 0;
+      gbc.weightx = 1;
       gbc.anchor = NORTH;
       add(leftDataPanel, gbc);
 
       gbc.gridx++;
-      add(Box.createRigidArea(new Dimension(40, 0)), gbc);
-
-      gbc.gridx++;
+      gbc.anchor = NORTHWEST;
       add(rightDataPanel, gbc);
 
       gbc.gridx = 0;
       gbc.gridwidth = REMAINDER;
-      addNext(new JScrollPane(table), gbc);
+      addNext(Box.createRigidArea(new Dimension(0, 0)), gbc);
+
+      JScrollPane scrollPane = new JScrollPane(table);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+      addNext(scrollPane, gbc);
 
       JPanel btnPanel = new JPanel();
       btnPanel.setOpaque(false);
@@ -113,6 +116,7 @@ public class DetailsPanel extends JPanel implements SessionView {
 
    public void updateView() {
       leftDataPanel.removeAll();
+      rightDataPanel.removeAll();
       GridBagConstraints gbc = new GridBagConstraints();
 
       ViewLoanOffersFacade facade = presenter.getFacade();
@@ -127,12 +131,14 @@ public class DetailsPanel extends JPanel implements SessionView {
       pbOffer.addData(lo);
 
       gbc.gridy = 0;
-      StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
-      pbStatusBy.addData(lr.getStatus(), lr.getStatusByEmployee());
-
       CustomerDataPanelBuilder pbCustomer = new CustomerDataPanelBuilder(rightDataPanel, gbc);
       pbCustomer.addData(sale.getCustomer());
 
+      StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
+      pbStatusBy.addData(lr);
+
+      leftDataPanel.repaint();
+      rightDataPanel.repaint();
       tableModel.refresh();
       presenter.pack();
    }
@@ -161,6 +167,7 @@ public class DetailsPanel extends JPanel implements SessionView {
 
    @Override
    public void enter() {
+      updateView();
       fetchLoanOffer();
    }
 

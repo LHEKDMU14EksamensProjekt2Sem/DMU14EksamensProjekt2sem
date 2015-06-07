@@ -8,7 +8,7 @@ public class Sale {
    private int id;
    private Employee seller;
    private Customer customer;
-   private Optional<Car> car;
+   private Optional<Car> car = Optional.empty();
    private Money basePrice;
    private Money sellingPrice;
 
