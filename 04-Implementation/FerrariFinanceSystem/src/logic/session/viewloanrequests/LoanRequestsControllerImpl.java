@@ -11,6 +11,7 @@ import logic.calculator.RepaymentPlanner;
 import logic.calculator.TermUnit;
 import logic.command.CreateLoanOfferCommand;
 import logic.command.FetchIdentityCommand;
+import logic.command.FetchLoanRequestCommand;
 import logic.command.FetchLoanRequestsCommand;
 import logic.command.UpdateLoanRequestStatusCommand;
 import logic.session.main.MainFacade;
@@ -60,6 +61,11 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
    }
 
    @Override
+   public void setCreditRating(Rating rating) {
+      creditRating = Optional.of(rating);
+   }
+
+   @Override
    public boolean hasAcceptedCreditRating() {
       return (creditRating.isPresent() && creditRating.get() != Rating.D);
    }
@@ -75,6 +81,19 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
       new SwingCommand<>(
               new FetchLoanRequestsCommand(),
               resultConsumer,
+              exceptionConsumer
+      ).execute();
+   }
+
+   @Override
+   public void fetchLoanRequest(Consumer<Optional<LoanRequest>> resultConsumer,
+                                Consumer<Throwable> exceptionConsumer) {
+      new SwingCommand<>(
+              new FetchLoanRequestCommand(selectedLoanRequest.get().getId()),
+              r -> {
+                 selectedLoanRequest = r;
+                 resultConsumer.accept(r);
+              },
               exceptionConsumer
       ).execute();
    }

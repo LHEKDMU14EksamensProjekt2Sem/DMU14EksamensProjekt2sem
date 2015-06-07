@@ -45,8 +45,32 @@ public class LoanRequestServiceImpl implements LoanRequestService {
 
    @Override
    public Optional<LoanRequest> readLoanRequest(int id) throws SQLException {
-      return ConnectionService.query(con ->
-              new LoanRequestAccessImpl(con).readLoanRequest(id));
+      return ConnectionService.query(con -> {
+         Optional<LoanRequest> opt = new LoanRequestAccessImpl(con).readLoanRequest(id);
+
+         if (opt.isPresent()) {
+            CustomerAccess customerAccess = new CustomerAccessImpl(con);
+            EmployeeAccess employeeAccess = new EmployeeAccessImpl(con);
+            CarAccess carAccess = new CarAccessImpl(con);
+
+            LoanRequest lr = opt.get();
+            Sale sale = lr.getSale();
+
+            Customer customer = customerAccess.readCustomer(sale);
+            sale.setCustomer(customer);
+
+            Employee seller = employeeAccess.readEmployee(sale);
+            sale.setSeller(seller);
+
+            Employee statusBy = employeeAccess.readEmployee(lr);
+            lr.setStatusByEmployee(statusBy);
+
+            Car car = carAccess.readCar(sale);
+            sale.setCar(car);
+         }
+
+         return opt;
+      });
    }
 
    @Override
@@ -56,7 +80,6 @@ public class LoanRequestServiceImpl implements LoanRequestService {
 
          CustomerAccess customerAccess = new CustomerAccessImpl(con);
          EmployeeAccess employeeAccess = new EmployeeAccessImpl(con);
-         CarAccess carAccess = new CarAccessImpl(con);
          for (LoanRequest lr : res) {
             Sale sale = lr.getSale();
 
@@ -65,12 +88,6 @@ public class LoanRequestServiceImpl implements LoanRequestService {
 
             Employee seller = employeeAccess.readEmployee(sale);
             sale.setSeller(seller);
-
-            Car car = carAccess.readCar(sale);
-            sale.setCar(car);
-
-            Employee statusBy = employeeAccess.readEmployee(lr);
-            lr.setStatusByEmployee(statusBy);
          }
 
          return res;

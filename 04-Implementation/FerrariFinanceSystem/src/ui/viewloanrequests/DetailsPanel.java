@@ -191,11 +191,7 @@ public class DetailsPanel extends JPanel implements SessionView {
               r -> presenter.dispose(),
               x -> {
                  x.printStackTrace();
-                 JOptionPane.showMessageDialog(presenter,
-                         "Fejl: Kunne ikke godkende låneanmodning.",
-                         "Uventet fejl",
-                         JOptionPane.ERROR_MESSAGE);
-                 presenter.dispose();
+                 showUnexpectedError("Kunne ikke godkende låneanmodning.");
               }
       );
    }
@@ -211,18 +207,32 @@ public class DetailsPanel extends JPanel implements SessionView {
                  r -> presenter.dispose(),
                  x -> {
                     x.printStackTrace();
-                    JOptionPane.showMessageDialog(presenter,
-                            "Fejl: Kunne ikke afvise låneanmodning.",
-                            "Uventet fejl",
-                            JOptionPane.ERROR_MESSAGE);
+                    showUnexpectedError("Kunne ikke afvise låneanmodning.");
                  }
          );
       }
    }
 
+   private void showUnexpectedError(String message) {
+      JOptionPane.showMessageDialog(presenter,
+              "Fejl: " + message,
+              "Uventet fejl",
+              JOptionPane.ERROR_MESSAGE);
+   }
+
+   private void fetchLoanRequest() {
+      presenter.getFacade().fetchLoanRequest(
+              r -> updateView(),
+              x -> {
+                 x.printStackTrace();
+                 showUnexpectedError("Kunne ikke hente låneanmodning.");
+              }
+      );
+   }
+
    @Override
    public void enter() {
-      updateView();
+      fetchLoanRequest();
 
       if (presenter.getFacade().getSelectedLoanRequest().isPending()) {
          fetchCreditRating();

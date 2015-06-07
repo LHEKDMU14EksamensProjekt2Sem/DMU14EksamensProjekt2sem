@@ -4,6 +4,7 @@ import com.ferrari.finances.dk.rki.Rating;
 import domain.LoanRequest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public interface LoanRequestsController {
@@ -13,12 +14,17 @@ public interface LoanRequestsController {
 
    void setSelectedLoanRequest(LoanRequest loanRequest);
 
+   void setCreditRating(Rating rating);
+
    boolean hasAcceptedCreditRating();
 
    boolean hasOvernightRate();
 
    void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);
+
+   void fetchLoanRequest(Consumer<Optional<LoanRequest>> resultConsumer,
+                         Consumer<Throwable> exceptionConsumer);
 
    void fetchCreditRating(Consumer<Rating> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);

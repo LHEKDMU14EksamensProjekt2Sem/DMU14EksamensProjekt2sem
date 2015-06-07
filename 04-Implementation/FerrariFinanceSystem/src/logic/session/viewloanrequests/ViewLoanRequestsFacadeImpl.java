@@ -7,6 +7,7 @@ import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
@@ -59,6 +60,11 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    }
 
    @Override
+   public void setCreditRating(Rating rating) {
+      loanRequestsCtrl.setCreditRating(rating);
+   }
+
+   @Override
    public boolean hasAcceptedCreditRating() {
       return loanRequestsCtrl.hasAcceptedCreditRating();
    }
@@ -72,6 +78,12 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    public void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       loanRequestsCtrl.fetchLoanRequests(resultConsumer, exceptionConsumer);
+   }
+
+   @Override
+   public void fetchLoanRequest(Consumer<Optional<LoanRequest>> resultConsumer,
+                                Consumer<Throwable> exceptionConsumer) {
+      loanRequestsCtrl.fetchLoanRequest(resultConsumer, exceptionConsumer);
    }
 
    @Override

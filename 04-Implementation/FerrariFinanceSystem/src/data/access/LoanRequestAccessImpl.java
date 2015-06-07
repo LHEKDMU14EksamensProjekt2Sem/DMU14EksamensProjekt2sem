@@ -117,16 +117,19 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
               + "(id, status_id, status_by_employee_id, \"date\", loan_amount, pref_payment, pref_term)"
               + "VALUES (?, (SELECT id FROM loan_request_status WHERE status = ?), ?, ?, ?, ?, ?)";
 
-      static final String SELECT_ALL
+      static final String SELECT_BASE
               = "SELECT lr.id, \"date\", loan_amount, pref_payment, pref_term,"
               + " status, base_price, selling_price"
               + " FROM loan_request lr"
               + " LEFT JOIN loan_request_status lrs ON lrs.id = status_id"
-              + " LEFT JOIN sale s ON s.id = lr.id"
+              + " LEFT JOIN sale s ON s.id = lr.id";
+
+      static final String SELECT_ALL
+              = SELECT_BASE
               + " ORDER BY \"date\" DESC";
 
       static final String SELECT_ONE
-              = SELECT_ALL
+              = SELECT_BASE
               + " WHERE lr.id = ?";
 
       static final String UPDATE_ONE_STATUS
