@@ -2,6 +2,7 @@ package logic.session.viewloanrequests;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
@@ -75,9 +76,10 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    }
 
    @Override
-   public void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
+   public void fetchLoanRequests(LoanRequestStatus status,
+                                 Consumer<List<LoanRequest>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
-      loanRequestsCtrl.fetchLoanRequests(resultConsumer, exceptionConsumer);
+      loanRequestsCtrl.fetchLoanRequests(status, resultConsumer, exceptionConsumer);
    }
 
    @Override

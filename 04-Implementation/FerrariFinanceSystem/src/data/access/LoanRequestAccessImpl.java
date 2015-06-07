@@ -65,14 +65,19 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
    }
 
    @Override
-   public List<LoanRequest> listLoanRequests() throws SQLException {
-      try (PreparedStatement st = con.get().prepareStatement(SQL.SELECT_ALL);
-           ResultSet rs = st.executeQuery()) {
-         List<LoanRequest> res = new ArrayList<>();
-         while (rs.next())
-            res.add(extractLoanRequest(rs));
+   public List<LoanRequest> listLoanRequests(LoanRequestStatus status) throws SQLException {
+      String sql = (status == null ? SQL.SELECT_ALL : SQL.SELECT_MANY);
+      try (PreparedStatement st = con.get().prepareStatement(sql)) {
+         if (status != null)
+            st.setString(1, status.toString());
 
-         return res;
+         try (ResultSet rs = st.executeQuery()) {
+            List<LoanRequest> res = new ArrayList<>();
+            while (rs.next())
+               res.add(extractLoanRequest(rs));
+
+            return res;
+         }
       }
    }
 
@@ -126,6 +131,11 @@ public class LoanRequestAccessImpl implements LoanRequestAccess {
 
       static final String SELECT_ALL
               = SELECT_BASE
+              + " ORDER BY \"date\" DESC";
+
+      static final String SELECT_MANY
+              = SELECT_BASE
+              + " WHERE status_id = (SELECT id FROM loan_request_status WHERE status = ?)"
               + " ORDER BY \"date\" DESC";
 
       static final String SELECT_ONE

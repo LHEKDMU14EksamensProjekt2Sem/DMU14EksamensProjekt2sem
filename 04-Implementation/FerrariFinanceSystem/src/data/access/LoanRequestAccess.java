@@ -1,6 +1,7 @@
 package data.access;
 
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface LoanRequestAccess {
 
    Optional<LoanRequest> readLoanRequest(int id) throws SQLException;
 
-   List<LoanRequest> listLoanRequests() throws SQLException;
+   List<LoanRequest> listLoanRequests(LoanRequestStatus status) throws SQLException;
 
    void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException;
 }

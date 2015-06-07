@@ -12,6 +12,7 @@ import util.finance.Money;
 import util.session.SessionView;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,6 +35,8 @@ import static ui.UIFactory.*;
 public class ListPanel extends JPanel implements SessionView {
    private final ViewLoanRequestsDialog presenter;
    private final List<LoanRequest> loanRequests;
+
+   private JComboBox<LoanRequestStatusFilter> cbFilter;
    private TableModel tableModel;
    private JTable table;
    private JButton btnViewDetails, btnClose;
@@ -48,6 +51,12 @@ public class ListPanel extends JPanel implements SessionView {
    }
 
    private void initComponents() {
+      cbFilter = createComboBox();
+      cbFilter.addActionListener(e ->
+              fetchLoanRequests(((LoanRequestStatusFilter) cbFilter.getSelectedItem()).getStatus()));
+      for (LoanRequestStatusFilter filter : LoanRequestStatusFilter.values())
+         cbFilter.addItem(filter);
+
       tableModel = new TableModel();
       table = new JTable(tableModel);
       table.setFillsViewportHeight(true);
@@ -108,8 +117,15 @@ public class ListPanel extends JPanel implements SessionView {
 
       gbc.insets = DEFAULT_GBC_INSETS;
       gbc.gridx = 0;
-      gbc.gridy = -1;
-      addNext(createLabel("Filter here"), gbc);
+      gbc.gridy = 0;
+      gbc.anchor = WEST;
+      add(createLabel("Vis:"), gbc);
+
+      gbc.gridx++;
+      add(cbFilter, gbc);
+
+      gbc.gridx--;
+      gbc.gridwidth = REMAINDER;
       addNext(new JScrollPane(table), gbc);
 
       JPanel btnPanel = new JPanel();
@@ -117,7 +133,6 @@ public class ListPanel extends JPanel implements SessionView {
       btnPanel.add(btnViewDetails);
       btnPanel.add(btnClose);
 
-      gbc.gridwidth = REMAINDER;
       gbc.anchor = EAST;
       addNext(btnPanel, gbc);
    }
@@ -127,8 +142,9 @@ public class ListPanel extends JPanel implements SessionView {
       add(comp, gbc);
    }
 
-   private void fetchLoanRequests() {
+   private void fetchLoanRequests(LoanRequestStatus status) {
       presenter.getFacade().fetchLoanRequests(
+              status,
               this::handleFetchResult,
               this::handleFetchException);
    }
@@ -149,7 +165,6 @@ public class ListPanel extends JPanel implements SessionView {
 
    @Override
    public void enter() {
-      fetchLoanRequests();
       updateNavigation();
    }
 

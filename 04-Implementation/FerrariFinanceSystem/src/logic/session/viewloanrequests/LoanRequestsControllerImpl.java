@@ -76,10 +76,11 @@ public class LoanRequestsControllerImpl implements LoanRequestsController {
    }
 
    @Override
-   public void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
+   public void fetchLoanRequests(LoanRequestStatus status,
+                                 Consumer<List<LoanRequest>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       new SwingCommand<>(
-              new FetchLoanRequestsCommand(),
+              new FetchLoanRequestsCommand(status),
               resultConsumer,
               exceptionConsumer
       ).execute();

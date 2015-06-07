@@ -2,6 +2,7 @@ package logic.session.viewloanrequests;
 
 import com.ferrari.finances.dk.rki.Rating;
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,8 @@ public interface LoanRequestsController {
 
    boolean hasOvernightRate();
 
-   void fetchLoanRequests(Consumer<List<LoanRequest>> resultConsumer,
+   void fetchLoanRequests(LoanRequestStatus status,
+                          Consumer<List<LoanRequest>> resultConsumer,
                           Consumer<Throwable> exceptionConsumer);
 
    void fetchLoanRequest(Consumer<Optional<LoanRequest>> resultConsumer,

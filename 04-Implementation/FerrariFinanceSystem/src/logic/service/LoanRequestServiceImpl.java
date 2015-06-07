@@ -16,6 +16,7 @@ import domain.Employee;
 import domain.Identity;
 import domain.LoanOffer;
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 import domain.Sale;
 import util.jdbc.ConnectionHandler;
 
@@ -74,9 +75,9 @@ public class LoanRequestServiceImpl implements LoanRequestService {
    }
 
    @Override
-   public List<LoanRequest> listLoanRequests() throws SQLException {
+   public List<LoanRequest> listLoanRequests(LoanRequestStatus status) throws SQLException {
       return ConnectionService.query(con -> {
-         List<LoanRequest> res = new LoanRequestAccessImpl(con).listLoanRequests();
+         List<LoanRequest> res = new LoanRequestAccessImpl(con).listLoanRequests(status);
 
          CustomerAccess customerAccess = new CustomerAccessImpl(con);
          EmployeeAccess employeeAccess = new EmployeeAccessImpl(con);

@@ -3,6 +3,7 @@ package logic.service;
 import domain.Identity;
 import domain.LoanOffer;
 import domain.LoanRequest;
+import domain.LoanRequestStatus;
 import util.jdbc.ConnectionHandler;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public interface LoanRequestService {
 
    Optional<LoanRequest> readLoanRequest(int id) throws SQLException;
 
-   List<LoanRequest> listLoanRequests() throws SQLException;
+   List<LoanRequest> listLoanRequests(LoanRequestStatus status) throws SQLException;
 
    void updateLoanRequestStatus(LoanRequest loanRequest) throws SQLException;
 
