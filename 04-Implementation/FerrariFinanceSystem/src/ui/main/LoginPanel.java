@@ -4,6 +4,7 @@ import util.session.SessionView;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -40,6 +41,7 @@ public class LoginPanel extends JPanel implements SessionView {
 
       lblPassword = createLabel("Adgangskode:");
       pfPassword = createPasswordField(12);
+      pfPassword.addActionListener(e -> login());
 
       lblMessage = createLabel(" ", BOLD_FONT);
       lblMessage.setForeground(Color.RED);
@@ -86,17 +88,44 @@ public class LoginPanel extends JPanel implements SessionView {
    private void login() {
       presenter.getFacade().login(tfUsername.getText(), pfPassword.getPassword(),
               r -> {
-                 if (r.isPresent())
+                 if (r.isPresent()) {
                     presenter.go(MAIN_MENU);
-                 else
-                    lblMessage.setText("Brugernavn eller adgangskode er forkert");
+                 } else {
+                    showWarning("Brugernavn eller adgangskode er forkert");
+                    reset();
+                 }
               },
-              x -> lblMessage.setText("Der er desværre sket en fejl. Prøv igen senere.")
+              x -> {
+                 showError("Der er desværre sket en fejl. Prøv igen senere.");
+                 x.printStackTrace();
+              }
       );
+   }
+
+   private void reset() {
+      pfPassword.setText(null);
+      tfUsername.setText(null);
+      tfUsername.requestFocus();
+
+      // TODO REM
+      tfUsername.setText("alwu");
+      pfPassword.setText("foobar");
    }
 
    @Override
    public void enter() {
-      tfUsername.requestFocus();
+      reset();
+   }
+
+   private void showWarning(String message) {
+      showDialog(message, "Fejl i login", JOptionPane.WARNING_MESSAGE);
+   }
+
+   private void showError(String message) {
+      showDialog(message, "Uventet fejl", JOptionPane.ERROR_MESSAGE);
+   }
+
+   private void showDialog(String message, String title, int type) {
+      JOptionPane.showMessageDialog(presenter, message, title, type);
    }
 }

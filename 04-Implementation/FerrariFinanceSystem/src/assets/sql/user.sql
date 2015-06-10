@@ -1,6 +1,6 @@
 CREATE TABLE user (
-  username TEXT PRIMARY KEY,
-  password TEXT NOT NULL,
-  salt BLOB NOT NULL,
-  employee_id INTEGER NOT NULL REFERENCES employee(id)
-) WITHOUT ROWID;
+  id INTEGER NOT NULL PRIMARY KEY REFERENCES employee(id),
+  username TEXT NOT NULL UNIQUE,
+  password BLOB NOT NULL,
+  salt BLOB NOT NULL
+);

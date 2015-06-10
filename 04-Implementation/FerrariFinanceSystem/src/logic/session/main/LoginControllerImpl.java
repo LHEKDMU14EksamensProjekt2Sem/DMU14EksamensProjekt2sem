@@ -1,8 +1,8 @@
 package logic.session.main;
 
 import domain.Employee;
-import logic.command.LoginCommand;
 import domain.User;
+import logic.command.LoginCommand;
 import util.swing.SwingCommand;
 
 import java.util.Optional;

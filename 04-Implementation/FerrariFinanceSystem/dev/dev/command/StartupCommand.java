@@ -6,6 +6,7 @@ import domain.Car;
 import domain.Customer;
 import domain.Employee;
 import domain.LoanRequest;
+import domain.User;
 import logic.command.CreateDatabaseCommand;
 import logic.util.DataUtil;
 import util.jdbc.ConnectionHandler;
@@ -39,6 +40,7 @@ public class StartupCommand implements Callable<Void> {
 
                if (Option.SAMPLE.get()) {
                   List<Employee> employees = new CreateEmployeeSampleCommand(con).call();
+                  List<User<Employee>> users = new CreateUserSampleCommand(employees, con).call();
                   List<Customer> customers = new CreateCustomerSampleCommand(con).call();
                   List<Car> cars = new CreateCarSampleCommand(con).call();
                   List<LoanRequest> loanRequests =
