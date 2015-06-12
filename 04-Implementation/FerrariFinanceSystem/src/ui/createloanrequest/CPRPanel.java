@@ -62,37 +62,10 @@ public class CPRPanel extends JPanel implements SessionView {
          }
          SwingUtilities.invokeLater(this::updateNavigation);
       });
-      tfCPR.setCommitter(tf -> {
-         try {
-            facade.specifyCPR(
-                    tf.getText(),
-                    r -> {
-                       if (r.isPresent() && !r.get().inGoodStanding()) {
-                          JOptionPane.showMessageDialog(presenter,
-                                  "Der har desværre været problemer med kunden.\nLåneanmodning afvist.",
-                                  "Låneanmodning afvist",
-                                  JOptionPane.WARNING_MESSAGE);
-                          presenter.dispose();
-                       }
-                    },
-                    x -> showUnexpectedError("Kunne ikke hente kundedata"));
-         } catch (ValueRequiredException e) {
-            tf.setError(ERR_CPR_REQUIRED);
-         } catch (InvalidCPRException e) {
-            tf.setError(ERR_CPR_INVALID);
-         }
-         SwingUtilities.invokeLater(this::updateNavigation);
-      });
-      tfCPR.addActionListener(e -> {
-         tfCPR.commit();
-         fetchCreditRating();
-      });
-
-      // TODO REMOVE
-//      tfCPR.setText("1504619887");
+      tfCPR.setCommitter(this::specifyCPR);
+      tfCPR.addActionListener(e -> tfCPR.commit());
 
       btnSearch = UIFactory.createButton(BUTTON_SEARCH);
-      btnSearch.addActionListener(e -> fetchCreditRating());
    }
 
    private void layoutComponents() {
@@ -118,10 +91,35 @@ public class CPRPanel extends JPanel implements SessionView {
       add(tfCPR.getMessageLabel(), gbc);
    }
 
-   private void fetchCreditRating() {
-      if (!tfCPR.isVerified())
-         return;
+   // Committer for tfCPR
+   private void specifyCPR(XTextField tf) {
+      CreateLoanRequestFacade facade = presenter.getFacade();
 
+      try {
+         facade.specifyCPR(
+                 tf.getText(),
+                 r -> {
+                    if (r.isPresent() && !r.get().inGoodStanding()) {
+                       JOptionPane.showMessageDialog(presenter,
+                               "Der har desværre været problemer med kunden.\nLåneanmodning afvist.",
+                               "Låneanmodning afvist",
+                               JOptionPane.WARNING_MESSAGE);
+                       presenter.dispose();
+                    } else {
+                       fetchCreditRating();
+                    }
+                 },
+                 x -> showUnexpectedError("Kunne ikke hente kundedata"));
+      } catch (ValueRequiredException e) {
+         tf.setError(ERR_CPR_REQUIRED);
+      } catch (InvalidCPRException e) {
+         tf.setError(ERR_CPR_INVALID);
+      }
+
+      updateNavigation();
+   }
+
+   private void fetchCreditRating() {
       presenter.getFacade().fetchCreditRating(
               r -> {
                  presenter.clearMessage();
