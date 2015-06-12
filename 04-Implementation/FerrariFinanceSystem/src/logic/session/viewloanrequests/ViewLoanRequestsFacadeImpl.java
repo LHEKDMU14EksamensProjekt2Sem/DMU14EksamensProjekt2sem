@@ -1,8 +1,10 @@
 package logic.session.viewloanrequests;
 
 import com.ferrari.finances.dk.rki.Rating;
+import domain.Employee;
 import domain.LoanRequest;
 import domain.LoanRequestStatus;
+import domain.User;
 import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
@@ -20,6 +22,11 @@ public class ViewLoanRequestsFacadeImpl implements ViewLoanRequestsFacade {
    public ViewLoanRequestsFacadeImpl(MainFacade owner) {
       this.owner = owner;
       loanRequestsCtrl = new LoanRequestsControllerImpl(this, owner);
+   }
+
+   @Override
+   public User<Employee> getUser() {
+      return owner.getUser();
    }
 
    @Override
