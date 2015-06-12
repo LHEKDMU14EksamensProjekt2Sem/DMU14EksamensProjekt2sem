@@ -8,12 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileIO {
+   private static final Charset UTF8 = Charset.forName("UTF-8");
+
    public static String read(InputStream in) throws IOException {
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(in))) {
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(in, UTF8))) {
          StringBuilder sb = new StringBuilder();
          while (r.ready())
             sb.append(r.read());
@@ -26,7 +29,7 @@ public class FileIO {
    }
 
    public static List<String> readLines(InputStream in) throws IOException {
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(in))) {
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(in, UTF8))) {
          List<String> lines = new ArrayList<>();
          while (r.ready()) {
             lines.add(r.readLine());
@@ -36,7 +39,7 @@ public class FileIO {
    }
 
    public static List<String> readLines(InputStream in, String linePattern) throws IOException {
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(in))) {
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(in, UTF8))) {
          List<String> lines = new ArrayList<>();
          while (r.ready()) {
             String l = r.readLine();
