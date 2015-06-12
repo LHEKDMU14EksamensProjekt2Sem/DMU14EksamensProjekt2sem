@@ -85,6 +85,8 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
 
    private JPanel carDescriptionWrapperPanel, carDescriptionPanel;
 
+   private boolean loadingCars;
+
    public RequestDetailsPanel(CreateLoanRequestDialog presenter) {
       this.presenter = presenter;
 
@@ -100,6 +102,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       cbCarModel = createComboBox();
       cbCarModel.addActionListener(e -> {
          CarModel model = (CarModel) cbCarModel.getSelectedItem();
+         loadingCars = true;
          facade.fetchCars(
                  model,
                  this::updateCars,
@@ -109,6 +112,9 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       lblCar = createLabel(LABEL_CAR);
       cbCar = createComboBox();
       cbCar.addActionListener(e -> {
+         if (loadingCars)
+            return;
+
          Car car = (Car) cbCar.getSelectedItem();
          facade.specifyCar(car);
          updateView();
@@ -435,6 +441,7 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
 
    private void updateCars(List<Car> cars) {
       cbCar.removeAllItems();
+      loadingCars = false;
       cars.forEach(cbCar::addItem);
    }
 
