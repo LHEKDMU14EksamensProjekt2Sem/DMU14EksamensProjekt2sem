@@ -1,5 +1,6 @@
 package ui.viewloanrequests;
 
+import domain.EmployeeRole;
 import domain.LoanRequest;
 import domain.Sale;
 import logic.session.viewloanrequests.ViewLoanRequestsFacade;
@@ -10,6 +11,7 @@ import ui.panel.DataPanelBuilder;
 import ui.panel.RequestDataPanelBuilder;
 import ui.panel.SellerDataPanelBuilder;
 import ui.panel.StatusByDataPanelBuilder;
+import util.finance.Money;
 import util.session.SessionView;
 
 import javax.swing.Box;
@@ -99,7 +101,9 @@ public class DetailsPanel extends JPanel implements SessionView {
 
    public void updateNavigation() {
       ViewLoanRequestsFacade facade = presenter.getFacade();
-      boolean isPending = facade.getSelectedLoanRequest().isPending();
+      boolean isPending = (facade.getSelectedLoanRequest().isPending()
+              && !(facade.getUser().getEntity().getRole() == EmployeeRole.SALESMAN
+              && facade.getSelectedLoanRequest().getLoanAmount().greaterThan(new Money(1000 * 1000))));
       btnDecline.setVisible(isPending);
       btnApprove.setVisible(isPending);
       btnApprove.setEnabled(facade.hasAcceptedCreditRating() && facade.hasOvernightRate());
@@ -132,15 +136,18 @@ public class DetailsPanel extends JPanel implements SessionView {
       CustomerDataPanelBuilder pbCustomer = new CustomerDataPanelBuilder(rightDataPanel, gbc);
       pbCustomer.addData(sale.getCustomer());
 
-      if (facade.getSelectedLoanRequest().isPending()) {
-         DataPanelBuilder pb = new DataPanelBuilder(rightDataPanel, gbc);
-         pb.addHeader("Kreditværdighed");
-         pb.addField(null, lblCreditRating);
-         pb.addHeader("Dagsrente");
-         pb.addField(null, lblOvernightRate);
-      } else {
-         StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
-         pbStatusBy.addData(lr);
+      if (!(facade.getUser().getEntity().getRole() == EmployeeRole.SALESMAN
+              && lr.getLoanAmount().greaterThan(new Money(1000 * 1000)))) {
+         if (facade.getSelectedLoanRequest().isPending()) {
+            DataPanelBuilder pb = new DataPanelBuilder(rightDataPanel, gbc);
+            pb.addHeader("Kreditværdighed");
+            pb.addField(null, lblCreditRating);
+            pb.addHeader("Dagsrente");
+            pb.addField(null, lblOvernightRate);
+         } else {
+            StatusByDataPanelBuilder pbStatusBy = new StatusByDataPanelBuilder(rightDataPanel, gbc);
+            pbStatusBy.addData(lr);
+         }
       }
 
       leftDataPanel.repaint();

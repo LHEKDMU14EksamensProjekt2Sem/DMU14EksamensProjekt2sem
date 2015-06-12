@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 import static java.math.RoundingMode.*;
 
-public final class Money {
+public final class Money implements Comparable<Money> {
    public static final Money ZERO = new Money(BigDecimal.ZERO);
 
    private final BigDecimal amount;
@@ -65,6 +65,19 @@ public final class Money {
 
    public Money negate() {
       return new Money(amount.negate());
+   }
+
+   public boolean greaterThan(Money o) {
+      return (compareTo(o) > 0);
+   }
+
+   public boolean lessThan(Money o) {
+      return (compareTo(o) < 0);
+   }
+
+   @Override
+   public int compareTo(Money o) {
+      return amount.compareTo(o.amount);
    }
 
    @Override
