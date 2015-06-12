@@ -3,6 +3,7 @@ package logic.session.createloanrequest;
 import com.ferrari.finances.dk.rki.Rating;
 import domain.Customer;
 import domain.Identity;
+import domain.Person;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
 import logic.session.createloanrequest.validation.CPRValidator;
@@ -24,6 +25,7 @@ public class CPRControllerImpl implements CPRController {
       this.mainFacade = mainFacade;
       validator = new CPRValidatorImpl();
       identity = new Identity();
+      identity.setPerson(new Person());
    }
 
    @Override

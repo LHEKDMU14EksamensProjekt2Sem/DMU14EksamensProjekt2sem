@@ -214,6 +214,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    public void submitLoanRequest(Consumer<Optional<LoanOffer>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
       sale.setCustomer(facade.getCustomer());
+
       new SwingCommand<>(
               new SubmitLoanRequestCommand(loanRequest, facade.getIdentity()),
               resultConsumer::accept,

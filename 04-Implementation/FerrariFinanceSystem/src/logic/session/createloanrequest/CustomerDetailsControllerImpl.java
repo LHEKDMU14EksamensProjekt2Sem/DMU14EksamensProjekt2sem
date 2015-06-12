@@ -30,8 +30,8 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
       this.facade = facade;
       validator = new CustomerDetailsValidatorImpl();
 
+      person = facade.getIdentity().getPerson();
       customer = new Customer();
-      person = new Person();
       customer.setPerson(person);
    }
 
