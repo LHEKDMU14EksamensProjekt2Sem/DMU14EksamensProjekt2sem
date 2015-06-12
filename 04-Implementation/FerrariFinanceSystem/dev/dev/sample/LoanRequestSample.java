@@ -21,9 +21,10 @@ public class LoanRequestSample {
    public static List<LoanRequest> newLoanRequests(List<Car> cars, List<Customer> customers, List<Employee> employees) {
       List<LoanRequest> list = new ArrayList<>();
 
-      // Create a loan request for each customer
-      int i = 0;
-      for (Customer c : customers) {
+      // Create a loan request for each
+      // of the first two customers
+      for (int i = 0; i < 2; i++) {
+         Customer c = customers.get(i);
          Sale s = newSale(cars.get(i * 10), c, employees.get(i));
 
          LoanRequest lr = new LoanRequest();
@@ -46,8 +47,6 @@ public class LoanRequestSample {
 
          lr.setLoanAmount(new Money(s.getSellingPrice().doubleValue() * 0.60));
          list.add(lr);
-
-         i++;
       }
 
       return list;
