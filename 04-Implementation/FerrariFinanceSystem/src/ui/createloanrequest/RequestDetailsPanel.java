@@ -1,6 +1,8 @@
 package ui.createloanrequest;
 
 import domain.Car;
+import domain.CarComponent;
+import domain.CarConfig;
 import domain.CarModel;
 import domain.LoanRequest;
 import domain.Sale;
@@ -12,6 +14,7 @@ import logic.format.GeneralNumberFormat;
 import logic.session.createloanrequest.CreateLoanRequestFacade;
 import ui.UIFactory;
 import ui.XTextField;
+import ui.translation.CarComponentTypeTranslator;
 import util.finance.Money;
 import util.session.SessionView;
 
@@ -22,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -492,17 +496,45 @@ public class RequestDetailsPanel extends JPanel implements SessionView {
       carDescriptionWrapperPanel.setVisible(true);
       carDescriptionPanel.removeAll();
 
-      carDescriptionPanel.add(createBoldLabel("Bil:"));
-      carDescriptionPanel.add(createBoldLabel("Beskrivelse:"));
+      Car car = (Car) cbCar.getSelectedItem();
+      CarConfig config = car.getConfig();
+      CarModel model = config.getModel();
 
+      addCarPanelHeader("Model");
+      addCarPanelLabel(model.getName());
+      addCarPanelDescription(model.getDescription());
+
+      addCarPanelHeader("Konfiguration");
+      addCarPanelLabel(config.getName());
+      addCarPanelDescription(config.getDescription());
+
+      for (CarComponent comp : config.getComponents()) {
+         addCarPanelHeader(CarComponentTypeTranslator.translate(comp.getType()));
+         addCarPanelLabel(comp.getName());
+      }
+
+      JLabel filler = new JLabel();
+      filler.setPreferredSize(new Dimension(200, 0));
+      carDescriptionPanel.add(filler);
+
+      // A repaint is required to prevent
+      // UI artifacts in carDescriptionPanel
+      SwingUtilities.invokeLater(this::repaint);
+   }
+
+   private void addCarPanelHeader(String text) {
+      carDescriptionPanel.add(createBoldLabel(text + ":"));
+   }
+
+   private void addCarPanelLabel(Object value) {
+      carDescriptionPanel.add(createLabel(value.toString()));
+   }
+
+   private void addCarPanelDescription(String text) {
       JTextArea ta = createTextArea();
-      ta.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida nec odio vel fermentum. Quisque commodo fringilla erat quis facilisis.");
+      ta.setText(text);
       ta.setMaximumSize(new Dimension(200, Short.MAX_VALUE));
       carDescriptionPanel.add(ta);
-
-      JLabel dummy = new JLabel();
-      dummy.setPreferredSize(new Dimension(200, 0));
-      carDescriptionPanel.add(dummy);
    }
 
    private void submit() {

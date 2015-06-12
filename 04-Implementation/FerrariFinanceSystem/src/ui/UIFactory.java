@@ -63,6 +63,7 @@ public class UIFactory {
       ta.setLineWrap(true);
       ta.setWrapStyleWord(true);
       configTextComponent(ta);
+      ta.setFont(ITALIC_FONT);
 
       // Text selection is broken; prevent it
       for (MouseListener l : ta.getMouseListeners())
