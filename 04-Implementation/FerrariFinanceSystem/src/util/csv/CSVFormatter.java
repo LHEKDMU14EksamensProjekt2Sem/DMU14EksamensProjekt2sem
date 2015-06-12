@@ -48,7 +48,7 @@ public class CSVFormatter<T> {
 
       // Add records
       for (T record : records) {
-         List<String> values = fields.stream().map(field -> field.valueOf(record))
+         List<String> values = fields.stream().map(field -> field.valueOf(record).toString())
                  .collect(Collectors.toList());
 
          sb.append(String.join(separator.toString(), values));

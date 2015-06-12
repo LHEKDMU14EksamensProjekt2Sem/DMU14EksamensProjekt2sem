@@ -63,6 +63,10 @@ public final class Money {
       return amount.doubleValue();
    }
 
+   public Money negate() {
+      return new Money(amount.negate());
+   }
+
    @Override
    public boolean equals(Object object) {
       if (this == object)

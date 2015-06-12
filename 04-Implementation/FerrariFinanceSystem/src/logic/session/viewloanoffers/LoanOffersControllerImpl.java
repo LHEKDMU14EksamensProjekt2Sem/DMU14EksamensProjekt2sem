@@ -1,16 +1,24 @@
 package logic.session.viewloanoffers;
 
 import domain.LoanOffer;
+import domain.RepaymentPlanPayment;
 import logic.command.FetchLoanOfferCommand;
 import logic.command.FetchLoanOffersCommand;
 import logic.session.main.MainFacade;
+import util.csv.CSVField;
+import util.csv.CSVFormatter;
+import util.io.FileIO;
 import util.swing.SwingCommand;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class LoanOffersControllerImpl implements LoanOffersController {
+   private static final String EXT_CSV = ".csv";
+
    private final ViewLoanOffersFacade facade;
    private final MainFacade mainFacade;
 
@@ -62,7 +70,19 @@ public class LoanOffersControllerImpl implements LoanOffersController {
    }
 
    @Override
-   public void exportRepaymentPlan() {
-      // TODO
+   public void exportRepaymentPlan(File file) throws IOException {
+      // Make sure file has .csv extension
+      if (!file.getName().endsWith(EXT_CSV))
+         file = new File(file.getPath() + EXT_CSV);
+
+      CSVFormatter<RepaymentPlanPayment> formatter = new CSVFormatter<>();
+
+      formatter.addField(new CSVField<>("Date", RepaymentPlanPayment::getDate));
+      formatter.addField(new CSVField<>("Payment", RepaymentPlanPayment::getAmount));
+      formatter.addField(new CSVField<>("Principal paid", RepaymentPlanPayment::getRepayment));
+      formatter.addField(new CSVField<>("Interest paid", RepaymentPlanPayment::getInterest));
+      formatter.addField(new CSVField<>("Ending balance", RepaymentPlanPayment::getEndingBalance));
+
+      FileIO.writeFile(file, formatter.format(getSelectedLoanOffer().getPayments()));
    }
 }

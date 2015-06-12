@@ -52,7 +52,7 @@ public class AnnuityCalculator {
 
          payments.add(
                  new AnnuityPayment(
-                         new Money(balance),
+                         new Money(balance).negate(),
                          new Money(payment),
                          new Money(principalPaid),
                          new Money(interestPaid)));

@@ -2,6 +2,7 @@ package util.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,10 +55,14 @@ public class FileIO {
       return read(new FileInputStream(path), linePattern);
    }
 
-   public static void writeFile(String path, String data) throws IOException {
-      try (BufferedWriter w = new BufferedWriter(new FileWriter(path))) {
+   public static void writeFile(File file, String data) throws IOException {
+      try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
          w.write(data);
       }
+   }
+
+   public static void writeFile(String path, String data) throws IOException {
+      writeFile(new File(path), data);
    }
 
    public static void writeFile(String path, List<String> lines, CharSequence delim) throws IOException {

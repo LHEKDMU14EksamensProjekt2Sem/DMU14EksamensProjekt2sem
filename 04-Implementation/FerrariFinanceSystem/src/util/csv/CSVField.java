@@ -3,14 +3,14 @@ package util.csv;
 import java.util.function.Function;
 
 public class CSVField<T> {
-   private final Function<T, String> translator;
+   private final Function<T, Object> translator;
    private String header;
 
-   public CSVField(Function<T, String> translator) {
+   public CSVField(Function<T, Object> translator) {
       this(null, translator);
    }
 
-   public CSVField(String header, Function<T, String> translator) {
+   public CSVField(String header, Function<T, Object> translator) {
       this.header = header;
       this.translator = translator;
    }
@@ -23,7 +23,7 @@ public class CSVField<T> {
       this.header = header;
    }
 
-   public String valueOf(T record) {
+   public Object valueOf(T record) {
       return translator.apply(record);
    }
 }

@@ -16,14 +16,18 @@ import util.session.SessionView;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static java.awt.GridBagConstraints.*;
@@ -144,8 +148,20 @@ public class DetailsPanel extends JPanel implements SessionView {
    }
 
    private void export() {
-      // TODO
-      presenter.getFacade().exportRepaymentPlan();
+      JFileChooser fileChooser = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV-fil", "csv");
+      fileChooser.setFileFilter(filter);
+
+      int choice = fileChooser.showSaveDialog(presenter);
+      if (choice == JFileChooser.APPROVE_OPTION) {
+         File file = fileChooser.getSelectedFile();
+         try {
+            presenter.getFacade().exportRepaymentPlan(file);
+         } catch (IOException e) {
+            e.printStackTrace();
+            showUnexpectedError("Kunne ikke eksportere til fil");
+         }
+      }
    }
 
    private void showUnexpectedError(String message) {

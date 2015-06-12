@@ -3,11 +3,11 @@ package util.csv;
 import java.util.function.Function;
 
 public class CSVQuotedField<T> extends CSVField<T> {
-   public CSVQuotedField(Function<T, String> translator) {
+   public CSVQuotedField(Function<T, Object> translator) {
       this(null, translator);
    }
 
-   public CSVQuotedField(String header, Function<T, String> translator) {
+   public CSVQuotedField(String header, Function<T, Object> translator) {
       super(header, translator);
    }
 
@@ -22,6 +22,6 @@ public class CSVQuotedField<T> extends CSVField<T> {
     */
    @Override
    public String valueOf(T record) {
-      return '"' + super.valueOf(record).replace("\"", "\"\"") + '"';
+      return '"' + super.valueOf(record).toString().replace("\"", "\"\"") + '"';
    }
 }

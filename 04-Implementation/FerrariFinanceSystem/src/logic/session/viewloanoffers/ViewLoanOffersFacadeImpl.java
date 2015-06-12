@@ -5,6 +5,8 @@ import logic.format.GeneralDateFormat;
 import logic.format.GeneralNumberFormat;
 import logic.session.main.MainFacade;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -71,7 +73,7 @@ public class ViewLoanOffersFacadeImpl implements ViewLoanOffersFacade {
    }
 
    @Override
-   public void exportRepaymentPlan() {
-      loanOffersCtrl.exportRepaymentPlan();
+   public void exportRepaymentPlan(File file) throws IOException {
+      loanOffersCtrl.exportRepaymentPlan(file);
    }
 }

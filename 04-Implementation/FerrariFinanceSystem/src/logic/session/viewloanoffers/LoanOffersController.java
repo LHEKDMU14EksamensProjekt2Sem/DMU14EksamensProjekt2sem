@@ -2,6 +2,8 @@ package logic.session.viewloanoffers;
 
 import domain.LoanOffer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -19,5 +21,5 @@ public interface LoanOffersController {
    void fetchLoanOffer(Consumer<Optional<LoanOffer>> resultConsumer,
                        Consumer<Throwable> exceptionConsumer);
 
-   void exportRepaymentPlan();
+   void exportRepaymentPlan(File file) throws IOException;
 }

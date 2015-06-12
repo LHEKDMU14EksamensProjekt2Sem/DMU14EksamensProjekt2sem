@@ -52,6 +52,6 @@ public class RepaymentPlanPayment {
    }
 
    public Money getEndingBalance() {
-      return balance.subtract(repayment);
+      return balance.add(repayment);
    }
 }
