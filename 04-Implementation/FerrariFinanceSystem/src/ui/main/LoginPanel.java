@@ -106,10 +106,6 @@ public class LoginPanel extends JPanel implements SessionView {
       pfPassword.setText(null);
       tfUsername.setText(null);
       tfUsername.requestFocus();
-
-      // TODO REM
-      tfUsername.setText("alwu");
-      pfPassword.setText("foobar");
    }
 
    @Override
