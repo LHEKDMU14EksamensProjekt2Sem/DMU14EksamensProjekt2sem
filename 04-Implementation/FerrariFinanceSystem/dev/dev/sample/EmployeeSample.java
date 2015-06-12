@@ -20,12 +20,12 @@ public class EmployeeSample {
                       SALES_MANAGER,
                       newPerson("Alice", "Wunderbaum",
                               "Wonderland 42", newPostalCode(7400),
-                              12345678, "alice@wonderland.com")),
+                              12345678, "alice@wondermail.org")),
               newEmployee(
                       SALESMAN,
-                      newPerson("Bob", "da Bass",
-                              "Bassheadvej 164", newPostalCode(7800),
-                              88888888, "bob@mixcloud.com")));
+                      newPerson("Bob", "Bazqux",
+                              "Foobarvej 164", newPostalCode(8000),
+                              88888888, "bobbaz@quxmail.com")));
    }
 
    private static Employee newEmployee(EmployeeRole role, Person p) {
@@ -40,7 +40,7 @@ public class EmployeeSample {
 
    public static List<String> newEmployeeCPRs() {
       return Arrays.asList(
-              "9876543210",
-              "0099887766");
+              "0101010101",
+              "0202020202");
    }
 }
