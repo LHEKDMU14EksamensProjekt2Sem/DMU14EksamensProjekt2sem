@@ -1,5 +1,6 @@
 package ui.createloanrequest;
 
+import domain.Person;
 import domain.PostalCode;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidNameException;
@@ -89,8 +90,6 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
                       tfStreet, tfPostalCode,
                       tfPhone, tfEmail
               ));
-
-      updateNavigation();
    }
 
    private void initComponents() {
@@ -261,7 +260,6 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
          }
          SwingUtilities.invokeLater(this::updateNavigation);
       });
-      // TODO: Should be same as btnNext click
       addDefaultActionListener(tfEmail);
 
       btnNext = createButton(BUTTON_NEXT);
@@ -269,14 +267,6 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
 
       btnCancel = createButton(BUTTON_CANCEL);
       btnCancel.addActionListener(e -> presenter.dispose());
-
-      // TODO REMOVE
-//      tfFirstName.setText("John");
-//      tfLastName.setText("Doe");
-//      tfStreet.setText("Vejlealle 34");
-//      tfPostalCode.setText("9000");
-//      tfPhone.setText("12345678");
-//      tfEmail.setText("e@mail.com");
    }
 
    private void addDefaultActionListener(JTextField tf) {
@@ -345,6 +335,38 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
       add(comp, gbc);
    }
 
+   private void updateView() {
+      updateFields();
+      updateNavigation();
+   }
+
+   private void updateFields() {
+      Person p = presenter.getFacade().getCustomer().getPerson();
+
+      tfFirstName.setText(p.getFirstName());
+      tfLastName.setText(p.getLastName());
+      tfStreet.setText(p.getStreet());
+
+      PostalCode pc = p.getPostalCode();
+      if (pc != null) {
+         tfPostalCode.setText(pc.getPostalCode() + "");
+         lblCity.setText(pc.getCity());
+         hasValidPostalCode = true;
+      }
+
+      if (p.getPhone() != 0) {
+         tfPhone.setText(p.getPhone() + "");
+      }
+
+      tfEmail.setText(p.getEmail());
+
+      if (tfFirstName.getText().isEmpty()) {
+         // Panel is not visible at this point,
+         // so requestFocus needs to be deferred
+         SwingUtilities.invokeLater(tfFirstName::requestFocus);
+      }
+   }
+
    private void updateNavigation() {
       forwardScheduled = false;
 
@@ -410,6 +432,6 @@ public class CustomerDetailsPanel extends JPanel implements SessionView {
 
    @Override
    public void enter() {
-      SwingUtilities.invokeLater(tfFirstName::requestFocus);
+      updateView();
    }
 }
