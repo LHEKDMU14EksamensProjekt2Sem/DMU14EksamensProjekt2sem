@@ -20,14 +20,24 @@ public class CustomerSample {
       return Arrays.asList(
               newCustomer(
                       GOOD_STANDING,
-                      newPerson("Hero", "Man",
-                              "Marble 5", newPostalCode(1000),
-                              55532877, "hero@marble.com")),
+                      newPerson("Charlie", "Sheen",
+                              "Strandvejen 55", newPostalCode(2200),
+                              55532877, "chsheen@gmail.com")),
               newCustomer(
                       GOOD_STANDING,
-                      newPerson("Julem", "Anden",
-                              "Coladiditvej 102", newPostalCode(2412),
-                              97851992, "jule@and.com")));
+                      newPerson("David", "Hasselhoff",
+                              "Genvejen 2a", newPostalCode(4000),
+                              27851992, "dahassel@hotmail.com")),
+              newCustomer(
+                      GOOD_STANDING,
+                      newPerson("Eric", "Clapton",
+                              "Skjoldgade 24", newPostalCode(1000),
+                              31249980, "eric@claptonmusic.com")),
+              newCustomer(
+                      BAD_STANDING,
+                      newPerson("Freddy", "Krueger",
+                              "Elmegade 13", newPostalCode(5200),
+                              13131313, "fred@horrormail.com")));
    }
 
    private static Customer newCustomer(boolean standing, Person p) {
@@ -42,7 +52,9 @@ public class CustomerSample {
 
    public static List<String> newCustomerCPRs() {
       return Arrays.asList(
-              "1010101010",
-              "1212121212");
+              "0203040506",
+              "0304050607",
+              "0405060708",
+              "0807060504");
    }
 }
