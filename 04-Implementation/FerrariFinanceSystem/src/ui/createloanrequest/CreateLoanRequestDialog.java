@@ -50,7 +50,7 @@ public class CreateLoanRequestDialog extends JDialog implements
       // Center on screen
       setLocationRelativeTo(null);
 
-      go(REQUEST_DETAILS);
+      go(CPR);
    }
 
    private void initComponents() {

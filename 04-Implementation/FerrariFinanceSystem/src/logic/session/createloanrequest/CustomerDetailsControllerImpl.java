@@ -1,6 +1,7 @@
 package logic.session.createloanrequest;
 
 import domain.Customer;
+import domain.Identity;
 import domain.Person;
 import domain.PostalCode;
 import exceptions.InvalidEmailException;
@@ -10,6 +11,7 @@ import exceptions.InvalidPostalCodeException;
 import exceptions.InvalidStreetException;
 import exceptions.StreetMissingHouseNumberException;
 import exceptions.ValueRequiredException;
+import logic.command.FetchCustomerCommand;
 import logic.command.FetchPostalCodeCommand;
 import logic.session.createloanrequest.validation.CustomerDetailsValidator;
 import logic.session.createloanrequest.validation.CustomerDetailsValidatorImpl;
@@ -21,15 +23,15 @@ import java.util.function.Consumer;
 public class CustomerDetailsControllerImpl implements CustomerDetailsController {
    private final CreateLoanRequestFacade facade;
    private final CustomerDetailsValidator validator;
-   private final Customer customer;
-   private final Person person;
+   private Customer customer;
+   private Person person;
 
    public CustomerDetailsControllerImpl(CreateLoanRequestFacade facade) {
       this.facade = facade;
       validator = new CustomerDetailsValidatorImpl();
 
-      person = facade.getIdentity().getPerson();
       customer = new Customer();
+      person = new Person();
       customer.setPerson(person);
    }
 
@@ -90,7 +92,19 @@ public class CustomerDetailsControllerImpl implements CustomerDetailsController 
    @Override
    public void fetchCustomer(Consumer<Optional<Customer>> resultConsumer,
                              Consumer<Throwable> exceptionConsumer) {
-      // TODO
+      Identity identity = facade.getIdentity();
+      new SwingCommand<>(
+              new FetchCustomerCommand(identity),
+              r -> {
+                 if (r.isPresent()) {
+                    customer = r.get();
+                    identity.setPerson(customer.getPerson());
+                 }
+
+                 resultConsumer.accept(r);
+              },
+              exceptionConsumer
+      ).execute();
    }
 
    // Validation

@@ -1,6 +1,7 @@
 package data.access;
 
 import domain.Customer;
+import domain.Identity;
 import domain.Sale;
 
 import java.sql.SQLException;
@@ -13,6 +14,8 @@ public interface CustomerAccess {
    void createCustomers(List<Customer> customers) throws SQLException;
 
    Optional<Customer> readCustomer(int id) throws SQLException;
+
+   Optional<Customer> readCustomer(Identity identity) throws SQLException;
 
    Customer readCustomer(Sale sale) throws SQLException;
 }

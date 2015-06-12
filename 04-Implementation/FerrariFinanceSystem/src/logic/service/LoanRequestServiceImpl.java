@@ -120,11 +120,9 @@ public class LoanRequestServiceImpl implements LoanRequestService {
                                                  Optional<Identity> identity,
                                                  ConnectionHandler con) throws SQLException {
       Sale sale = loanRequest.getSale();
-      Employee employee = sale.getSeller();
-      employee.getPerson().setId(1);
-      if (identity.isPresent()) {
-         Customer customer = sale.getCustomer();
-         new CustomerServiceImpl().createCustomer(customer, identity.get());
+      Customer customer = sale.getCustomer();
+      if (identity.isPresent() && customer.getId() == 0) {
+         new CustomerServiceImpl().createCustomer(customer, identity.get(), con);
       }
 
       new SaleAccessImpl(con).createSale(sale);

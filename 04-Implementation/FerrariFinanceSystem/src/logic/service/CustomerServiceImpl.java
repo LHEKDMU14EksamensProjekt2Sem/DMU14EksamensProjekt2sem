@@ -30,6 +30,12 @@ public class CustomerServiceImpl implements CustomerService {
    }
 
    @Override
+   public Optional<Customer> readCustomer(Identity identity) throws SQLException {
+      return ConnectionService.query(con ->
+              new CustomerAccessImpl(con).readCustomer(identity));
+   }
+
+   @Override
    public void updateCustomer(Customer customer) throws SQLException {
       // TODO
    }

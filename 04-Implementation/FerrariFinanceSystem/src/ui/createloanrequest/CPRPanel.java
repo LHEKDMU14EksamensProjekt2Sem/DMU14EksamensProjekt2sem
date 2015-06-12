@@ -64,7 +64,18 @@ public class CPRPanel extends JPanel implements SessionView {
       });
       tfCPR.setCommitter(tf -> {
          try {
-            facade.specifyCPR(tf.getText());
+            facade.specifyCPR(
+                    tf.getText(),
+                    r -> {
+                       if (r.isPresent() && !r.get().inGoodStanding()) {
+                          JOptionPane.showMessageDialog(presenter,
+                                  "Der har desværre været problemer med kunden.\nLåneanmodning afvist.",
+                                  "Låneanmodning afvist",
+                                  JOptionPane.WARNING_MESSAGE);
+                          presenter.dispose();
+                       }
+                    },
+                    x -> showUnexpectedError("Kunne ikke hente kundedata"));
          } catch (ValueRequiredException e) {
             tf.setError(ERR_CPR_REQUIRED);
          } catch (InvalidCPRException e) {
@@ -145,6 +156,13 @@ public class CPRPanel extends JPanel implements SessionView {
 
    private void updateNavigation() {
       btnSearch.setEnabled(tfCPR.isVerified());
+   }
+
+   private void showUnexpectedError(String message) {
+      JOptionPane.showMessageDialog(presenter,
+              "Fejl: " + message,
+              "Uventet fejl",
+              JOptionPane.ERROR_MESSAGE);
    }
 
    @Override

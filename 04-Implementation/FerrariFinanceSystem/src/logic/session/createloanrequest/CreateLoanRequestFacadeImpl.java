@@ -61,9 +61,11 @@ public class CreateLoanRequestFacadeImpl implements CreateLoanRequestFacade {
    }
 
    @Override
-   public void specifyCPR(String cpr) throws
+   public void specifyCPR(String cpr,
+                          Consumer<Optional<Customer>> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer) throws
            InvalidCPRException, ValueRequiredException {
-      cprCtrl.specifyCPR(cpr);
+      cprCtrl.specifyCPR(cpr, resultConsumer, exceptionConsumer);
    }
 
    @Override

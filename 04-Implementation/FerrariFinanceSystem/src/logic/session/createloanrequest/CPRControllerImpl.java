@@ -1,14 +1,15 @@
 package logic.session.createloanrequest;
 
 import com.ferrari.finances.dk.rki.Rating;
+import domain.Customer;
 import domain.Identity;
-import domain.Person;
 import exceptions.InvalidCPRException;
 import exceptions.ValueRequiredException;
 import logic.session.createloanrequest.validation.CPRValidator;
 import logic.session.createloanrequest.validation.CPRValidatorImpl;
 import logic.session.main.MainFacade;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CPRControllerImpl implements CPRController {
@@ -23,7 +24,6 @@ public class CPRControllerImpl implements CPRController {
       this.mainFacade = mainFacade;
       validator = new CPRValidatorImpl();
       identity = new Identity();
-      identity.setPerson(new Person());
    }
 
    @Override
@@ -37,9 +37,12 @@ public class CPRControllerImpl implements CPRController {
    }
 
    @Override
-   public void specifyCPR(String cpr) throws
+   public void specifyCPR(String cpr,
+                          Consumer<Optional<Customer>> resultConsumer,
+                          Consumer<Throwable> exceptionConsumer) throws
            InvalidCPRException, ValueRequiredException {
       identity.setCPR(validator.validateCPR(cpr));
+      facade.fetchCustomer(resultConsumer, exceptionConsumer);
    }
 
    @Override

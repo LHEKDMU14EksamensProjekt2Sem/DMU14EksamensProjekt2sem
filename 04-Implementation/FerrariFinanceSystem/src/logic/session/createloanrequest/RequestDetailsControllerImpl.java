@@ -45,7 +45,6 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
 
       sale = new Sale();
       sale.setSeller(employee);
-      sale.setCustomer(facade.getCustomer());
       sale.setBasePrice(Money.ZERO);
       sale.setSellingPrice(Money.ZERO);
 
@@ -214,6 +213,7 @@ public class RequestDetailsControllerImpl implements RequestDetailsController {
    @Override
    public void submitLoanRequest(Consumer<Optional<LoanOffer>> resultConsumer,
                                  Consumer<Throwable> exceptionConsumer) {
+      sale.setCustomer(facade.getCustomer());
       new SwingCommand<>(
               new SubmitLoanRequestCommand(loanRequest, facade.getIdentity()),
               resultConsumer::accept,

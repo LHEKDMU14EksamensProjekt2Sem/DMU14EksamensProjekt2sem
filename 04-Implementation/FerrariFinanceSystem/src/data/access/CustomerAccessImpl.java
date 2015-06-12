@@ -1,6 +1,7 @@
 package data.access;
 
 import domain.Customer;
+import domain.Identity;
 import domain.Person;
 import domain.PostalCode;
 import domain.Sale;
@@ -42,6 +43,21 @@ public class CustomerAccessImpl implements CustomerAccess {
    }
 
    @Override
+   public Optional<Customer> readCustomer(Identity identity) throws SQLException {
+      try (PreparedStatement st = con.get().prepareStatement(SQL.selectOne(SQL.BY_IDENTITY))) {
+         st.setString(1, identity.getCPR());
+
+         try (ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+               return Optional.of(extractCustomer(rs));
+            } else {
+               return Optional.empty();
+            }
+         }
+      }
+   }
+
+   @Override
    public Customer readCustomer(Sale sale) throws SQLException {
       return readCustomer(sale.getId(), SQL.BY_SALE).get();
    }
@@ -51,30 +67,34 @@ public class CustomerAccessImpl implements CustomerAccess {
          st.setInt(1, id);
 
          try (ResultSet rs = st.executeQuery()) {
-            Customer customer = new Customer();
-            Person person = new Person();
-            PostalCode postalCode = new PostalCode();
-
-            person.setPostalCode(postalCode);
-            customer.setPerson(person);
-
             if (rs.next()) {
-               person.setId(rs.getInt("id"));
-               customer.setStanding(rs.getBoolean("standing"));
-               person.setFirstName(rs.getString("first_name"));
-               person.setLastName(rs.getString("last_name"));
-               person.setStreet(rs.getString("street"));
-               postalCode.setPostalCode(rs.getShort("postal_code"));
-               postalCode.setCity(rs.getString("city"));
-               person.setPhone(rs.getInt("phone"));
-               person.setEmail(rs.getString("email"));
-
-               return Optional.of(customer);
+               return Optional.of(extractCustomer(rs));
             } else {
                return Optional.empty();
             }
          }
       }
+   }
+
+   private Customer extractCustomer(ResultSet rs) throws SQLException {
+      Customer customer = new Customer();
+      Person person = new Person();
+      PostalCode postalCode = new PostalCode();
+
+      person.setPostalCode(postalCode);
+      customer.setPerson(person);
+
+      person.setId(rs.getInt("id"));
+      customer.setStanding(rs.getBoolean("standing"));
+      person.setFirstName(rs.getString("first_name"));
+      person.setLastName(rs.getString("last_name"));
+      person.setStreet(rs.getString("street"));
+      postalCode.setPostalCode(rs.getShort("postal_code"));
+      postalCode.setCity(rs.getString("city"));
+      person.setPhone(rs.getInt("phone"));
+      person.setEmail(rs.getString("email"));
+
+      return customer;
    }
 
    private static class SQL {
@@ -89,6 +109,9 @@ public class CustomerAccessImpl implements CustomerAccess {
               + " WHERE c.id = %s";
 
       static final String BY_ID = "?";
+
+      static final String BY_IDENTITY
+              = "(SELECT id FROM cpr WHERE cpr = ?)";
 
       static final String BY_SALE
               = "(SELECT customer_id FROM sale WHERE id = ?)";

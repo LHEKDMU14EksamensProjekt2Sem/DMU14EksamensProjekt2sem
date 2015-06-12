@@ -24,7 +24,7 @@ public class CustomerSample {
                               "Marble 5", newPostalCode(1000),
                               55532877, "hero@marble.com")),
               newCustomer(
-                      BAD_STANDING,
+                      GOOD_STANDING,
                       newPerson("Julem", "Anden",
                               "Coladiditvej 102", newPostalCode(2412),
                               97851992, "jule@and.com")));
@@ -42,7 +42,7 @@ public class CustomerSample {
 
    public static List<String> newCustomerCPRs() {
       return Arrays.asList(
-              "0000000001",
-              "2011772122");
+              "1010101010",
+              "1212121212");
    }
 }
