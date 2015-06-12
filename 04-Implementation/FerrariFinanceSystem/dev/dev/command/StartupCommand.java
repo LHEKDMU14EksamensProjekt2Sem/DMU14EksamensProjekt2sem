@@ -30,22 +30,22 @@ public class StartupCommand implements Callable<Void> {
     */
    @Override
    public Void call() throws IOException, SQLException {
-      if (Option.DESTROY.get())
-         DataUtil.destroyDatabase();
+//      if (Option.DESTROY.get())
+//         DataUtil.destroyDatabase();
 
       if (!DataUtil.databaseExists()) {
          try (ConnectionHandler con = ConnectionService.connect()) {
             try {
                new CreateDatabaseCommand(con).call();
 
-               if (Option.SAMPLE.get()) {
+//               if (Option.SAMPLE.get()) {
                   List<Employee> employees = new CreateEmployeeSampleCommand(con).call();
                   List<User<Employee>> users = new CreateUserSampleCommand(employees, con).call();
                   List<Customer> customers = new CreateCustomerSampleCommand(con).call();
                   List<Car> cars = new CreateCarSampleCommand(con).call();
                   List<LoanRequest> loanRequests =
                           new CreateLoanRequestSampleCommand(cars, customers, employees, con).call();
-               }
+//               }
 
                con.commit();
             } catch (SQLException e) {
