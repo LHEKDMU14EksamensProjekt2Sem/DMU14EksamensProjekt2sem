@@ -79,4 +79,23 @@ public class LoanOffer implements AnnuityLoan {
    public void setLoanRequest(LoanRequest loanRequest) {
       this.loanRequest = loanRequest;
    }
+
+   public Money getSumOfPayments() {
+      Money sum = Money.ZERO;
+      for (RepaymentPlanPayment p : payments)
+         sum = sum.add(p.getAmount());
+      return sum;
+   }
+
+   public Money getTotalCost() {
+      Money sum = Money.ZERO;
+      for (RepaymentPlanPayment p : payments)
+         sum = sum.add(p.getInterest());
+      return sum;
+   }
+
+   public double getAPR() {
+      double costPct = (getSumOfPayments().subtract(principal).doubleValue() / principal.doubleValue());
+      return (costPct / payments.size() * 12);
+   }
 }
